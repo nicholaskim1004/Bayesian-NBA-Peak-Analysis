@@ -131,11 +131,6 @@ player_grouping <- nba %>%
 
 ```
 
-```{r}
-player_grouping %>% select(Player, College, Weight_Tier) 
-```
-
-
 Looking at frequency of superstar, star, etc for college
 ```{r}
 player_unique <- player_grouping %>%
@@ -184,8 +179,11 @@ tier_college <- tier_college %>%
 ```{r}
 library(ggplot2)
 
-ggplot(data = nba, aes(x = Draft.Pick, fill = Round)) +
-  geom_histogram(bins = 60)
+ggplot(nba, aes(x = Draft.Pick, colour = Round)) +
+  geom_density()
+
+ggplot(nba, aes(x = Draft.Pick)) +
+  geom_density()
 ```
 
 ```{r warning=FALSE}
@@ -243,11 +241,74 @@ ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
 
 ```
 
+```{r}
+tier_long <- tier_college %>%
+  select(College, prop_superstar, prop_star, prop_role, prop_bench, prop_non) %>%
+  pivot_longer(
+    cols = starts_with("prop_"),
+    names_to = "Tier",
+    values_to = "Scaled_Prop"
+  ) %>%
+  mutate(
+    Tier = case_when(
+      Tier == "prop_superstar" ~ "Superstar",
+      Tier == "prop_star" ~ "Star",
+      Tier == "prop_role" ~ "Role Player",
+      Tier == "prop_bench" ~ "Bench",
+      Tier == "prop_non" ~ "Non-Rotation"
+    )
+  )
+
+ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
+  geom_bar(stat = "identity", width = 1) +
+  theme_bw() +
+  labs(
+    title = "Scaled Player Tier Proportions by College",
+    x = "College",
+    y = "Scaled Proportion"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Superstar" = "#FFD700",  # gold
+      "Star" = "#1E90FF",       # dodger blue
+      "Role Player" = "#32CD32",# lime green
+      "Bench" = "#FFA500",      # orange
+      "Non-Rotation" = "#A9A9A9"# dark grey
+    )
+  ) +
+  theme(
+    axis.text.x = element_text(size = 4, angle = 90, hjust = 1),
+    legend.position = "right"
+  )
+
+```
+
+```{r}
+prop_tiers_colleges_round <- player_grouping %>% group_by(College, Round) %>% 
+  summarise(
+    n = n(),
+    prop_superstar = mean(Weight_Tier == "Superstar"),
+    prop_star = mean(Weight_Tier == "Star"),
+    prop_role = mean(Weight_Tier == "Role Player"),
+    prop_bench = mean(Weight_Tier == "Bench"),
+    prop_non = mean(Weight_Tier == "Non-Rotation"),
+    .groups = "drop"
+  )
+prop_tiers_colleges_round
+```
+
 ## Data Modeling
 
+High lvl idea: 
 
+Layers: 
+1. College -> Draft Pick
+2. Draft Pick -> Player Impact (Superstar, Star, etc)
 
+Distributions:
+College Round Dis -> Categorical Distribution (based on n_i/t_i)
 
+Round Player Impact -> Beta Distribution where props are determined by College and the Round selected
 
 
 
