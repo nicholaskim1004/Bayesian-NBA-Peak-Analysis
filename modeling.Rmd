@@ -20,10 +20,10 @@ nba$Draft.Pick[is.na(nba$Draft.Pick)] <- -5
 #creating a factor on the type of draft pick they were 1st, 2nd, Undrafted
 rounds = numeric(nrow(nba))
 for (i in 1:nrow(nba)){
-  if ((nba[i,11] <= 32) & (nba[i,11] > 0)){
+  if ((nba[i,13] <= 32) & (nba[i,13] > 0)){
     rounds[i] = "1st"
   }
-  else if (nba[i,11]<= 0){
+  else if (nba[i,13]<= 0){
     rounds[i] = "Undrafted"
   }
   else{
@@ -34,13 +34,12 @@ for (i in 1:nrow(nba)){
 nba$Round <- as.factor(rounds)
 
 #filling in missing info for 2 players
-nba[nba$Player=="Sekou Doumbouya",10] <- "INSEP"
-nba[nba$Player=="Mãozinha Pereira",10] <- "Cearense"
+nba[nba$Player=="Sekou Doumbouya",12] <- "INSEP"
+nba[nba$Player=="Mãozinha Pereira",12] <- "Cearense"
 
 #changing Undrafted player to be -5 for consistency
-nba[nba$Player=="Scotty Hopson",11] <- -5
+nba[nba$Player=="Scotty Hopson",13] <- -5
 ```
-
 Lets see the different distributions of draft picks by college
 
 ```{r}
@@ -108,20 +107,72 @@ college_summary <- WS_by_player_college %>%
 
 Let's also look at the percentage of star players to get more granularity!
 
-Creating levels by the number of standard deviations away a players WS is by year
+Creating levels by the number of standard deviations away a players WS is by year. Will use an empicarl bayes shrinkage penalty on the number of MP so those who play more and are better are weighted fairly and those who did well with a small number of MP is less inflated. 
 
 ```{r}
-nba %>%
+k <- 1000
+player_grouping <- nba %>%
   group_by(Year) %>%
   mutate(
-    WS_pct = percent_rank(WS),
-    tier = case_when(
-      WS_pct >= 0.90 ~ "Superstar",
-      WS_pct >= 0.75 ~ "Star",
-      WS_pct >= 0.40 ~ "Role Player",
-      WS_pct >= 0.10 ~ "Bench",
+    league_avg_WS48 = mean(WS.48, na.rm = TRUE),
+    w = MP / (MP + k),
+    adj_WS48 = w * WS.48 + (1 - w) * league_avg_WS48,
+    weighted_WS = percent_rank(adj_WS48),
+    Weight_Tier = case_when(
+      weighted_WS >= 0.95 ~ "Superstar",
+      weighted_WS >= 0.80 ~ "Star",
+      weighted_WS >= 0.40 ~ "Role Player",
+      weighted_WS >= 0.10 ~ "Bench",
       TRUE ~ "Non-Rotation"
     )
+  )
+
+```
+
+```{r}
+player_grouping %>% select(Player, College, Weight_Tier) 
+```
+
+
+Looking at frequency of superstar, star, etc for college
+```{r}
+player_unique <- player_grouping %>%
+  distinct(Player, College, Weight_Tier)
+
+tier_college <- player_unique %>%
+  group_by(College) %>%
+  summarise(
+    n = n(),
+    prop_superstar = mean(Weight_Tier == "Superstar"),
+    prop_star = mean(Weight_Tier == "Star"),
+    prop_role = mean(Weight_Tier == "Role Player"),
+    prop_bench = mean(Weight_Tier == "Bench"),
+    prop_non = mean(Weight_Tier == "Non-Rotation")
+  )
+
+#shrinkage pen for proportions
+
+#getting global proportions
+p0_superstar <- mean(player_unique$Weight_Tier == "Superstar")
+p0_star <- mean(player_unique$Weight_Tier == "Star")
+p0_role <- mean(player_unique$Weight_Tier == "Role Player")
+p0_bench <- mean(player_unique$Weight_Tier == "Bench")
+p0_non <- mean(player_unique$Weight_Tier == "Non-Rotation")
+
+k <- 100   # shrinkage strength
+
+tier_college <- tier_college %>%
+  mutate(
+    prop_superstar_shrunk = (n / (n + k)) * prop_superstar + 
+                            (k / (n + k)) * p0_superstar,
+    prop_star_shrunk = (n / (n + k)) * prop_star + 
+                            (k / (n + k)) * p0_star,
+    prop_role_shrunk = (n / (n + k)) * prop_role + 
+                            (k / (n + k)) * p0_role,
+    prop_bench_shrunk = (n / (n + k)) * prop_bench + 
+                            (k / (n + k)) * p0_bench,
+    prop_non_shrunk = (n / (n + k)) * prop_non + 
+                            (k / (n + k)) * p0_non,
   )
 
 ```
