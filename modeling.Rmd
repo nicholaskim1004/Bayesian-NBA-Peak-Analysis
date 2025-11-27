@@ -32,9 +32,17 @@ for (i in 1:nrow(nba)){
 }
 
 nba$Round <- as.factor(rounds)
+
+#filling in missing info for 2 players
+nba[nba$Player=="Sekou Doumbouya",10] <- "INSEP"
+nba[nba$Player=="Mãozinha Pereira",10] <- "Cearense"
 ```
 
 Lets see the different distributions of draft picks by college
+
+```{r}
+table(nba$College, nba$Round)
+```
 
 ```{r}
 library(dbplyr)
@@ -45,6 +53,41 @@ colnames(round_df) <- c("College","Round","Count")
 round_df <- round_df %>% arrange(desc(Count))
 round_df %>% filter(Round == "1st") %>% slice_head(n=10)
 ```
+
+This is showing the percentage that a player from that college will be a 1st, 2nd, or go Undrafted
+
+```{r}
+pick_prop <- round_df %>% group_by(College) %>% 
+  summarise(total = sum(Count),
+            prop_1st = sum(Count[Round == "1st"])/total,
+            prop_2nd = sum(Count[Round == "2nd"])/total,
+            prop_und = sum(Count[Round == "Undrafted"])/total)
+pick_prop
+```
+
+Now lets look at how productive a player is from some draft position
+```{r}
+nba %>% group_by(Round) %>% 
+  summarise(mean_WS = mean(WS),
+            mean_BPM = mean(BPM),
+            mean_PER = mean(PER))
+```
+
+Now with granular look by college
+```{r}
+WS_college <- nba %>% group_by(Round, College) %>% 
+  summarise(total = n(),
+            mean_WS = mean(WS),
+            mean_BPM = mean(BPM),
+            mean_PER = mean(PER))
+```
+
+Here the means are skewed heavily due to 1 player being extremely productive while also coming from a small sample. Better metric would be in proption of hitting a gem/star player!
+
+```{r}
+
+```
+
 
 ```{r}
 library(ggplot2)
