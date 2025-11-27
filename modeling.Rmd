@@ -1,0 +1,73 @@
+---
+title: "final_proj"
+author: "Nick Kim"
+date: "2025-11-27"
+output: pdf_document
+---
+
+```{r}
+nba <- read.csv("/Users/nicholaskim/Documents/STAT 551/final proj/Data/Win_Shares_College_Draft.csv")
+
+#removing first column as it stores the index of the data
+nba <- nba[,-1]
+
+#converting Draft.Picks into a numeric
+nba$Draft.Pick <- as.numeric(nba$Draft.Pick)
+
+#Since "Undrafted" will become NA will set this to be -5 to distinguish
+nba$Draft.Pick[is.na(nba$Draft.Pick)] <- -5
+
+#creating a factor on the type of draft pick they were 1st, 2nd, Undrafted
+rounds = numeric(nrow(nba))
+for (i in 1:nrow(nba)){
+  if ((nba[i,11] <= 32) & (nba[i,11] > 0)){
+    rounds[i] = "1st"
+  }
+  else if (nba[i,11]< 0){
+    rounds[i] = "Undrafted"
+  }
+  else{
+    rounds[i] = "2nd"
+  }
+}
+
+nba$Round <- as.factor(rounds)
+```
+
+Lets see the different distributions of draft picks by college
+
+```{r}
+library(dbplyr)
+
+round_df <- as.data.frame(table(nba$College, nba$Round))
+colnames(round_df) <- c("College","Round","Count")
+
+round_df <- round_df %>% arrange(desc(Count))
+round_df %>% filter(Round == "1st") %>% slice_head(n=10)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = nba, aes(x = Draft.Pick, fill = College)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5)
+```
+
+```{r}
+ken = nba[nba$College == "Kentucky", ]
+ken$Draft.Pick = as.numeric(ken$Draft.Pick)
+ggplot(data = ken, aes(x = Draft.Pick, fill = Round)) +
+  geom_histogram()
+```
+
+
+```{r}
+length(unique(nba$College))
+```
+
+
+
+
+
+
+
