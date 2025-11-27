@@ -23,7 +23,7 @@ for (i in 1:nrow(nba)){
   if ((nba[i,11] <= 32) & (nba[i,11] > 0)){
     rounds[i] = "1st"
   }
-  else if (nba[i,11]< 0){
+  else if (nba[i,11]<= 0){
     rounds[i] = "Undrafted"
   }
   else{
@@ -36,6 +36,9 @@ nba$Round <- as.factor(rounds)
 #filling in missing info for 2 players
 nba[nba$Player=="Sekou Doumbouya",10] <- "INSEP"
 nba[nba$Player=="Mãozinha Pereira",10] <- "Cearense"
+
+#changing Undrafted player to be -5 for consistency
+nba[nba$Player=="Scotty Hopson",11] <- -5
 ```
 
 Lets see the different distributions of draft picks by college
@@ -75,25 +78,61 @@ nba %>% group_by(Round) %>%
 
 Now with granular look by college
 ```{r}
-WS_college <- nba %>% group_by(Round, College) %>% 
-  summarise(total = n(),
-            mean_WS = mean(WS),
-            mean_BPM = mean(BPM),
-            mean_PER = mean(PER))
-```
+WS_by_player_college <- nba %>%
+  group_by(Player, College, Round) %>%
+  summarise(
+    mean_WS  = mean(WS, na.rm = TRUE),
+    mean_BPM = mean(BPM, na.rm = TRUE),
+    mean_PER = mean(PER, na.rm = TRUE),
+    .groups = "drop"
+  )
 
-Here the means are skewed heavily due to 1 player being extremely productive while also coming from a small sample. Better metric would be in proption of hitting a gem/star player!
+```
 
 ```{r}
+college_summary <- WS_by_player_college %>%
+  group_by(College) %>%
+  summarise(
+    player_count = n(),                                 
+    num_1st = sum(Round == "1st"),
+    num_2nd = sum(Round == "2nd"),
+    num_und = sum(Round == "Undrafted"),
+    
+    avg_WS = mean(mean_WS),
+    avg_BPM = mean(mean_BPM),
+    avg_PER = mean(mean_PER),
+    .groups = "drop"
+  )
 
 ```
+
+Let's also look at the percentage of star players to get more granularity!
+
+Creating levels by the number of standard deviations away a players WS is by year
+
+```{r}
+nba %>%
+  group_by(Year) %>%
+  mutate(
+    WS_pct = percent_rank(WS),
+    tier = case_when(
+      WS_pct >= 0.90 ~ "Superstar",
+      WS_pct >= 0.75 ~ "Star",
+      WS_pct >= 0.40 ~ "Role Player",
+      WS_pct >= 0.10 ~ "Bench",
+      TRUE ~ "Non-Rotation"
+    )
+  )
+
+```
+
 
 
 ```{r}
 library(ggplot2)
 
-ggplot(data = nba, aes(x = Draft.Pick, fill = College)) +
-  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5)
+ggplot(data = nba, aes(x = Draft.Pick, fill = Round)) +
+  geom_histogram(bins = 60)
 ```
 
 ```{r}
@@ -103,10 +142,6 @@ ggplot(data = ken, aes(x = Draft.Pick, fill = Round)) +
   geom_histogram()
 ```
 
-
-```{r}
-length(unique(nba$College))
-```
 
 
 
