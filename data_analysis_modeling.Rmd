@@ -5,6 +5,8 @@ date: "2025-11-27"
 output: pdf_document
 ---
 
+## Data Analysis
+
 ```{r}
 nba <- read.csv("/Users/nicholaskim/Documents/STAT 551/final proj/Data/Win_Shares_College_Draft.csv")
 
@@ -241,7 +243,7 @@ ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
 
 ```
 
-
+## Data Modeling
 
 
 

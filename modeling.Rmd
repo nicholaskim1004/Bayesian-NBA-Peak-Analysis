@@ -1,6 +1,0 @@
----
-title: "modeling"
-author: "Nick Kim"
-date: "2025-11-27"
-output: pdf_document
----
