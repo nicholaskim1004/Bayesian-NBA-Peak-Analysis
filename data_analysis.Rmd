@@ -1,0 +1,253 @@
+---
+title: "final_proj"
+author: "Nick Kim"
+date: "2025-11-27"
+output: pdf_document
+---
+
+```{r}
+nba <- read.csv("/Users/nicholaskim/Documents/STAT 551/final proj/Data/Win_Shares_College_Draft.csv")
+
+#removing first column as it stores the index of the data
+nba <- nba[,-1]
+
+#converting Draft.Picks into a numeric
+nba$Draft.Pick <- as.numeric(nba$Draft.Pick)
+
+#Since "Undrafted" will become NA will set this to be -5 to distinguish
+nba$Draft.Pick[is.na(nba$Draft.Pick)] <- -5
+
+#creating a factor on the type of draft pick they were 1st, 2nd, Undrafted
+rounds = numeric(nrow(nba))
+for (i in 1:nrow(nba)){
+  if ((nba[i,13] <= 32) & (nba[i,13] > 0)){
+    rounds[i] = "1st"
+  }
+  else if (nba[i,13]<= 0){
+    rounds[i] = "Undrafted"
+  }
+  else{
+    rounds[i] = "2nd"
+  }
+}
+
+nba$Round <- as.factor(rounds)
+
+#filling in missing info for 2 players
+nba[nba$Player=="Sekou Doumbouya",12] <- "INSEP"
+nba[nba$Player=="Mãozinha Pereira",12] <- "Cearense"
+
+#changing Undrafted player to be -5 for consistency
+nba[nba$Player=="Scotty Hopson",13] <- -5
+```
+Lets see the different distributions of draft picks by college
+
+```{r}
+table(nba$College, nba$Round)
+```
+
+```{r}
+library(dbplyr)
+
+round_df <- as.data.frame(table(nba$College, nba$Round))
+colnames(round_df) <- c("College","Round","Count")
+
+round_df <- round_df %>% arrange(desc(Count))
+round_df %>% filter(Round == "1st") %>% slice_head(n=10)
+```
+
+This is showing the percentage that a player from that college will be a 1st, 2nd, or go Undrafted
+
+```{r}
+pick_prop <- round_df %>% group_by(College) %>% 
+  summarise(total = sum(Count),
+            prop_1st = sum(Count[Round == "1st"])/total,
+            prop_2nd = sum(Count[Round == "2nd"])/total,
+            prop_und = sum(Count[Round == "Undrafted"])/total)
+pick_prop
+```
+
+Now lets look at how productive a player is from some draft position
+```{r}
+nba %>% group_by(Round) %>% 
+  summarise(mean_WS = mean(WS),
+            mean_BPM = mean(BPM),
+            mean_PER = mean(PER))
+```
+
+Now with granular look by college
+```{r}
+WS_by_player_college <- nba %>%
+  group_by(Player, College, Round) %>%
+  summarise(
+    mean_WS  = mean(WS, na.rm = TRUE),
+    mean_BPM = mean(BPM, na.rm = TRUE),
+    mean_PER = mean(PER, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+```
+
+```{r}
+college_summary <- WS_by_player_college %>%
+  group_by(College) %>%
+  summarise(
+    player_count = n(),                                 
+    num_1st = sum(Round == "1st"),
+    num_2nd = sum(Round == "2nd"),
+    num_und = sum(Round == "Undrafted"),
+    
+    avg_WS = mean(mean_WS),
+    avg_BPM = mean(mean_BPM),
+    avg_PER = mean(mean_PER),
+    .groups = "drop"
+  )
+
+```
+
+Let's also look at the percentage of star players to get more granularity!
+
+Creating levels by the number of standard deviations away a players WS is by year. Will use an empicarl bayes shrinkage penalty on the number of MP so those who play more and are better are weighted fairly and those who did well with a small number of MP is less inflated. 
+
+```{r}
+k <- 1000
+player_grouping <- nba %>%
+  group_by(Year) %>%
+  mutate(
+    league_avg_WS48 = mean(WS.48, na.rm = TRUE),
+    w = MP / (MP + k),
+    adj_WS48 = w * WS.48 + (1 - w) * league_avg_WS48,
+    weighted_WS = percent_rank(adj_WS48),
+    Weight_Tier = case_when(
+      weighted_WS >= 0.95 ~ "Superstar",
+      weighted_WS >= 0.80 ~ "Star",
+      weighted_WS >= 0.40 ~ "Role Player",
+      weighted_WS >= 0.10 ~ "Bench",
+      TRUE ~ "Non-Rotation"
+    )
+  )
+
+```
+
+```{r}
+player_grouping %>% select(Player, College, Weight_Tier) 
+```
+
+
+Looking at frequency of superstar, star, etc for college
+```{r}
+player_unique <- player_grouping %>%
+  distinct(Player, College, Weight_Tier)
+
+tier_college <- player_unique %>%
+  group_by(College) %>%
+  summarise(
+    n = n(),
+    prop_superstar = mean(Weight_Tier == "Superstar"),
+    prop_star = mean(Weight_Tier == "Star"),
+    prop_role = mean(Weight_Tier == "Role Player"),
+    prop_bench = mean(Weight_Tier == "Bench"),
+    prop_non = mean(Weight_Tier == "Non-Rotation")
+  )
+
+#shrinkage pen for proportions
+
+#getting global proportions
+p0_superstar <- mean(player_unique$Weight_Tier == "Superstar")
+p0_star <- mean(player_unique$Weight_Tier == "Star")
+p0_role <- mean(player_unique$Weight_Tier == "Role Player")
+p0_bench <- mean(player_unique$Weight_Tier == "Bench")
+p0_non <- mean(player_unique$Weight_Tier == "Non-Rotation")
+
+k <- 100   # shrinkage strength
+
+tier_college <- tier_college %>%
+  mutate(
+    prop_superstar_shrunk = (n / (n + k)) * prop_superstar + 
+                            (k / (n + k)) * p0_superstar,
+    prop_star_shrunk = (n / (n + k)) * prop_star + 
+                            (k / (n + k)) * p0_star,
+    prop_role_shrunk = (n / (n + k)) * prop_role + 
+                            (k / (n + k)) * p0_role,
+    prop_bench_shrunk = (n / (n + k)) * prop_bench + 
+                            (k / (n + k)) * p0_bench,
+    prop_non_shrunk = (n / (n + k)) * prop_non + 
+                            (k / (n + k)) * p0_non,
+  )
+
+```
+
+
+
+```{r}
+library(ggplot2)
+
+ggplot(data = nba, aes(x = Draft.Pick, fill = Round)) +
+  geom_histogram(bins = 60)
+```
+
+```{r warning=FALSE}
+ggplot(nba, aes(x = Draft.Pick, color = College)) +
+  geom_density(linewidth = 1, alpha = 0.5) +
+  theme_bw() +
+  theme(legend.position = "none") +     # hide legend if too big
+  labs(title = "Draft Pick Density (All Colleges Overlaid)",
+       x = "Draft Pick",
+       y = "Density")
+
+```
+```{r}
+library(tidyr)
+library(dplyr)
+
+tier_long <- tier_college %>%
+  select(College, prop_superstar_shrunk, prop_star_shrunk, prop_role_shrunk, prop_bench_shrunk, prop_non_shrunk) %>%
+  pivot_longer(
+    cols = starts_with("prop_"),
+    names_to = "Tier",
+    values_to = "Scaled_Prop"
+  ) %>%
+  mutate(
+    Tier = case_when(
+      Tier == "prop_superstar_shrunk" ~ "Superstar",
+      Tier == "prop_star_shrunk" ~ "Star",
+      Tier == "prop_role_shrunk" ~ "Role Player",
+      Tier == "prop_bench_shrunk" ~ "Bench",
+      Tier == "prop_non_shrunk" ~ "Non-Rotation"
+    )
+  )
+
+ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
+  geom_bar(stat = "identity", width = 1) +
+  theme_bw() +
+  labs(
+    title = "Scaled Player Tier Proportions by College",
+    x = "College",
+    y = "Scaled Proportion"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Superstar" = "#FFD700",  # gold
+      "Star" = "#1E90FF",       # dodger blue
+      "Role Player" = "#32CD32",# lime green
+      "Bench" = "#FFA500",      # orange
+      "Non-Rotation" = "#A9A9A9"# dark grey
+    )
+  ) +
+  theme(
+    axis.text.x = element_text(size = 4, angle = 90, hjust = 1),
+    legend.position = "right"
+  )
+
+```
+
+
+
+
+
+
+
+
+
+
+
