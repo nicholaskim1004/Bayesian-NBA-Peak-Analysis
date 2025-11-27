@@ -186,12 +186,63 @@ ggplot(data = nba, aes(x = Draft.Pick, fill = Round)) +
   geom_histogram(bins = 60)
 ```
 
-```{r}
-ken = nba[nba$College == "Kentucky", ]
-ken$Draft.Pick = as.numeric(ken$Draft.Pick)
-ggplot(data = ken, aes(x = Draft.Pick, fill = Round)) +
-  geom_histogram()
+```{r warning=FALSE}
+ggplot(nba, aes(x = Draft.Pick, color = College)) +
+  geom_density(linewidth = 1, alpha = 0.5) +
+  theme_bw() +
+  theme(legend.position = "none") +     # hide legend if too big
+  labs(title = "Draft Pick Density (All Colleges Overlaid)",
+       x = "Draft Pick",
+       y = "Density")
+
 ```
+```{r}
+library(tidyr)
+library(dplyr)
+
+tier_long <- tier_college %>%
+  select(College, prop_superstar_shrunk, prop_star_shrunk, prop_role_shrunk, prop_bench_shrunk, prop_non_shrunk) %>%
+  pivot_longer(
+    cols = starts_with("prop_"),
+    names_to = "Tier",
+    values_to = "Scaled_Prop"
+  ) %>%
+  mutate(
+    Tier = case_when(
+      Tier == "prop_superstar_shrunk" ~ "Superstar",
+      Tier == "prop_star_shrunk" ~ "Star",
+      Tier == "prop_role_shrunk" ~ "Role Player",
+      Tier == "prop_bench_shrunk" ~ "Bench",
+      Tier == "prop_non_shrunk" ~ "Non-Rotation"
+    )
+  )
+
+ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
+  geom_bar(stat = "identity", width = 1) +
+  theme_bw() +
+  labs(
+    title = "Scaled Player Tier Proportions by College",
+    x = "College",
+    y = "Scaled Proportion"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Superstar" = "#FFD700",  # gold
+      "Star" = "#1E90FF",       # dodger blue
+      "Role Player" = "#32CD32",# lime green
+      "Bench" = "#FFA500",      # orange
+      "Non-Rotation" = "#A9A9A9"# dark grey
+    )
+  ) +
+  theme(
+    axis.text.x = element_text(size = 4, angle = 90, hjust = 1),
+    legend.position = "right"
+  )
+
+```
+
+
+
 
 
 
