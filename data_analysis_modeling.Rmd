@@ -22,7 +22,7 @@ nba$Draft.Pick[is.na(nba$Draft.Pick)] <- -5
 #creating a factor on the type of draft pick they were 1st, 2nd, Undrafted
 rounds = numeric(nrow(nba))
 for (i in 1:nrow(nba)){
-  if ((nba[i,13] <= 32) & (nba[i,13] > 0)){
+  if ((nba[i,13] <= 30) & (nba[i,13] > 0)){
     rounds[i] = "1st"
   }
   else if (nba[i,13]<= 0){
@@ -35,9 +35,38 @@ for (i in 1:nrow(nba)){
 
 nba$Round <- as.factor(rounds)
 
+round_bins = numeric(nrow(nba))
+for (i in 1:nrow(nba)){
+  if ((nba[i,13] <= 14) & (nba[i,13] > 0)){
+    round_bins[i] = "1-14"
+  }
+  else if ((nba[i,13]> 14) & (nba[i,13] <= 30)) {
+    round_bins[i] = "15-30"
+  }
+  else if ((nba[i,13]> 30) & (nba[i,13] <= 44)) {
+    round_bins[i] = "31-44"
+  }
+  else if ((nba[i,13]> 44) & (nba[i,13] <= 60)) {
+    round_bins[i] = "45-60"
+  }
+  else{
+    round_bins[i] = "Undrafted"
+  }
+}
+
+nba$Round_bins <- as.factor(round_bins)
+
 #filling in missing info for 2 players
 nba[nba$Player=="Sekou Doumbouya",12] <- "INSEP"
 nba[nba$Player=="Mãozinha Pereira",12] <- "Cearense"
+
+#cleaning up College data
+nba[nba$Player=="Alex Ducas",12] <- "Australian Institute of Sport"
+nba[(nba$College == "St. John's, N.Y.")|(nba$College == "St. John's")|(nba$College == "St. John's (NY)"),12] <- "St. John's"
+nba[(nba$College == "Sydney")|(nba$College == "Sydney Kings"),12]<-"Sydney"
+nba[(nba$College == "Texas")|(nba$College == "University of Texas at Austin")|(nba$College == "Texas-Austin"),12] <- "Texas"
+nba[(nba$College == "Wisc.-Green Bay")|(nba$College == "Wisconsin-Green Bay"),12] <- "Wisconsin-Green Bay"
+nba[nba$Player=="Alex Sarr",12] <- "Perth"
 
 #changing Undrafted player to be -5 for consistency
 nba[nba$Player=="Scotty Hopson",13] <- -5
@@ -51,8 +80,8 @@ table(nba$College, nba$Round)
 ```{r}
 library(dbplyr)
 
-round_df <- as.data.frame(table(nba$College, nba$Round))
-colnames(round_df) <- c("College","Round","Count")
+round_df <- as.data.frame(table(nba$College, nba$Round, nba$Round_bins))
+colnames(round_df) <- c("College","Round","Round_bin","Count")
 
 round_df <- round_df %>% arrange(desc(Count))
 round_df %>% filter(Round == "1st") %>% slice_head(n=10)
@@ -65,6 +94,11 @@ pick_prop <- round_df %>% group_by(College) %>%
   summarise(total = sum(Count),
             prop_1st = sum(Count[Round == "1st"])/total,
             prop_2nd = sum(Count[Round == "2nd"])/total,
+            prop_lottery = sum(Count[Round_bin == "1-14"])/total,
+            prop_later1st = sum(Count[Round_bin == "15-30"])/total,
+            prop_top2nd = sum(Count[Round_bin == "31-44"])/total,
+            prop_later2nd = sum(Count[Round_bin == "45-60"])/total,
+            prop_und = sum(Count[Round_bin == "Undrafted"])/total,
             prop_und = sum(Count[Round == "Undrafted"])/total)
 pick_prop
 ```
@@ -80,7 +114,7 @@ nba %>% group_by(Round) %>%
 Now with granular look by college
 ```{r}
 WS_by_player_college <- nba %>%
-  group_by(Player, College, Round) %>%
+  group_by(Player, College, Round_bins) %>%
   summarise(
     mean_WS  = mean(WS, na.rm = TRUE),
     mean_BPM = mean(BPM, na.rm = TRUE),
@@ -95,9 +129,11 @@ college_summary <- WS_by_player_college %>%
   group_by(College) %>%
   summarise(
     player_count = n(),                                 
-    num_1st = sum(Round == "1st"),
-    num_2nd = sum(Round == "2nd"),
-    num_und = sum(Round == "Undrafted"),
+    num_lottery = sum(Round_bins == "1-14"),
+    num_late1st = sum(Round_bins == "15-30"),
+    num_early2nd = sum(Round_bins == "31-44"),
+    num_late2nd = sum(Round_bins == "45-60"),
+    num_und = sum(Round_bins == "Undrafted"),
     
     avg_WS = mean(mean_WS),
     avg_BPM = mean(mean_BPM),
@@ -179,7 +215,7 @@ tier_college <- tier_college %>%
 ```{r}
 library(ggplot2)
 
-ggplot(nba, aes(x = Draft.Pick, colour = Round)) +
+ggplot(nba, aes(x = Draft.Pick, colour = Round_bins)) +
   geom_density()
 
 ggplot(nba, aes(x = Draft.Pick)) +
@@ -284,7 +320,7 @@ ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
 ```
 
 ```{r}
-prop_tiers_colleges_round <- player_grouping %>% group_by(College, Round) %>% 
+prop_tiers_colleges_round <- player_grouping %>% group_by(College, Round_bins) %>% 
   summarise(
     n = n(),
     prop_superstar = mean(Weight_Tier == "Superstar"),
@@ -306,11 +342,42 @@ Layers:
 2. Draft Pick -> Player Impact (Superstar, Star, etc)
 
 Distributions:
-College Round Dis -> Categorical Distribution (based on n_i/t_i)
+College Round Dis -> Categorical Distribution (based on n_i/t_i) where t_i is from Direchlet
 
-Round Player Impact -> Beta Distribution where props are determined by College and the Round selected
+Round Player Impact -> Bernoulli where props are determined by College and the Round selected
 
+Creating per College dataset which I'll feed into my model. Player counts of each Round bin and Player Tier bins
 
+```{r}
+num_colleges = length(unique(nba$College))
+num_round_bins = length(unique(nba$Round_bins))
 
+round_prop_mat = matrix(nrow = num_colleges, ncol = num_round_bins)
+
+for (i in 1:length(unique(nba$Round_bins))){
+  round_prop_mat[,i] = pick_prop$total * pick_prop[,i+4, drop=TRUE]
+}
+colnames(round_prop_mat) <- c("Lottery","Late 1st","Early 2nd","Late 2nd","Undrafted")
+
+round_totals <- rowSums(round_prop_mat)
+```
+
+Table for count of player tier given college and draft pick
+```{r}
+num_tiers = length(unique(player_grouping$Weight_Tier))
+college_list = pick_prop$College
+
+round_bins = c("1-14","15-30","31-44","45-60","Undrafted")
+
+tier_mat = array(0,dim = list(num_colleges, num_round_bins, num_tiers))
+
+for (i in 1:num_colleges){
+  fil_to_col = prop_tiers_colleges_round[prop_tiers_colleges_round$College == college_list[i],]
+    for (j in 1:num_round_bins){
+      indx <- which(round_bins == fil_to_col$Round_bins[j])
+      tier_mat[i,indx,] = as.numeric(fil_to_col[j,c(4,5,6,7,8),drop=TRUE]*fil_to_col[j,3,drop=TRUE])
+    }
+}
+```
 
 
