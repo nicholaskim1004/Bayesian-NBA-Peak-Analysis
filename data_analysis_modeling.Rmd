@@ -450,3 +450,17 @@ ppc_df <- tibble(
 ppc_df %>% arrange(desc(observed)) %>% head(10)
 ```
 
+```{r}
+ggplot(ppc_df, aes(x = sim_mean, y = observed)) +
+  geom_errorbarh(aes(xmin = sim_lo, xmax = sim_hi), height = 0.2, alpha = 0.6) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(title = "Variational Plot of Actual Superstar Count per College vs Sim",
+       x = "Predicted # superstars (mean ± 90% CI)", y = "Observed # superstars")
+```
+At lower tail where we have less data there is more variability/less certainty in capturing the observed superstar count. As we progress up the y axis or as we get more data we capture the true mean. Evidence that the model is plausible!
+
+
+
+
+
