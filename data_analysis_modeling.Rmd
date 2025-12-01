@@ -380,4 +380,73 @@ for (i in 1:num_colleges){
 }
 ```
 
+Running the STAN model
+```{r}
+library(rstan)
+
+storage.mode(round_prop_mat) <- "integer"
+storage.mode(tier_mat) <- "integer"
+
+posterior <- stan(
+  file = "by_college.stan",
+  data = list(C = num_colleges, P = num_round_bins, T = num_tiers, college_count = round_prop_mat, tier_count = tier_mat),
+  seed = 1234,
+  chains = 2,
+  iter = 2000
+)
+```
+```{r}
+summary <- rstan::summary(posterior)$summary
+
+post_picks <- rstan::extract(posterior)$pick_probs
+post_tiers <- rstan::extract(posterior)$tier_probs
+```
+
+posterior predictive check on a random subset of my data
+```{r}
+set.seed(1234)
+
+n_samples <- 210
+
+num_iters <- dim(post_picks)[1]
+ran_iters <- sample(1:num_iters,n_samples)
+
+pred_college_counts <- array(0,dim=list(n_samples, num_colleges, num_round_bins))
+pred_tier_counts <- array(0,dim=list(n_samples, num_colleges, num_round_bins, num_tiers))
+
+for (d in 1:n_samples){
+  ran_ind = ran_iters[d]
+  for (c in 1:num_colleges){
+    Total_c = round_totals[c] #total number of players drafted from that college
+    pred_college_counts[d,c,] = as.vector(rmultinom(1, size = Total_c, prob = post_picks[ran_ind,c,]))
+    
+    for (r in 1:num_round_bins){
+      Total_t = sum(tier_mat[c,r,]) #total number of players drafted from that college and in that specific draft bin
+      pred_tier_counts[d,c,r,] = as.vector(rmultinom(1, size = Total_t, prob = post_tiers[ran_ind,c,r,]))
+    }
+  }
+}
+```
+
+Checking number of superstars betwen acutal data and from our simulated draw
+```{r}
+library(tidyverse)
+actual_superstar_count <- apply(tier_mat[,,1],1,sum)
+
+sim_superstar_count <- apply(pred_tier_counts[,,,1],c(1,2),sum)
+  
+sim_super_mean <- apply(sim_superstar_count, 2, mean)
+sim_super_lo   <- apply(sim_superstar_count, 2, quantile, 0.05)
+sim_super_hi   <- apply(sim_superstar_count, 2, quantile, 0.95)
+
+ppc_df <- tibble(
+  College = college_list,
+  observed = actual_superstar_count,
+  sim_mean = sim_super_mean,
+  sim_lo = sim_super_lo,
+  sim_hi = sim_super_hi
+)
+
+ppc_df %>% arrange(desc(observed)) %>% head(10)
+```
 
