@@ -66,7 +66,20 @@ nba[(nba$College == "St. John's, N.Y.")|(nba$College == "St. John's")|(nba$Colle
 nba[(nba$College == "Sydney")|(nba$College == "Sydney Kings"),12]<-"Sydney"
 nba[(nba$College == "Texas")|(nba$College == "University of Texas at Austin")|(nba$College == "Texas-Austin"),12] <- "Texas"
 nba[(nba$College == "Wisc.-Green Bay")|(nba$College == "Wisconsin-Green Bay"),12] <- "Wisconsin-Green Bay"
+nba[(nba$College == "Nebraska")|(nba$College == "Nebraska-Lincoln"),12] <- "Nebraska"
+nba[(nba$College=="St. Mary's")|(nba$College=="St. Mary's College"),12] <- "St. Mary's"
+
 nba[nba$Player=="Alex Sarr",12] <- "Perth"
+
+
+nba[nba$College=="Capital City Go-Go",12] <- "New Zealand Breakers"
+nba[nba$College=="Barcelona, Spain",12] <- "Olympiacos"
+nba[nba$College=="Huntington",12] <- "Louisville"
+nba[nba$College=="Edgewater HS (FL)",12] <- "IMG Academy (FL)"
+nba[nba$College=="Josh Giddey",12] <- "Adelaide"
+nba[nba$College=="Rockingham Flames (Aus.)",12] <- "Perth"
+nba[nba$College=="Serbia",12] <- "Mega Basket"
+nba[nba$College=="Winnipeg Sea Bears",12] <- "Louisiana State"
 
 #changing Undrafted player to be -5 for consistency
 nba[nba$Player=="Scotty Hopson",13] <- -5
@@ -75,6 +88,112 @@ Lets see the different distributions of draft picks by college
 
 ```{r}
 table(nba$College, nba$Round)
+```
+Creating a country column which stores what country the league they played is based
+```{r}
+france <- c("ADA Blois","ASVEL","Cholet","Elan Chalon","INSEP","JL Bourg-en-Bresse","Le Mans","Metropolitans 92","Pau Orthez","Poiteirs Basket 86","Rouen, France","Strasbourg IG")
+
+aus <- c("Adelaide","Australian Institute of Sport","Brisbane","Brose Bamberg","Illawarra","Perth","Sydney")
+
+turkey <- c("Anadolus Efes","Besiktas","Bursaspor","Crvena zvezda","Fenerbachce")
+
+canada <- c("Athlete Institute Prep","Vanier")
+
+germany <- c("Bayern Munich","Braunschweig","Ratiopharm","Riesen Ludwigsburg")
+
+spain <- c("Baloncesto Fuenlabrada","Baskonia","Bibao","Cajasol Sevilla","Estudiantes","FC Barcelona","Gran Canaria","Murcia","Real Madrid","Ricoh Manresa","San Pablo Burgos","Zaragoza")
+
+brazil <- c("Cearense","Flamengo","Minas","Pinheiros")
+
+solvenia <- c("Cedevita","Union Olimpija")
+
+russia <- c("CSKA Moscow")
+
+serbia <- c("Bekio","Mega Basket")
+
+greece <- c("Filathlitikos","Olympiacos","Panathiaikos")
+
+china <- c("Guangdong","Guangzhou Loong Lions")
+
+lithuania <- c("Lietuvos rytas Vilnius","Zalgiris")
+
+israel <- c("Maccabi Tel Aviv")
+
+senegal <- c("NBA Global Academy")
+
+italy <- c("Olimpia Milano","Victoria Liberta")
+
+ukraine <- c("SK Cherkasy Monkey")
+
+japan <- c("Yokohama B-Corsairs (Japan)")
+
+league_country <- list()
+
+for (i in 1:nrow(nba)){
+  if (nba$College[i] %in% france){
+    league_country[i] = "France"
+  }
+  else if (nba$College[i] %in% aus){
+    league_country[i] = "Australia"
+  }
+  else if (nba$College[i] %in% turkey){
+    league_country[i] = "Turkey"
+  }
+  else if (nba$College[i] %in% canada){
+    league_country[i] = "Canada"
+  }
+  else if (nba$College[i] %in% germany){
+    league_country[i] = "Germany"
+  }
+  else if (nba$College[i] %in% spain){
+    league_country[i] = "Spain"
+  }
+  else if (nba$College[i] %in% brazil){
+    league_country[i] = "Brazil"
+  }
+  else if (nba$College[i] %in% solvenia){
+    league_country[i] = "Solvenia"
+  }
+  else if (nba$College[i] %in% russia){
+    league_country[i] = "Russia"
+  }
+  else if (nba$College[i] %in% serbia){
+    league_country[i] = "Serbia"
+  }
+  else if (nba$College[i] %in% greece){
+    league_country[i] = "Greece"
+  }
+  else if (nba$College[i] %in% china){
+    league_country[i] = "China"
+  }
+  else if (nba$College[i] %in% lithuania){
+    league_country[i] = "Lithuania"
+  }
+  else if (nba$College[i] %in% israel){
+    league_country[i] = "Israel"
+  }
+  else if (nba$College[i] %in% senegal){
+    league_country[i] = "Senegal"
+  }
+  else if (nba$College[i] %in% italy){
+    league_country[i] = "Italy"
+  }
+  else if (nba$College[i] %in% ukraine){
+    league_country[i] = "Ukraine"
+  }
+  else if (nba$College[i] %in% japan){
+    league_country[i] = "Japan"
+  }
+  else{
+    league_country[i] = "USA"
+  }
+}
+
+nba$Country <- factor(unlist(league_country))
+```
+
+```{r}
+table(nba$Country)
 ```
 
 ```{r}
@@ -461,6 +580,15 @@ ggplot(ppc_df, aes(x = sim_mean, y = observed)) +
 At lower tail where we have less data there is more variability/less certainty in capturing the observed superstar count. As we progress up the y axis or as we get more data we capture the true mean. Evidence that the model is plausible!
 
 
+## On NBA Draft Prospects
+
+
+Creating NBA draft prospects data set. Some need to change college to one we have: Melbourne United, KK Partizan, Valencia Basket Club, South East Melbourne, Paris Basketball, Club Joventut, KK Mega
+```{r}
+nba_prospects <- data.frame(Player = c("AJ Dybantsa","Darryn Peterson","Cameron Boozer","Mikel Brown","Kingston Flemings","Caleb Wilson","Nate Ament","Karim Lopez","Isaiah Evans","Chris Cenac","Meleek Thomas","Labaron Philon","Dash Daniels","Cameron Carr","Hannes Steinbach","Brayden Burries","Darius Acuff","Matt Able","Thomas Haugh","Alijah Arenas","Yaxel Lendeborg","Bennett Stirtz","Patrick Ngongba","Ian Jackson","Tounde Yessoufou","Henri Vessaar","Miikka Muurinen","Koa Peat","Segio De Larrea","Miles Byrd","Zuby Ejiofor","Morez Johnson","JT Toppin","Karter Knox","PJ Haggerty","Adam Atamna","Richie Saunders","Baba Miller","Jaron Pierre","Tarris Reed","Nate Bittle","Malique Lewis","Milos Uzan","Baye Ndongo","Alex Karaban","Mouhamed Faye","Michael Ruzic","Mackenzie Mgbako","Tre White","Joshua Jefferson","Malique Ewin","Xaivian Lee","JJ Starling","Ognjen Srzentic","Braden Smith","Donovan Dent","Roddy Gayle","Kylan Boswell","Ryan Conwell","Denzel Aberdeen","Dame Sarr","Neoklis Avdalas","Flory Bidunga","Cayden Boozer","Chris Cenac Jr."),
+           College = c("Brigham Young","Kansas","Duke","Louisville","Houston","North Carolina","Tennessee","New Zealand Breakers","Duke","Houston","Arkansas","Alabama","Melbourne United","Baylor","Washington","Arizona","Arkansas","North Carolina State","Florida","USC","Michigan","Iowa","Duke","St. John's","Baylor","North Carolina","KK Partizan","Arizona","Valencia Basket Club","San Diego State","St. John's","Michigan","Texas Tech","Arkansas","Kansas State","ASVEL","Brigham Young","Cincinnati","Southern Methodist","Connecticut","Oregon","South East Melbourne","Houston","Georgia Tech","Connecticut","Paris Basketball","Club Joventut Badalona","Texas A&M","Kansas","Iowa State","Arkansas","Florida","Syracuse","KK Mega Leks","Purdue","UCLA","Michigan","Illinois","Louisville","Kentucky","Duke","Virginia Tech","Kansas","Duke","Houston"),
+           Projected_pick = c(1:60,rep("Undrafted",5)))
+```
 
 
 
