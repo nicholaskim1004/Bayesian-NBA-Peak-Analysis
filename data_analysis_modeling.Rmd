@@ -195,6 +195,11 @@ nba$Country <- factor(unlist(league_country))
 ```{r}
 table(nba$Country)
 ```
+```{r}
+country_mapping <- data.frame(country_name = unique(nba$Country),
+                              factor_id = as.numeric(unique(nba$Country)))
+```
+
 
 ```{r}
 library(dbplyr)
@@ -457,10 +462,20 @@ prop_tiers_colleges_round
 High lvl idea: 
 
 Layers: 
-1. College -> Draft Pick
-2. Draft Pick -> Player Impact (Superstar, Star, etc)
+1. Country 19
+2.College 285
+3. Draft Pick Bin 5 each college
+4. Player Impact (Superstar, Star, etc) 5 each bin
 
 Distributions:
+
+Global mu, std param -> 
+
+use count data for countries to estimate concentration values to get probs of going to a college/team 
+
+
+
+
 College Round Dis -> Categorical Distribution (based on n_i/t_i) where t_i is from Direchlet
 
 Round Player Impact -> Bernoulli where props are determined by College and the Round selected
@@ -499,6 +514,12 @@ for (i in 1:num_colleges){
 }
 ```
 
+Setting up country vector in same order as others
+```{r}
+region <- merge(pick_prop[,1], unique(nba[,c(12,16)]), by = "College")
+region_id_vec <- as.numeric(region$Country)
+```
+
 Running the STAN model
 ```{r}
 library(rstan)
@@ -508,18 +529,22 @@ storage.mode(tier_mat) <- "integer"
 
 posterior <- stan(
   file = "by_college.stan",
-  data = list(C = num_colleges, P = num_round_bins, T = num_tiers, college_count = round_prop_mat, tier_count = tier_mat),
+  data = list(C = num_colleges, P = num_round_bins, T = num_tiers, R = length(unique(nba$Country)),
+              region_of_college = region_id_vec, college_count = round_prop_mat, tier_count = tier_mat),
   seed = 1234,
   chains = 2,
   iter = 2000
 )
 ```
+
 ```{r}
 summary <- rstan::summary(posterior)$summary
 
-post_picks <- rstan::extract(posterior)$pick_probs
-post_tiers <- rstan::extract(posterior)$tier_probs
+summary(posterior)
 ```
+
+
+
 
 posterior predictive check on a random subset of my data
 ```{r}
