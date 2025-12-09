@@ -8,454 +8,86 @@ output: pdf_document
 ## Data Analysis
 
 ```{r}
-nba <- read.csv("/Users/nicholaskim/Documents/STAT 551/final proj/Data/Win_Shares_College_Draft.csv")
+nba <- read.csv("/Users/nicholaskim/Documents/STAT 551/final proj/Data/peaks.csv")
 
-#removing first column as it stores the index of the data
 nba <- nba[,-1]
-
-#converting Draft.Picks into a numeric
-nba$Draft.Pick <- as.numeric(nba$Draft.Pick)
-
-#Since "Undrafted" will become NA will set this to be -5 to distinguish
-nba$Draft.Pick[is.na(nba$Draft.Pick)] <- -5
-
-#creating a factor on the type of draft pick they were 1st, 2nd, Undrafted
-rounds = numeric(nrow(nba))
-for (i in 1:nrow(nba)){
-  if ((nba[i,13] <= 30) & (nba[i,13] > 0)){
-    rounds[i] = "1st"
-  }
-  else if (nba[i,13]<= 0){
-    rounds[i] = "Undrafted"
-  }
-  else{
-    rounds[i] = "2nd"
-  }
-}
-
-nba$Round <- as.factor(rounds)
-
-round_bins = numeric(nrow(nba))
-for (i in 1:nrow(nba)){
-  if ((nba[i,13] <= 14) & (nba[i,13] > 0)){
-    round_bins[i] = "1-14"
-  }
-  else if ((nba[i,13]> 14) & (nba[i,13] <= 30)) {
-    round_bins[i] = "15-30"
-  }
-  else if ((nba[i,13]> 30) & (nba[i,13] <= 44)) {
-    round_bins[i] = "31-44"
-  }
-  else if ((nba[i,13]> 44) & (nba[i,13] <= 60)) {
-    round_bins[i] = "45-60"
-  }
-  else{
-    round_bins[i] = "Undrafted"
-  }
-}
-
-nba$Round_bins <- as.factor(round_bins)
-
-#filling in missing info for 2 players
-nba[nba$Player=="Sekou Doumbouya",12] <- "INSEP"
-nba[nba$Player=="Mãozinha Pereira",12] <- "Cearense"
-
-#cleaning up College data
-nba[nba$Player=="Alex Ducas",12] <- "Australian Institute of Sport"
-nba[(nba$College == "St. John's, N.Y.")|(nba$College == "St. John's")|(nba$College == "St. John's (NY)"),12] <- "St. John's"
-nba[(nba$College == "Sydney")|(nba$College == "Sydney Kings"),12]<-"Sydney"
-nba[(nba$College == "Texas")|(nba$College == "University of Texas at Austin")|(nba$College == "Texas-Austin"),12] <- "Texas"
-nba[(nba$College == "Wisc.-Green Bay")|(nba$College == "Wisconsin-Green Bay"),12] <- "Wisconsin-Green Bay"
-nba[(nba$College == "Nebraska")|(nba$College == "Nebraska-Lincoln"),12] <- "Nebraska"
-nba[(nba$College=="St. Mary's")|(nba$College=="St. Mary's College"),12] <- "St. Mary's"
-
-nba[nba$Player=="Alex Sarr",12] <- "Perth"
-
-
-nba[nba$College=="Capital City Go-Go",12] <- "New Zealand Breakers"
-nba[nba$College=="Barcelona, Spain",12] <- "Olympiacos"
-nba[nba$College=="Huntington",12] <- "Louisville"
-nba[nba$College=="Edgewater HS (FL)",12] <- "IMG Academy (FL)"
-nba[nba$College=="Josh Giddey",12] <- "Adelaide"
-nba[nba$College=="Rockingham Flames (Aus.)",12] <- "Perth"
-nba[nba$College=="Serbia",12] <- "Mega Basket"
-nba[nba$College=="Winnipeg Sea Bears",12] <- "Louisiana State"
-
-#changing Undrafted player to be -5 for consistency
-nba[nba$Player=="Scotty Hopson",13] <- -5
 ```
-Lets see the different distributions of draft picks by college
+
+
+Making plots to help with setting priors
 
 ```{r}
-table(nba$College, nba$Round)
+library(ggplot2)
+library(dplyr)
+
+ggplot(data = nba, aes(x = Country, fill = Player.Tier)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ```
-Creating a country column which stores what country the league they played is based
-```{r}
-france <- c("ADA Blois","ASVEL","Cholet","Elan Chalon","INSEP","JL Bourg-en-Bresse","Le Mans","Metropolitans 92","Pau Orthez","Poiteirs Basket 86","Rouen, France","Strasbourg IG")
-
-aus <- c("Adelaide","Australian Institute of Sport","Brisbane","Brose Bamberg","Illawarra","Perth","Sydney")
-
-turkey <- c("Anadolus Efes","Besiktas","Bursaspor","Crvena zvezda","Fenerbachce")
-
-canada <- c("Athlete Institute Prep","Vanier")
-
-germany <- c("Bayern Munich","Braunschweig","Ratiopharm","Riesen Ludwigsburg")
-
-spain <- c("Baloncesto Fuenlabrada","Baskonia","Bibao","Cajasol Sevilla","Estudiantes","FC Barcelona","Gran Canaria","Murcia","Real Madrid","Ricoh Manresa","San Pablo Burgos","Zaragoza")
-
-brazil <- c("Cearense","Flamengo","Minas","Pinheiros")
-
-solvenia <- c("Cedevita","Union Olimpija")
-
-russia <- c("CSKA Moscow")
-
-serbia <- c("Bekio","Mega Basket")
-
-greece <- c("Filathlitikos","Olympiacos","Panathiaikos")
-
-china <- c("Guangdong","Guangzhou Loong Lions")
-
-lithuania <- c("Lietuvos rytas Vilnius","Zalgiris")
-
-israel <- c("Maccabi Tel Aviv")
-
-senegal <- c("NBA Global Academy")
-
-italy <- c("Olimpia Milano","Victoria Liberta")
-
-ukraine <- c("SK Cherkasy Monkey")
-
-japan <- c("Yokohama B-Corsairs (Japan)")
-
-league_country <- list()
-
-for (i in 1:nrow(nba)){
-  if (nba$College[i] %in% france){
-    league_country[i] = "France"
-  }
-  else if (nba$College[i] %in% aus){
-    league_country[i] = "Australia"
-  }
-  else if (nba$College[i] %in% turkey){
-    league_country[i] = "Turkey"
-  }
-  else if (nba$College[i] %in% canada){
-    league_country[i] = "Canada"
-  }
-  else if (nba$College[i] %in% germany){
-    league_country[i] = "Germany"
-  }
-  else if (nba$College[i] %in% spain){
-    league_country[i] = "Spain"
-  }
-  else if (nba$College[i] %in% brazil){
-    league_country[i] = "Brazil"
-  }
-  else if (nba$College[i] %in% solvenia){
-    league_country[i] = "Solvenia"
-  }
-  else if (nba$College[i] %in% russia){
-    league_country[i] = "Russia"
-  }
-  else if (nba$College[i] %in% serbia){
-    league_country[i] = "Serbia"
-  }
-  else if (nba$College[i] %in% greece){
-    league_country[i] = "Greece"
-  }
-  else if (nba$College[i] %in% china){
-    league_country[i] = "China"
-  }
-  else if (nba$College[i] %in% lithuania){
-    league_country[i] = "Lithuania"
-  }
-  else if (nba$College[i] %in% israel){
-    league_country[i] = "Israel"
-  }
-  else if (nba$College[i] %in% senegal){
-    league_country[i] = "Senegal"
-  }
-  else if (nba$College[i] %in% italy){
-    league_country[i] = "Italy"
-  }
-  else if (nba$College[i] %in% ukraine){
-    league_country[i] = "Ukraine"
-  }
-  else if (nba$College[i] %in% japan){
-    league_country[i] = "Japan"
-  }
-  else{
-    league_country[i] = "USA"
-  }
-}
-
-nba$Country <- factor(unlist(league_country))
-```
+US, Spain, Turkey, France, and Serbia have very similar distributions with an even spread of players across tiers. An interesting thing to notice is that you only really see top talent (all-nba and above) coming from the countries with top leagues in the world.
 
 ```{r}
 table(nba$Country)
 ```
+Let's look at differences in leagues within a handful of countries we have data for
 ```{r}
-country_mapping <- data.frame(country_name = unique(nba$Country),
-                              factor_id = as.numeric(unique(nba$Country)))
+usa <- subset(nba, Country == "USA")
+spain <- subset(nba, Country == "Spain")
+
+ggplot(data = usa, aes(x = League, fill = Player.Tier)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(table(usa$League))
+
+ggplot(data = spain, aes(x = League, fill = Player.Tier)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(table(spain$League))
+```
+For high school there is a selection bias in my data since the NBA stopped drafted high school players in the early 2000's and I pulled information on players who played up until 5 years ago. This means that those high school players who were significant contributors of had long successful careers where the ones that made it into my data while their other piers won't be captured.
+
+In either case, the difference in leagues mostly seems to come in the number of all time great to all-nba talent that is produced.
+
+Lastly, lets take a look at draft position and its effect
+```{r}
+ggplot(data = nba, aes(x = Round.Bin, fill = Player.Tier)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = Round.Bin)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(data = usa, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(data = spain, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+Similar, to the other plots, as we move further away from places where we'd expect top talent less is produced. If we were to disregard the selection bias in high school we can see in the us bar charts that as league difficulty gets weaker there are a high proportion of Undrafted players. This is more clear in the Spain example, where high school is filtered out.
 
-```{r}
-library(dbplyr)
-
-round_df <- as.data.frame(table(nba$College, nba$Round, nba$Round_bins))
-colnames(round_df) <- c("College","Round","Round_bin","Count")
-
-round_df <- round_df %>% arrange(desc(Count))
-round_df %>% filter(Round == "1st") %>% slice_head(n=10)
-```
-
-This is showing the percentage that a player from that college will be a 1st, 2nd, or go Undrafted
-
-```{r}
-pick_prop <- round_df %>% group_by(College) %>% 
-  summarise(total = sum(Count),
-            prop_1st = sum(Count[Round == "1st"])/total,
-            prop_2nd = sum(Count[Round == "2nd"])/total,
-            prop_lottery = sum(Count[Round_bin == "1-14"])/total,
-            prop_later1st = sum(Count[Round_bin == "15-30"])/total,
-            prop_top2nd = sum(Count[Round_bin == "31-44"])/total,
-            prop_later2nd = sum(Count[Round_bin == "45-60"])/total,
-            prop_und = sum(Count[Round_bin == "Undrafted"])/total,
-            prop_und = sum(Count[Round == "Undrafted"])/total)
-pick_prop
-```
-
-Now lets look at how productive a player is from some draft position
-```{r}
-nba %>% group_by(Round) %>% 
-  summarise(mean_WS = mean(WS),
-            mean_BPM = mean(BPM),
-            mean_PER = mean(PER))
-```
-
-Now with granular look by college
-```{r}
-WS_by_player_college <- nba %>%
-  group_by(Player, College, Round_bins) %>%
-  summarise(
-    mean_WS  = mean(WS, na.rm = TRUE),
-    mean_BPM = mean(BPM, na.rm = TRUE),
-    mean_PER = mean(PER, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-```
-
-```{r}
-college_summary <- WS_by_player_college %>%
-  group_by(College) %>%
-  summarise(
-    player_count = n(),                                 
-    num_lottery = sum(Round_bins == "1-14"),
-    num_late1st = sum(Round_bins == "15-30"),
-    num_early2nd = sum(Round_bins == "31-44"),
-    num_late2nd = sum(Round_bins == "45-60"),
-    num_und = sum(Round_bins == "Undrafted"),
-    
-    avg_WS = mean(mean_WS),
-    avg_BPM = mean(mean_BPM),
-    avg_PER = mean(mean_PER),
-    .groups = "drop"
-  )
-
-```
-
-Let's also look at the percentage of star players to get more granularity!
-
-Creating levels by the number of standard deviations away a players WS is by year. Will use an empicarl bayes shrinkage penalty on the number of MP so those who play more and are better are weighted fairly and those who did well with a small number of MP is less inflated. 
-
-```{r}
-k <- 1000
-player_grouping <- nba %>%
-  group_by(Year) %>%
-  mutate(
-    league_avg_WS48 = mean(WS.48, na.rm = TRUE),
-    w = MP / (MP + k),
-    adj_WS48 = w * WS.48 + (1 - w) * league_avg_WS48,
-    weighted_WS = percent_rank(adj_WS48),
-    Weight_Tier = case_when(
-      weighted_WS >= 0.95 ~ "Superstar",
-      weighted_WS >= 0.80 ~ "Star",
-      weighted_WS >= 0.40 ~ "Role Player",
-      weighted_WS >= 0.10 ~ "Bench",
-      TRUE ~ "Non-Rotation"
-    )
-  )
-
-```
-
-Looking at frequency of superstar, star, etc for college
-```{r}
-player_unique <- player_grouping %>%
-  distinct(Player, College, Weight_Tier)
-
-tier_college <- player_unique %>%
-  group_by(College) %>%
-  summarise(
-    n = n(),
-    prop_superstar = mean(Weight_Tier == "Superstar"),
-    prop_star = mean(Weight_Tier == "Star"),
-    prop_role = mean(Weight_Tier == "Role Player"),
-    prop_bench = mean(Weight_Tier == "Bench"),
-    prop_non = mean(Weight_Tier == "Non-Rotation")
-  )
-
-#shrinkage pen for proportions
-
-#getting global proportions
-p0_superstar <- mean(player_unique$Weight_Tier == "Superstar")
-p0_star <- mean(player_unique$Weight_Tier == "Star")
-p0_role <- mean(player_unique$Weight_Tier == "Role Player")
-p0_bench <- mean(player_unique$Weight_Tier == "Bench")
-p0_non <- mean(player_unique$Weight_Tier == "Non-Rotation")
-
-k <- 100   # shrinkage strength
-
-tier_college <- tier_college %>%
-  mutate(
-    prop_superstar_shrunk = (n / (n + k)) * prop_superstar + 
-                            (k / (n + k)) * p0_superstar,
-    prop_star_shrunk = (n / (n + k)) * prop_star + 
-                            (k / (n + k)) * p0_star,
-    prop_role_shrunk = (n / (n + k)) * prop_role + 
-                            (k / (n + k)) * p0_role,
-    prop_bench_shrunk = (n / (n + k)) * prop_bench + 
-                            (k / (n + k)) * p0_bench,
-    prop_non_shrunk = (n / (n + k)) * prop_non + 
-                            (k / (n + k)) * p0_non,
-  )
-
-```
-
-
-
-```{r}
-library(ggplot2)
-
-ggplot(nba, aes(x = Draft.Pick, colour = Round_bins)) +
-  geom_density()
-
-ggplot(nba, aes(x = Draft.Pick)) +
-  geom_density()
-```
 
 ```{r warning=FALSE}
-ggplot(nba, aes(x = Draft.Pick, color = College)) +
+ggplot(nba, aes(x = Draft.Pick, color = League)) +
   geom_density(linewidth = 1, alpha = 0.5) +
-  theme_bw() +
-  theme(legend.position = "none") +     # hide legend if too big
-  labs(title = "Draft Pick Density (All Colleges Overlaid)",
+  theme_bw()  +     # hide legend if too big
+  labs(title = "Draft Pick Density per League",
        x = "Draft Pick",
        y = "Density")
 
 ```
-```{r}
-library(tidyr)
-library(dplyr)
+Key insights:
+- League difficulty matters in terms of generating elite/generational talent
+- Same goes for Round.Bin 
 
-tier_long <- tier_college %>%
-  select(College, prop_superstar_shrunk, prop_star_shrunk, prop_role_shrunk, prop_bench_shrunk, prop_non_shrunk) %>%
-  pivot_longer(
-    cols = starts_with("prop_"),
-    names_to = "Tier",
-    values_to = "Scaled_Prop"
-  ) %>%
-  mutate(
-    Tier = case_when(
-      Tier == "prop_superstar_shrunk" ~ "Superstar",
-      Tier == "prop_star_shrunk" ~ "Star",
-      Tier == "prop_role_shrunk" ~ "Role Player",
-      Tier == "prop_bench_shrunk" ~ "Bench",
-      Tier == "prop_non_shrunk" ~ "Non-Rotation"
-    )
-  )
+These variables should then have their own effect to capture should differences
 
-ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
-  geom_bar(stat = "identity", width = 1) +
-  theme_bw() +
-  labs(
-    title = "Scaled Player Tier Proportions by College",
-    x = "College",
-    y = "Scaled Proportion"
-  ) +
-  scale_fill_manual(
-    values = c(
-      "Superstar" = "#FFD700",  # gold
-      "Star" = "#1E90FF",       # dodger blue
-      "Role Player" = "#32CD32",# lime green
-      "Bench" = "#FFA500",      # orange
-      "Non-Rotation" = "#A9A9A9"# dark grey
-    )
-  ) +
-  theme(
-    axis.text.x = element_text(size = 4, angle = 90, hjust = 1),
-    legend.position = "right"
-  )
-
-```
-
-```{r}
-tier_long <- tier_college %>%
-  select(College, prop_superstar, prop_star, prop_role, prop_bench, prop_non) %>%
-  pivot_longer(
-    cols = starts_with("prop_"),
-    names_to = "Tier",
-    values_to = "Scaled_Prop"
-  ) %>%
-  mutate(
-    Tier = case_when(
-      Tier == "prop_superstar" ~ "Superstar",
-      Tier == "prop_star" ~ "Star",
-      Tier == "prop_role" ~ "Role Player",
-      Tier == "prop_bench" ~ "Bench",
-      Tier == "prop_non" ~ "Non-Rotation"
-    )
-  )
-
-ggplot(tier_long, aes(x = College, y = Scaled_Prop, fill = Tier)) +
-  geom_bar(stat = "identity", width = 1) +
-  theme_bw() +
-  labs(
-    title = "Scaled Player Tier Proportions by College",
-    x = "College",
-    y = "Scaled Proportion"
-  ) +
-  scale_fill_manual(
-    values = c(
-      "Superstar" = "#FFD700",  # gold
-      "Star" = "#1E90FF",       # dodger blue
-      "Role Player" = "#32CD32",# lime green
-      "Bench" = "#FFA500",      # orange
-      "Non-Rotation" = "#A9A9A9"# dark grey
-    )
-  ) +
-  theme(
-    axis.text.x = element_text(size = 4, angle = 90, hjust = 1),
-    legend.position = "right"
-  )
-
-```
-
-```{r}
-prop_tiers_colleges_round <- player_grouping %>% group_by(College, Round_bins) %>% 
-  summarise(
-    n = n(),
-    prop_superstar = mean(Weight_Tier == "Superstar"),
-    prop_star = mean(Weight_Tier == "Star"),
-    prop_role = mean(Weight_Tier == "Role Player"),
-    prop_bench = mean(Weight_Tier == "Bench"),
-    prop_non = mean(Weight_Tier == "Non-Rotation"),
-    .groups = "drop"
-  )
-prop_tiers_colleges_round
-```
 
 ## Data Modeling
 
