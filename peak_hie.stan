@@ -4,9 +4,9 @@ data {
   int<lower=1> P; // number of pick bins
   int<lower=1> T; // number of tier bins
   int<lower=0> tier_counts[L,P,T]; // stores number of players in specific tier given leage and pick
-  int<lower=0> total_lp[L,P]; // player total over specific league and pick bin
 
   vector[L] league_diff_map; // stores the ind to a particular league
+  int<lower=0,upper=1> is_hs[L]; 
 }
 
 parameters {
@@ -20,6 +20,8 @@ parameters {
   vector<lower=0>[T] sigma_p;
   
   vector[T] beta_league_difficulty;
+  
+  vector[T] beta_hs;
 }
 
 transformed parameters {
@@ -49,6 +51,8 @@ model {
   
   beta_league_difficulty ~ normal(0, 1);
   
+  beta_hs ~ normal(0,1);
+  
   //prior
 
   for (l in 1:L){
@@ -58,7 +62,8 @@ model {
         eta[t] = alpha[t] + 
         league_effect[l,t] + 
         pick_effect[p,t] +
-        beta_league_difficulty[t]*league_diff_map[l];
+        beta_league_difficulty[t]*league_diff_map[l] +
+        beta_hs[t]*is_hs[l];
       }
       tier_counts[l, p] ~ multinomial(softmax(eta));
     }
@@ -76,7 +81,8 @@ generated quantities {
         eta[t] = alpha[t]
                + league_effect[l,t]
                + pick_effect[p,t]
-               + beta_league_difficulty[t] * league_diff_map[l];
+               + beta_league_difficulty[t] * league_diff_map[l]
+               + beta_hs[t] * is_hs[l];
       }
       prob_tier_new[l,p] = softmax(eta);
     }
