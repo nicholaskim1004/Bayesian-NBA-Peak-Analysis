@@ -6,7 +6,7 @@ data {
   int<lower=0> tier_counts[L,P,T]; // stores number of players in specific tier given leage and pick
 
   vector[L] league_diff_map; // stores the ind to a particular league
-  int<lower=0,upper=1> is_hs[L]; 
+
 }
 
 parameters {
@@ -51,8 +51,6 @@ model {
   
   beta_league_difficulty ~ normal(0, 1);
   
-  beta_hs ~ normal(0,1);
-  
   //prior
 
   for (l in 1:L){
@@ -62,8 +60,7 @@ model {
         eta[t] = alpha[t] + 
         league_effect[l,t] + 
         pick_effect[p,t] +
-        beta_league_difficulty[t]*league_diff_map[l] +
-        beta_hs[t]*is_hs[l];
+        beta_league_difficulty[t]*league_diff_map[l];
       }
       tier_counts[l, p] ~ multinomial(softmax(eta));
     }
@@ -81,8 +78,7 @@ generated quantities {
         eta[t] = alpha[t]
                + league_effect[l,t]
                + pick_effect[p,t]
-               + beta_league_difficulty[t] * league_diff_map[l]
-               + beta_hs[t] * is_hs[l];
+               + beta_league_difficulty[t] * league_diff_map[l];
       }
       prob_tier_new[l,p] = softmax(eta);
     }

@@ -35,7 +35,7 @@ Let's look at differences in leagues within a handful of countries we have data 
 usa <- subset(nba, Country == "USA")
 spain <- subset(nba, Country == "Spain")
 
-ggplot(data = usa, aes(x = League, fill = Player.Tier)) + 
+ggplot(data = usa, aes(x = reorder(League,League.Diff), fill = Player.Tier)) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -50,6 +50,12 @@ print(table(spain$League))
 For high school there is a selection bias in my data since the NBA stopped drafted high school players in the early 2000's and I pulled information on players who played up until 5 years ago. This means that those high school players who were significant contributors of had long successful careers where the ones that made it into my data while their other piers won't be captured.
 
 In either case, the difference in leagues mostly seems to come in the number of all time great to all-nba talent that is produced.
+
+```{r}
+ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = Player.Tier)) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 Lastly, lets take a look at draft position and its effect
 ```{r}
@@ -97,10 +103,14 @@ print(table(nba$Round.Bin,nba$Met.Draft.Expt))
 
 ## Data Modeling
 
-Rescaling League Difficulty into a scalar
+Adjusting League.Diff to be a scalar
 ```{r}
-nba$League_adj <- (30-nba$League.Diff)/29
+league_raw <- (30 + 1 - nba$League.Diff)  # invert so higher = more difficult
+league_diff_std <- scale(league_raw)[,1] 
+
+nba$League_adj <- league_diff_std
 ```
+
 
 ```{r}
 num_leagues <- length(unique(nba$League))
@@ -110,15 +120,14 @@ num_tiers <- length(unique(nba$Player.Tier))
 tier_counts_table <- as.numeric(table(nba$League,nba$Round.Bin,nba$Player.Tier))
 tier_counts <- array(tier_counts_table,dim = c(num_leagues,num_pick_bins,num_tiers))
 
-total_lp <- array(as.numeric(table(nba$League,nba$Round.Bin)), dim = c(num_leagues,num_pick_bins))
+#total_lp <- array(as.numeric(table(nba$League,nba$Round.Bin)), dim = c(num_leagues,num_pick_bins))
 
-league_diff_map <- nba %>% select(League, League_adj) %>% group_by(League) %>% summarise(league_adj = mean(League_adj))
+league_diff_map <- nba %>% select(League, League_adj) %>% group_by(League) %>% summarise(league_adj= mean(League_adj))
 
 dat = list(L = num_leagues,
            P = num_pick_bins,
            T = num_tiers,
-           tier_counts = tier_counts, 
-           total_lp = total_lp,
+           tier_counts = tier_counts,
            league_diff_map = league_diff_map$league_adj)
 ```
 
@@ -133,7 +142,106 @@ peaks_mcmc <- stan(
 )
 ```
 
+```{r}
+summary_df <- as.data.frame(summary(peaks_mcmc)$summary)
+```
 
+```{r}
+pp <- rstan::extract(peaks_mcmc)$prob_tier_new
+
+rep_counts <- array(0, dim = c(nrow(pp), num_leagues, num_pick_bins, num_tiers))
+
+for (i in 1:nrow(pp)){
+  for (l in 1:num_leagues){
+    for (p in 1:num_pick_bins){
+      rep_counts[i, l, p, ] <- rmultinom(
+        n = 1,
+        size = total_lp[l, p],
+        prob = pp[i, l, p, ]
+      )
+    }
+  }
+}
+```
+
+Let's see how our models player tier proportions are distributed compared to the data 
+```{r}
+#actual all time great rate from data
+actual_league_atg_prop <- as.numeric(table(nba$League, nba$Player.Tier)[,1])/sum(as.numeric(table(nba$League, nba$Player.Tier)[,1]))
+
+
+league_atg_prop = numeric(num_leagues)
+
+for (l in 1:num_leagues){
+  league_atg_count = apply(rep_counts[,l,,1],1,sum)
+  total_atg_count = apply(rep_counts[,,,1],1,sum)
+  
+  league_atg_prop[l] = mean(league_atg_count/total_atg_count, na.rm = TRUE)
+}
+
+cat("Actual\n")
+print(actual_league_atg_prop)
+cat("Sim\n")
+print(league_atg_prop)
+```
+trying a model to account for the selection bias in hs
+```{r}
+dat = list(L = num_leagues,
+           P = num_pick_bins,
+           T = num_tiers,
+           tier_counts = tier_counts,
+           league_diff_map = league_diff_map$league_adj,
+           is_hs = ifelse(league_diff_map$League == "High School",1,0))
+```
+
+```{r}
+library(rstan)
+peaks_mcmc_hs <- stan(
+    file = "peak_hie.stan",
+    data = dat,
+    seed = 1234,
+    chains = 2,
+    iter = 2000
+)
+```
+```{r}
+pp <- rstan::extract(peaks_mcmc)$prob_tier_new
+
+rep_counts <- array(0, dim = c(nrow(pp), num_leagues, num_pick_bins, num_tiers))
+
+for (i in 1:nrow(pp)){
+  for (l in 1:num_leagues){
+    for (p in 1:num_pick_bins){
+      rep_counts[i, l, p, ] <- rmultinom(
+        n = 1,
+        size = total_lp[l, p],
+        prob = pp[i, l, p, ]
+      )
+    }
+  }
+}
+```
+
+Let's see how our models player tier proportions are distributed compared to the data 
+```{r}
+#actual all time great rate from data
+actual_league_atg_prop <- as.numeric(table(nba$League, nba$Player.Tier)[,1])/sum(as.numeric(table(nba$League, nba$Player.Tier)[,1]))
+
+
+league_atg_prop = numeric(num_leagues)
+
+for (l in 1:num_leagues){
+  league_atg_count = apply(rep_counts[,l,,1],1,sum)
+  total_atg_count = apply(rep_counts[,,,1],1,sum)
+  
+  league_atg_prop[l] = mean(league_atg_count/total_atg_count, na.rm = TRUE)
+}
+
+cat("Actual\n")
+print(actual_league_atg_prop)
+cat("Sim\n")
+print(league_atg_prop)
+```
 
 
 ## On NBA Draft Prospects
