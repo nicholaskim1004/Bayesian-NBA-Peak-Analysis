@@ -52,7 +52,7 @@
 50,Keion Brooks Jr.,24,-3.5,24,-3.5,Washington,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 51,Mason Jones,22,-2.7,22,-2.7,Arkansas,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 52,McKinley Wright IV,24,-2.7,24,-2.7,Colorado,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
-53,Josh Hall,20,-11.9,20,-11.9,Moravian Prep (NC),0,Undrafted,Undrafted,USA,High School,30,Benchwarmer,Met
+53,Josh Hall,20,-11.9,20,-11.9,Moravian Prep (NC),0,Undrafted,Undrafted,USA,High School,29,Benchwarmer,Met
 54,Terrence Shannon Jr.,24,-2.1,24,-2.1,Illinois,27,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 55,David Duke Jr.,22,-3.9,22,-3.9,Providence,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 56,Tyler Hansbrough,24,-1.3,27,-1.6666666666666667,North Carolina,13,1st,1-14,USA,Top D1,2,Replacement Level,Met
@@ -81,10 +81,10 @@
 79,Lamar Patterson,24,-5.1,24,-5.1,Pittsburgh,48,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
 80,Devin Carter,22,-3.2,22,-3.2,Providence,13,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 81,Brodric Thomas,24,-4.4,24,-4.4,Truman State,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
-82,Sergey Karasev,21,-1.7,21,-2.75,Zenit Saint Petersburg,19,1st,15-30,Russia,VTB United League,12,Benchwarmer,Bust
+82,Sergey Karasev,21,-1.7,21,-2.75,Zenit Saint Petersburg,19,1st,15-30,Russia,VTB United League,13,Benchwarmer,Bust
 83,Hunter Tyson,24,-4.8,24,-4.8,Clemson,37,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 84,Kendall Marshall,21,-0.8,23,-2.8000000000000003,North Carolina,13,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
-85,Chris Andersen,23,3.0,32,2.5,Blinn J.C.,0,Undrafted,Undrafted,USA,JUCO,29,Good Starter,Exceeded
+85,Chris Andersen,23,3.0,32,2.5,Blinn J.C.,0,Undrafted,Undrafted,USA,JUCO,28,Good Starter,Exceeded
 86,Javon Freeman-Liberty,24,-5.2,24,-5.2,DePaul,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 87,Jordan Walsh,20,-3.9,20,-3.9,Arkansas,38,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 88,Wade Baldwin,20,-5.5,20,-5.5,Vanderbilt,17,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
@@ -122,7 +122,7 @@
 120,Kyle Collinsworth,26,-2.6,26,-2.6,Brigham Young,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 121,Marko Gudurić,24,-3.4,24,-3.4,Fenerbahce,0,Undrafted,Undrafted,Turkey,Euroleague,1,Benchwarmer,Met
 122,Adreian Payne,23,-6.2,24,-6.550000000000001,Michigan State,15,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
-123,Džanan Musa,20,-4.4,20,-4.4,Cedevita,29,1st,15-30,Solvenia,ABA,17,Benchwarmer,Bust
+123,Džanan Musa,20,-4.4,20,-4.4,Cedevita,29,1st,15-30,Solvenia,ABA,11,Benchwarmer,Bust
 124,Patrick Baldwin Jr.,21,-4.6,21,-4.6,Wisconsin-Milwaukee,28,1st,15-30,USA,Other D1,7,Benchwarmer,Bust
 125,Anderson Varejão,22,3.7,29,2.1333333333333333,FC Barcelona,30,1st,15-30,Spain,Euroleague,1,Good Starter,Met
 126,Wendell Moore Jr.,23,-2.7,23,-2.7,Duke,26,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
@@ -135,13 +135,13 @@
 133,Rob Dillingham,20,-4.2,20,-4.2,Kentucky,8,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 134,Tyler Cavanaugh,23,-1.9,23,-1.9,George Washington,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 135,Miye Oni,23,-1.7,23,-1.7,Yale,58,2nd,45-60,USA,Other D1,7,Replacement Level,Met
-136,Nicolás Brussino,23,-1.6,23,-1.6,Penarol,0,Undrafted,Undrafted,Argentina,LUB,25,Replacement Level,Exceeded
+136,Nicolás Brussino,23,-1.6,23,-1.6,Penarol,0,Undrafted,Undrafted,Argentina,LUB,24,Replacement Level,Exceeded
 137,Jaylen Clark,23,-0.2,23,-0.2,UCLA,53,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 138,Mouhamed Gueye,22,-0.6,22,-0.6,Washington State,39,2nd,31-44,USA,Other D1,7,Replacement Level,Below
 139,Ignas Brazdeikis,23,-4.3,23,-4.3,Michigan,47,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
-140,Kendrick Perkins,20,0.5,23,-0.033333333333333326,Clifton J. Ozen HS (TX),27,1st,15-30,USA,High School,30,Replacement Level,Below
+140,Kendrick Perkins,20,0.5,23,-0.033333333333333326,Clifton J. Ozen HS (TX),27,1st,15-30,USA,High School,29,Replacement Level,Below
 141,Dillon Jones,23,-4.0,23,-4.0,Weber State,26,1st,15-30,USA,Other D1,7,Benchwarmer,Bust
-142,Kevin Garnett,19,10.2,27,9.366666666666667,Farragut Academy HS (IL),5,1st,1-14,USA,High School,30,MVP,Met
+142,Kevin Garnett,19,10.2,27,9.366666666666667,Farragut Academy HS (IL),5,1st,1-14,USA,High School,29,MVP,Met
 143,Isaiah Briscoe,22,-5.0,22,-5.0,Kentucky,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 144,Keifer Sykes,28,-6.9,28,-6.9,Wisconsin-Green Bay,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
 145,Carl Landry,24,1.5,24,1.1666666666666667,Purdue,31,2nd,31-44,USA,Top D1,2,Role Player,Met
@@ -176,23 +176,23 @@
 174,Micah Potter,26,-3.5,26,-3.5,Wisconsin,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 175,C.J. Williams,27,-2.1,27,-2.1,North Carolina State,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 176,Alan Williams,24,-1.3,24,-1.3,Cal-Santa Barbara,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
-177,Luka Šamanić,21,-4.9,21,-6.35,Union Olimpija,19,1st,15-30,Solvenia,ABA,17,Benchwarmer,Bust
+177,Luka Šamanić,21,-4.9,21,-6.35,Union Olimpija,19,1st,15-30,Solvenia,ABA,11,Benchwarmer,Bust
 178,James Michael McAdoo,23,-1.8,23,-1.8,North Carolina,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 179,James Anderson,21,1.0,23,-1.0999999999999999,Oklahoma State,20,1st,15-30,USA,Top D1,2,Replacement Level,Below
 180,Jay Huff,26,3.5,26,3.5,Virginia,0,Undrafted,Undrafted,USA,Top D1,2,Good Starter,Exceeded
 181,Mo Williams,21,2.3,26,1.4666666666666666,Alabama,47,2nd,45-60,USA,Top D1,2,Role Player,Met
 182,Jamal Cain,24,-2.3,24,-2.8499999999999996,Oakland,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
-183,Gui Santos,22,-1.7,22,-1.7,Minas,55,2nd,45-60,Brazil,NBB,15,Replacement Level,Met
-184,Amar'e Stoudemire,21,4.8,25,3.6666666666666665,Cypress Creek HS (FL),9,1st,1-14,USA,High School,30,Good Starter,Met
+183,Gui Santos,22,-1.7,22,-1.7,Minas,55,2nd,45-60,Brazil,NBB,16,Replacement Level,Met
+184,Amar'e Stoudemire,21,4.8,25,3.6666666666666665,Cypress Creek HS (FL),9,1st,1-14,USA,High School,29,Good Starter,Met
 185,Darrun Hilliard,22,-2.5,22,-4.25,Villanova,38,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 186,Mychal Mulder,26,-1.8,26,-1.8,Kentucky,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 187,Festus Ezeli,23,-0.1,26,-1.7666666666666666,Vanderbilt,30,1st,15-30,USA,Top D1,2,Replacement Level,Below
 188,Chris Chiozza,24,-1.2,24,-3.6,Florida,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 189,Jawun Evans,21,-5.0,21,-5.0,Oklahoma State,39,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 190,Pelle Larsson,23,-3.1,23,-3.1,Arizona,44,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-191,Karlo Matković,23,-2.0,23,-2.0,Mega Basket,52,2nd,45-60,Serbia,Mega Superbasket,16,Replacement Level,Met
+191,Karlo Matković,23,-2.0,23,-2.0,Mega Basket,52,2nd,45-60,Serbia,ABA,11,Replacement Level,Met
 192,A.J. Lawson,23,-2.5,24,-3.55,South Carolina,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
-193,Bruno Caboclo,23,-1.1,23,-1.1,Pinheiros,20,1st,15-30,Brazil,NBB,15,Replacement Level,Below
+193,Bruno Caboclo,23,-1.1,23,-1.1,Pinheiros,20,1st,15-30,Brazil,NBB,16,Replacement Level,Below
 194,Eric Moreland,26,0.5,26,0.5,Oregon State,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 195,Gary Neal,26,-0.1,27,-0.6333333333333333,Towson,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 196,John Jenkins,21,0.3,23,-1.1333333333333333,Vanderbilt,23,1st,15-30,USA,Top D1,2,Replacement Level,Below
@@ -207,7 +207,7 @@
 205,Chris Johnson,23,1.6,27,-0.4333333333333333,Louisiana State,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 206,Marcelo Huertas,32,-5.0,32,-5.0,FC Barcelona,0,Undrafted,Undrafted,Spain,Euroleague,1,Benchwarmer,Met
 207,Jaden Springer,21,-2.7,22,-3.05,Tennessee,28,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
-208,Josh Smith,19,5.1,24,3.9666666666666663,Oak Hill Academy (VA),17,1st,15-30,USA,High School,30,All-Star,Exceeded
+208,Josh Smith,19,5.1,24,3.9666666666666663,Oak Hill Academy (VA),17,1st,15-30,USA,High School,29,All-Star,Exceeded
 209,Jeff Dowtin Jr.,25,0.2,27,-0.85,Rhode Island,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 210,Charles Bassey,22,0.7,22,-0.20000000000000007,Western Kentucky,53,2nd,45-60,USA,Other D1,7,Replacement Level,Met
 211,Brian Roberts,27,-0.6,27,-1.3,Dayton,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
@@ -239,7 +239,7 @@
 237,Jamison Battle,23,-2.3,23,-2.3,Ohio State,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 238,Oso Ighodaro,22,-2.6,22,-2.6,Marquette,40,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 239,Cody Williams,20,-7.3,20,-7.3,Colorado,10,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
-240,Ante Žižić,22,-3.2,22,-3.2,Darussafaka,23,1st,15-30,Turkey,BSL,24,Benchwarmer,Bust
+240,Ante Žižić,22,-3.2,22,-3.2,Darussafaka,23,1st,15-30,Turkey,BSL,23,Benchwarmer,Bust
 241,Kevin Séraphin,21,-1.7,22,-2.9666666666666663,Cholet,17,1st,15-30,France,LNB Pro A,10,Benchwarmer,Bust
 242,Jeff Withey,23,1.4,26,0.8666666666666667,Kansas,39,2nd,31-44,USA,Top D1,2,Role Player,Met
 243,O.J. Mayo,21,0.8,24,0.10000000000000002,Southern California,3,1st,1-14,USA,Top D1,2,Role Player,Below
@@ -263,7 +263,7 @@
 261,Justin Hamilton,24,-0.8,24,-0.8,Louisiana State,45,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 262,Neemias Queta,24,1.5,24,0.4,Utah State,39,2nd,31-44,USA,Other D1,7,Role Player,Met
 263,Norris Cole,23,-2.8,26,-3.233333333333333,Cleveland State,28,1st,15-30,USA,Other D1,7,Benchwarmer,Bust
-264,Dominick Barlow,19,-1.7,20,-2.8333333333333335,Overtime Elite,0,Undrafted,Undrafted,USA,Overtime,27,Benchwarmer,Met
+264,Dominick Barlow,19,-1.7,20,-2.8333333333333335,Overtime Elite,0,Undrafted,Undrafted,USA,Overtime,26,Benchwarmer,Met
 265,Ronnie Price,23,-0.7,24,-1.2666666666666666,Utah Valley,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 266,Matt Thomas,25,1.1,25,-2.033333333333333,Iowa State,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 267,Johnny O'Bryant,21,-4.4,24,-6.6000000000000005,Louisiana State,36,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
@@ -296,7 +296,7 @@
 294,Zach Edey,22,-0.1,22,-0.1,Purdue,9,1st,1-14,USA,Top D1,2,Replacement Level,Met
 295,Frank Mason III,23,-2.3,23,-2.7,Kansas,34,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 296,Kel'el Ware,20,-0.1,20,-0.1,Indiana,15,1st,15-30,USA,Top D1,2,Replacement Level,Below
-297,Alexis Ajinça,22,-0.3,26,-2.0666666666666664,Hyeres-Toulon,20,1st,15-30,France,LNB Pro B,21,Benchwarmer,Bust
+297,Alexis Ajinça,22,-0.3,26,-2.0666666666666664,Hyeres-Toulon,20,1st,15-30,France,LNB Pro B,20,Benchwarmer,Bust
 298,Julian Phillips,20,-3.0,21,-4.15,Tennessee,35,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 299,Rashad Vaughn,19,-3.6,20,-4.65,UNLV,17,1st,15-30,USA,Other D1,7,Benchwarmer,Bust
 300,Tayshaun Prince,23,2.1,24,1.8333333333333333,Kentucky,23,1st,15-30,USA,Top D1,2,Role Player,Met
@@ -308,12 +308,12 @@
 306,Orlando Robinson,22,-1.1,23,-2.1999999999999997,Fresno State,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
 307,DeAndre Liggins,24,-0.7,24,-1.8,Kentucky,53,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 308,Jordan McRae,25,-1.5,28,-2.3000000000000003,Tennessee,58,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
-309,Lucas Nogueira,24,5.2,25,3.6,Estudiantes,16,1st,15-30,Spain,Primera FEB,18,Good Starter,Met
+309,Lucas Nogueira,24,5.2,25,3.6,Estudiantes,16,1st,15-30,Spain,Primera FEB,17,Good Starter,Met
 310,Paul Pierce,21,5.9,24,5.2,Kansas,10,1st,1-14,USA,Top D1,2,All-NBA,Exceeded
 311,Kira Lewis Jr.,19,-3.4,19,-4.3999999999999995,Alabama,13,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 312,Matas Buzelis,20,-2.5,20,-2.5,G League Ignite,11,1st,1-14,USA,G League,8,Benchwarmer,Bust
 313,Jordan Hill,22,-0.5,26,-0.9,Arizona,8,1st,1-14,USA,Top D1,2,Replacement Level,Met
-314,Sergio Rodríguez,20,-1.1,20,-1.2666666666666668,Estudiantes,27,1st,15-30,Spain,Primera FEB,18,Replacement Level,Below
+314,Sergio Rodríguez,20,-1.1,20,-1.2666666666666668,Estudiantes,27,1st,15-30,Spain,Primera FEB,17,Replacement Level,Below
 315,Kyle Filipowski,21,-1.0,21,-1.0,Duke,32,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 316,Kris Humphries,19,0.9,28,0.13333333333333333,Minnesota,14,1st,1-14,USA,Top D1,2,Role Player,Below
 317,Jarace Walker,20,0.2,20,-0.35,Houston,8,1st,1-14,USA,Top D1,2,Replacement Level,Met
@@ -328,7 +328,7 @@
 326,Nicolò Melli,29,-1.3,29,-2.4,Fenerbahce,0,Undrafted,Undrafted,Turkey,Euroleague,1,Benchwarmer,Met
 327,Anthony Lamb,23,-1.1,25,-3.5999999999999996,Vermont,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
 328,Justin Champagnie,20,-0.5,23,-1.25,Pittsburgh,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
-329,Sekou Doumbouya,19,-6.7,19,-6.7,INSEP,15,1st,15-30,France,International Prep,23,Benchwarmer,Bust
+329,Sekou Doumbouya,19,-6.7,19,-6.7,INSEP,15,1st,15-30,France,International Prep,22,Benchwarmer,Bust
 330,Tristan Da Silva,23,-2.6,23,-2.6,Colorado,18,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 331,Alonzo Gee,23,-0.6,27,-1.5,Alabama,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 332,Anthony Morrow,23,1.8,29,0.4000000000000001,Georgia Tech,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
@@ -341,9 +341,9 @@
 339,Dalen Terry,21,-2.3,21,-3.05,Arizona,18,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 340,Bryce McGowens,20,-4.9,21,-5.45,Nebraska,40,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 341,Tyler Dorsey,21,-2.9,21,-3.2,Oregon,41,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-342,Elie Okobo,21,-1.9,22,-3.8,Elan Bearnais,31,2nd,31-44,France,LNB Pro B,21,Benchwarmer,Bust
+342,Elie Okobo,21,-1.9,22,-3.8,Elan Bearnais,31,2nd,31-44,France,LNB Pro B,20,Benchwarmer,Bust
 343,D.J. Wilson,22,-2.2,22,-3.1666666666666665,Michigan,17,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
-344,Isaac Bonga,20,-2.8,20,-4.3,Skyliners Frankfurt,39,2nd,31-44,Germany,Bundesliga,13,Benchwarmer,Bust
+344,Isaac Bonga,20,-2.8,20,-4.3,Skyliners Frankfurt,39,2nd,31-44,Germany,Bundesliga,14,Benchwarmer,Bust
 345,Duop Reath,27,-0.3,28,-0.6,Louisiana State,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 346,Marcus Thornton,22,1.2,27,1.0999999999999999,Louisiana State,43,2nd,31-44,USA,Top D1,2,Role Player,Met
 347,Omari Spellman,21,-1.2,21,-1.5,Villanova,30,1st,15-30,USA,Top D1,2,Replacement Level,Below
@@ -365,7 +365,7 @@
 363,Jordan Bell,23,2.8,23,-0.20000000000000004,Oregon,38,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 364,Alfonzo McKinnie,26,-0.4,28,-3.0666666666666664,Wisconsin-Green Bay,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
 365,Jodie Meeks,22,0.2,23,-0.13333333333333333,Kentucky,41,2nd,31-44,USA,Top D1,2,Replacement Level,Below
-366,Kobe Bryant,18,7.6,27,6.866666666666667,Lower Merion HS (PA),13,1st,1-14,USA,High School,30,All-NBA,Exceeded
+366,Kobe Bryant,18,7.6,27,6.866666666666667,Lower Merion HS (PA),13,1st,1-14,USA,High School,29,All-NBA,Exceeded
 367,Chasson Randle,23,-1.7,23,-3.866666666666667,Stanford,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 368,Willie Reed,25,0.8,27,-0.19999999999999998,St. Louis,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 369,Tony Bradley,22,1.3,22,-0.25,North Carolina,28,1st,15-30,USA,Top D1,2,Replacement Level,Below
@@ -377,7 +377,7 @@
 375,Anthony Gill,29,-1.9,29,-3.0999999999999996,Virginia,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 376,Cheick Diallo,21,-0.9,22,-1.1333333333333335,Kansas,33,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 377,Yves Missi,20,-3.0,20,-3.0,Baylor,21,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
-378,Vasilije Micić,30,-4.6,30,-5.8,Mega Basket,52,2nd,45-60,Serbia,Mega Superbasket,16,Benchwarmer,Below
+378,Vasilije Micić,30,-4.6,30,-5.8,Mega Basket,52,2nd,45-60,Serbia,ABA,11,Benchwarmer,Below
 379,Jared Butler,21,-1.0,24,-1.5666666666666667,Baylor,40,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 380,Rodney Stuckey,21,0.6,25,0.36666666666666664,Eastern Washington,15,1st,15-30,USA,Other D1,7,Role Player,Met
 381,Rodions Kurucs,20,-2.6,20,-2.7,FC Barcelona,40,2nd,31-44,Spain,Euroleague,1,Benchwarmer,Bust
@@ -385,12 +385,12 @@
 383,JT Thor,19,-3.0,19,-4.066666666666666,Auburn,37,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 384,Brice Sensabaugh,20,-1.2,21,-3.35,Ohio State,28,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 385,Andrew Bogut,21,3.1,24,2.8333333333333335,Utah,1,1st,1-14,USA,Top D1,2,Good Starter,Met
-386,Leandro Barbosa,21,2.7,24,1.633333333333333,Bauru,28,1st,15-30,Brazil,NBB,15,Role Player,Met
+386,Leandro Barbosa,21,2.7,24,1.633333333333333,Bauru,28,1st,15-30,Brazil,NBB,16,Role Player,Met
 387,Ben Sheppard,22,-2.0,23,-2.7,Belmont,26,1st,15-30,USA,Other D1,7,Benchwarmer,Bust
 388,Jaylen Wells,21,-2.2,21,-2.2,Washington State,39,2nd,31-44,USA,Other D1,7,Benchwarmer,Bust
 389,Edmond Sumner,24,-2.6,27,-2.766666666666667,Xavier,52,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
 390,Isaiah Livers,23,-1.5,23,-3.466666666666667,Michigan,42,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-391,Nikola Jović,20,0.3,20,0.3,Mega Basket,27,1st,15-30,Serbia,Mega Superbasket,16,Role Player,Met
+391,Nikola Jović,20,0.3,20,0.3,Mega Basket,27,1st,15-30,Serbia,ABA,11,Role Player,Met
 392,Lindy Waters III,24,1.9,26,0.1333333333333333,Oklahoma State,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 393,Brandon Rush,23,1.7,26,-0.1333333333333334,Kansas,13,1st,1-14,USA,Top D1,2,Replacement Level,Met
 394,Luis Scola,27,0.5,28,0.06666666666666667,Tau Ceramica,55,2nd,45-60,Spain,Euroleague,1,Role Player,Met
@@ -401,7 +401,7 @@
 399,Tarik Black,23,-2.1,23,-2.6333333333333333,Kansas,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 400,Dereck Lively II,19,3.3,20,1.9,Duke,12,1st,1-14,USA,Top D1,2,Role Player,Below
 401,Wayne Selden,23,-3.1,23,-4.25,Kansas,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
-402,Guerschon Yabusele,23,-1.0,29,-1.85,"Rouen, France",16,1st,15-30,France,LNB Pro B,21,Replacement Level,Below
+402,Guerschon Yabusele,23,-1.0,29,-1.85,"Rouen, France",16,1st,15-30,France,LNB Pro B,20,Replacement Level,Below
 403,Darrell Arthur,20,-0.1,28,-0.8333333333333334,Kansas,27,1st,15-30,USA,Top D1,2,Replacement Level,Below
 404,Marcus Sasser,23,-0.6,24,-1.6,Houston,25,1st,15-30,USA,Top D1,2,Replacement Level,Below
 405,Stephon Castle,20,-3.2,20,-3.2,Connecticut,4,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
@@ -435,11 +435,11 @@
 433,Lavoy Allen,22,0.0,25,-1.0999999999999999,Temple,50,2nd,45-60,USA,Other D1,7,Replacement Level,Met
 434,Jordan Hawkins,21,-3.1,21,-4.25,Connecticut,14,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 435,Mark Williams,21,3.5,23,1.4666666666666666,Duke,15,1st,15-30,USA,Top D1,2,Role Player,Met
-436,Al Jefferson,20,3.7,27,3.0,Prentiss (HS),15,1st,15-30,USA,High School,30,Good Starter,Met
+436,Al Jefferson,20,3.7,27,3.0,Prentiss (HS),15,1st,15-30,USA,High School,29,Good Starter,Met
 437,Boban Marjanović,27,5.5,28,4.333333333333333,Crvena zvezda,0,Undrafted,Undrafted,Turkey,Euroleague,1,All-Star,Exceeded
 438,Shane Larkin,21,-1.7,25,-2.1666666666666665,Miami,18,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 439,Jason Smith,21,-0.4,24,-1.2666666666666666,Colorado State,20,1st,15-30,USA,Other D1,7,Replacement Level,Below
-440,Joffrey Lauvergne,23,-1.0,26,-1.6000000000000003,Khimki,55,2nd,45-60,Russia,Super League 1,26,Replacement Level,Met
+440,Joffrey Lauvergne,23,-1.0,26,-1.6000000000000003,Khimki,55,2nd,45-60,Russia,Super League 1,25,Replacement Level,Met
 441,Yuta Watanabe,26,-0.6,28,-1.0999999999999999,George Washington,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 442,Roy Hibbert,22,1.4,25,0.06666666666666661,Georgetown,17,1st,15-30,USA,Top D1,2,Role Player,Met
 443,Jake LaRavia,21,0.2,23,-1.9333333333333333,Wake Forest,19,1st,15-30,USA,Other D1,7,Replacement Level,Below
@@ -451,15 +451,15 @@
 449,A.J. Green,23,-0.9,23,-1.7333333333333334,Northern Iowa,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 450,Luke Babbitt,22,-0.4,25,-1.1666666666666667,Nevada,16,1st,15-30,USA,Other D1,7,Replacement Level,Below
 451,Shaquille Harrison,24,2.8,26,0.26666666666666655,Tulsa,0,Undrafted,Undrafted,USA,Other D1,7,Role Player,Exceeded
-452,Boris Diaw,21,2.8,23,1.7666666666666666,Pau Orthez,21,1st,15-30,France,LNB Pro B,21,Role Player,Met
-453,Brandon Jennings,20,3.3,25,2.533333333333333,Virtus Roma,10,1st,1-14,Italy,Serie B,19,Good Starter,Met
+452,Boris Diaw,21,2.8,23,1.7666666666666666,Pau Orthez,21,1st,15-30,France,LNB Pro B,20,Role Player,Met
+453,Brandon Jennings,20,3.3,25,2.533333333333333,Virtus Roma,10,1st,1-14,Italy,Serie B,18,Good Starter,Met
 454,Treveon Graham,24,-2.7,24,-4.0,Va Commonwealth,0,Undrafted,Undrafted,USA,Other D1,7,Benchwarmer,Met
 455,Jalen Wilson,23,-2.9,23,-3.4,Kansas,51,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
 456,Jordan Goodwin,24,0.7,24,-0.3666666666666667,St. Louis,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 457,Day'Ron Sharpe,20,0.9,23,-0.4666666666666666,North Carolina,29,1st,15-30,USA,Top D1,2,Replacement Level,Below
 458,Álex Abrines,23,-1.5,24,-2.1333333333333333,FC Barcelona,32,2nd,31-44,Spain,Euroleague,1,Benchwarmer,Bust
 459,Tyler Ulis,21,-2.4,21,-3.4000000000000004,Kentucky,34,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-460,Timofey Mozgov,24,-0.7,28,-0.9666666666666667,Khimki,0,Undrafted,Undrafted,Russia,Super League 1,26,Replacement Level,Exceeded
+460,Timofey Mozgov,24,-0.7,28,-0.9666666666666667,Khimki,0,Undrafted,Undrafted,Russia,Super League 1,25,Replacement Level,Exceeded
 461,Marreese Speights,21,0.6,27,-0.6333333333333333,Florida,16,1st,15-30,USA,Top D1,2,Replacement Level,Below
 462,Quincy Acy,22,0.1,22,-0.5666666666666667,Baylor,37,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 463,James Wiseman,19,-3.5,21,-4.25,Memphis,2,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
@@ -472,7 +472,7 @@
 470,Gradey Dick,20,-3.2,21,-4.300000000000001,Kansas,13,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 471,Ramon Sessions,21,1.6,22,0.5333333333333333,Nevada,56,2nd,45-60,USA,Other D1,7,Role Player,Met
 472,Hollis Thompson,22,-1.8,23,-2.5333333333333337,Georgetown,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
-473,Ausar Thompson,21,1.7,22,-0.2500000000000001,Overtime Elite,5,1st,1-14,USA,Overtime,27,Replacement Level,Met
+473,Ausar Thompson,21,1.7,22,-0.2500000000000001,Overtime Elite,5,1st,1-14,USA,Overtime,26,Replacement Level,Met
 474,Keon Ellis,24,1.9,25,1.5499999999999998,Alabama,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 475,Randy Foye,23,0.5,30,0.033333333333333326,Villanova,7,1st,1-14,USA,Top D1,2,Role Player,Below
 476,Jarell Martin,21,-3.7,21,-3.8666666666666667,Louisiana State,25,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
@@ -508,29 +508,29 @@
 506,Jordan Nwora,22,-1.1,22,-1.9000000000000001,Louisville,45,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 507,Aleksej Pokusevski,19,0.0,21,-1.5,Olympiacos,17,1st,15-30,Greece,Euroleague,1,Replacement Level,Below
 508,Jason Terry,22,4.0,28,3.466666666666667,Arizona,10,1st,1-14,USA,Top D1,2,Good Starter,Met
-509,Cristiano Felício,23,0.3,23,-1.1666666666666667,Flamengo,0,Undrafted,Undrafted,Brazil,NBB,15,Replacement Level,Exceeded
+509,Cristiano Felício,23,0.3,23,-1.1666666666666667,Flamengo,0,Undrafted,Undrafted,Brazil,NBB,16,Replacement Level,Exceeded
 510,Jeremiah Robinson-Earl,21,-1.5,22,-2.066666666666667,Villanova,32,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 511,Jaime Jaquez Jr.,22,-0.9,23,-1.4,UCLA,18,1st,15-30,USA,Top D1,2,Replacement Level,Below
 512,Scoot Henderson,19,-2.2,20,-4.0,G League Ignite,3,1st,1-14,USA,G League,8,Benchwarmer,Bust
 513,Théo Maledon,19,-2.5,21,-3.966666666666667,ASVEL,34,2nd,31-44,France,LNB Pro A,10,Benchwarmer,Bust
-514,Thon Maker,19,-1.2,21,-1.5333333333333332,Athlete Institute Prep,10,1st,1-14,Canada,International Prep,23,Replacement Level,Met
+514,Thon Maker,19,-1.2,21,-1.5333333333333332,Athlete Institute Prep,10,1st,1-14,Canada,International Prep,22,Replacement Level,Met
 515,Cason Wallace,20,1.0,21,0.55,Kentucky,10,1st,1-14,USA,Top D1,2,Role Player,Below
 516,Malaki Branham,19,-3.2,21,-4.666666666666667,Ohio State,20,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 517,Max Christie,19,-2.5,21,-3.0666666666666664,Michigan State,35,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-518,Nenê,20,3.6,27,2.9333333333333336,Vasco de Gama,7,1st,1-14,Brazil,NBB,15,Good Starter,Met
+518,Nenê,20,3.6,27,2.9333333333333336,Vasco de Gama,7,1st,1-14,Brazil,NBB,16,Good Starter,Met
 519,Jon Leuer,22,1.0,24,0.3,Wisconsin,40,2nd,31-44,USA,Top D1,2,Role Player,Met
 520,Damian Jones,23,1.1,23,0.30000000000000004,Vanderbilt,30,1st,15-30,USA,Top D1,2,Role Player,Met
 521,Isaiah Canaan,22,-0.8,23,-1.5,Murray State,34,2nd,31-44,USA,Other D1,7,Replacement Level,Below
-522,Amen Thompson,21,4.1,22,2.9499999999999997,Overtime Elite,4,1st,1-14,USA,Overtime,27,Good Starter,Met
+522,Amen Thompson,21,4.1,22,2.9499999999999997,Overtime Elite,4,1st,1-14,USA,Overtime,26,Good Starter,Met
 523,Shabazz Muhammad,21,0.7,22,-1.4000000000000001,UCLA,14,1st,1-14,USA,Top D1,2,Replacement Level,Met
-524,Victor Wembanyama,20,6.5,21,5.85,Metropolitans 92,1,1st,1-14,France,Nationale Masculine 1,28,All-NBA,Exceeded
+524,Victor Wembanyama,20,6.5,21,5.85,Metropolitans 92,1,1st,1-14,France,Nationale Masculine 1,27,All-NBA,Exceeded
 525,Channing Frye,22,2.7,26,1.5333333333333334,Arizona,8,1st,1-14,USA,Top D1,2,Role Player,Below
 526,Ryan Arcidiacono,23,-1.9,24,-2.333333333333333,Villanova,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 527,Simone Fontecchio,27,-1.0,28,-3.033333333333333,Baskonia,0,Undrafted,Undrafted,Spain,Euroleague,1,Benchwarmer,Met
 528,Gary Payton II,27,3.7,29,2.0,Oregon State,0,Undrafted,Undrafted,USA,Top D1,2,Good Starter,Exceeded
 529,Terence Davis,22,0.8,22,-0.5333333333333333,Mississippi,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 530,Chandler Parsons,23,2.0,24,1.7666666666666668,Florida,38,2nd,31-44,USA,Top D1,2,Role Player,Met
-531,Bilal Coulibaly,19,-3.7,20,-3.95,Metropolitans 92,7,1st,1-14,France,Nationale Masculine 1,28,Benchwarmer,Bust
+531,Bilal Coulibaly,19,-3.7,20,-3.95,Metropolitans 92,7,1st,1-14,France,Nationale Masculine 1,27,Benchwarmer,Bust
 532,Tari Eason,21,3.6,23,1.1666666666666667,Louisiana State,17,1st,15-30,USA,Top D1,2,Role Player,Met
 533,Brandin Podziemski,20,0.7,21,0.3,Santa Clara,19,1st,15-30,USA,Other D1,7,Role Player,Met
 534,Darius Miller,22,-1.9,27,-2.4666666666666663,Kentucky,46,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
@@ -538,14 +538,14 @@
 536,Manu Ginóbili,25,8.3,30,7.666666666666667,Virtus Bologna,57,2nd,45-60,Italy,Euroleague,1,MVP,Met
 537,Nassir Little,19,-1.4,21,-2.3666666666666667,North Carolina,25,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 538,Wes Iwundu,23,-2.6,25,-3.366666666666667,Kansas State,33,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-539,Dragan Bender,19,-2.9,22,-3.5666666666666664,Maccabi Tel Aviv,4,1st,1-14,Israel,Israeli Premier League,22,Benchwarmer,Bust
+539,Dragan Bender,19,-2.9,22,-3.5666666666666664,Maccabi Tel Aviv,4,1st,1-14,Israel,Israeli Premier League,21,Benchwarmer,Bust
 540,Deron Williams,21,4.0,24,3.6,Illinois,3,1st,1-14,USA,Top D1,2,Good Starter,Met
-541,Omri Casspi,21,0.4,30,0.13333333333333333,Maccabi Tel Aviv,23,1st,15-30,Israel,Israeli Premier League,22,Role Player,Met
+541,Omri Casspi,21,0.4,30,0.13333333333333333,Maccabi Tel Aviv,23,1st,15-30,Israel,Israeli Premier League,21,Role Player,Met
 542,Oshae Brissett,22,0.6,22,-1.1333333333333335,Syracuse,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 543,Tony Allen,23,3.6,28,2.3000000000000003,Oklahoma State,25,1st,15-30,USA,Top D1,2,Good Starter,Met
 544,Trendon Watford,21,-0.5,23,-1.3333333333333333,Louisiana State,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 545,Chuma Okeke,22,-0.1,23,-1.0666666666666667,Auburn,16,1st,15-30,USA,Top D1,2,Replacement Level,Below
-546,Dante Exum,19,-0.6,28,-1.6666666666666667,Australian Institute of Sport,5,1st,1-14,Australia,International Prep,23,Replacement Level,Met
+546,Dante Exum,19,-0.6,28,-1.6666666666666667,Australian Institute of Sport,5,1st,1-14,Australia,International Prep,22,Replacement Level,Met
 547,Tre Mann,20,-1.3,22,-2.533333333333333,Florida,18,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
 548,Frank Jackson,20,-1.7,22,-3.266666666666667,Duke,31,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 549,Xavier Tillman Sr.,22,1.9,24,0.7999999999999998,Michigan State,35,2nd,31-44,USA,Top D1,2,Role Player,Met
@@ -556,7 +556,7 @@
 554,Jordan McLaughlin,23,4.2,27,1.6333333333333335,Southern California,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 555,Miles McBride,21,0.0,24,-0.7999999999999999,West Virginia,36,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 556,Kyle O'Quinn,22,3.1,26,2.6666666666666665,Norfolk State,49,2nd,45-60,USA,Other D1,7,Good Starter,Exceeded
-557,Jameer Nelson,22,5.1,25,2.766666666666666,St. Joseph's (PA),20,1st,15-30,USA,High School,30,Good Starter,Met
+557,Jameer Nelson,22,5.1,25,2.766666666666666,St. Joseph's (PA),20,1st,15-30,USA,High School,29,Good Starter,Met
 558,José Calderón,24,4.5,26,3.4666666666666663,Tau Ceramica,0,Undrafted,Undrafted,Spain,Euroleague,1,Good Starter,Exceeded
 559,Semi Ojeleye,23,-1.7,25,-2.6999999999999997,Southern Methodist,37,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 560,Ty Jerome,22,4.3,27,0.9333333333333332,Virginia,24,1st,15-30,USA,Top D1,2,Role Player,Met
@@ -578,7 +578,7 @@
 576,Sterling Brown,22,-1.5,23,-1.7,Southern Methodist,46,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 577,Ziaire Williams,20,-2.3,23,-3.266666666666667,Stanford,10,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 578,Wesley Johnson,23,-0.2,28,-0.6666666666666666,Syracuse,4,1st,1-14,USA,Top D1,2,Replacement Level,Met
-579,Gerald Green,20,1.4,28,0.6333333333333333,Gulf Shores Academy (HS),18,1st,15-30,USA,High School,30,Role Player,Met
+579,Gerald Green,20,1.4,28,0.6333333333333333,Gulf Shores Academy (HS),18,1st,15-30,USA,High School,29,Role Player,Met
 580,Jose Alvarado,23,1.9,23,0.19999999999999996,Georgia Tech,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 581,Jalen McDaniels,22,-2.1,25,-2.5333333333333337,San Diego State,52,2nd,45-60,USA,Top D1,2,Benchwarmer,Below
 582,Trevor Booker,23,0.0,28,-0.10000000000000002,Clemson,23,1st,15-30,USA,Top D1,2,Replacement Level,Below
@@ -591,7 +591,7 @@
 589,Ochai Agbaji,22,-0.7,24,-2.7000000000000006,Kansas,14,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 590,Denzel Valentine,23,-0.6,26,-1.4333333333333336,Michigan State,14,1st,1-14,USA,Top D1,2,Replacement Level,Met
 591,Nick Richards,24,-1.3,25,-2.1333333333333333,Kentucky,42,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
-592,Goga Bitadze,20,2.5,25,1.633333333333333,Mega Basket,18,1st,15-30,Serbia,Mega Superbasket,16,Role Player,Met
+592,Goga Bitadze,20,2.5,25,1.633333333333333,Mega Basket,18,1st,15-30,Serbia,ABA,11,Role Player,Met
 593,Luc Mbah a Moute,22,-0.2,29,-0.43333333333333335,UCLA,37,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 594,Arron Afflalo,22,1.4,25,0.43333333333333335,UCLA,27,1st,15-30,USA,Top D1,2,Role Player,Met
 595,Robert Williams,21,6.0,23,5.533333333333334,Texas A&M,27,1st,15-30,USA,Top D1,2,All-NBA,Exceeded
@@ -599,19 +599,19 @@
 597,John Henson,22,0.9,29,0.6,North Carolina,14,1st,1-14,USA,Top D1,2,Role Player,Below
 598,Khem Birch,25,1.2,26,-0.23333333333333336,UNLV,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 599,Meyers Leonard,20,2.0,24,1.4666666666666666,Illinois,11,1st,1-14,USA,Top D1,2,Role Player,Below
-600,Monta Ellis,20,1.6,22,1.0000000000000002,Lanier HS (MS),40,2nd,31-44,USA,High School,30,Role Player,Met
+600,Monta Ellis,20,1.6,22,1.0000000000000002,Lanier HS (MS),40,2nd,31-44,USA,High School,29,Role Player,Met
 601,Justin Jackson,22,-1.6,23,-2.8333333333333335,North Carolina,15,1st,15-30,USA,Top D1,2,Benchwarmer,Bust
-602,Jonas Jerebko,22,0.9,26,0.3,Angelico Biella,39,2nd,31-44,Italy,Serie B,19,Role Player,Met
+602,Jonas Jerebko,22,0.9,26,0.3,Angelico Biella,39,2nd,31-44,Italy,Serie B,18,Role Player,Met
 603,Devin Harris,21,2.8,25,2.033333333333333,Wisconsin,5,1st,1-14,USA,Top D1,2,Good Starter,Met
 604,Kosta Koufos,19,0.9,22,0.3666666666666667,Ohio State,23,1st,15-30,USA,Top D1,2,Role Player,Met
-605,Ian Mahinmi,24,0.9,29,-0.6,Pau Orthez,28,1st,15-30,France,LNB Pro B,21,Replacement Level,Below
+605,Ian Mahinmi,24,0.9,29,-0.6,Pau Orthez,28,1st,15-30,France,LNB Pro B,20,Replacement Level,Below
 606,Jahlil Okafor,20,-0.2,24,-1.1333333333333333,Duke,3,1st,1-14,USA,Top D1,2,Replacement Level,Met
 607,Shelvin Mack,21,-1.1,23,-1.3666666666666665,Butler,34,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 608,Hamidou Diallo,20,-0.5,23,-1.3333333333333333,Kentucky,45,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 609,Jerian Grant,23,0.1,24,-0.9333333333333332,Notre Dame,19,1st,15-30,USA,Top D1,2,Replacement Level,Below
 610,Walker Kessler,21,2.9,21,1.866666666666667,Auburn,22,1st,15-30,USA,Top D1,2,Role Player,Met
-611,Tyson Chandler,21,2.6,32,2.266666666666667,Dominguez HS (CA),2,1st,1-14,USA,High School,30,Good Starter,Met
-612,Shaun Livingston,19,0.4,27,0.2333333333333333,Peoria Central HS (IL),4,1st,1-14,USA,High School,30,Role Player,Below
+611,Tyson Chandler,21,2.6,32,2.266666666666667,Dominguez HS (CA),2,1st,1-14,USA,High School,29,Good Starter,Met
+612,Shaun Livingston,19,0.4,27,0.2333333333333333,Peoria Central HS (IL),4,1st,1-14,USA,High School,29,Role Player,Below
 613,Andre Roberson,22,0.5,24,-0.09999999999999998,Colorado,26,1st,15-30,USA,Top D1,2,Replacement Level,Below
 614,Dyson Daniels,19,1.5,21,0.10000000000000002,G League Ignite,8,1st,1-14,USA,G League,8,Role Player,Below
 615,Shabazz Napier,23,1.5,27,0.6000000000000001,Connecticut,24,1st,15-30,USA,Top D1,2,Role Player,Met
@@ -622,15 +622,15 @@
 620,Yogi Ferrell,23,-1.1,23,-1.4333333333333333,Indiana,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 621,Shaedon Sharpe,19,-1.3,21,-2.4666666666666663,Kentucky,7,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 622,John Konchar,24,1.7,28,1.4666666666666668,Indiana-Purdue Fort Wayne,0,Undrafted,Undrafted,USA,Other D1,7,Role Player,Exceeded
-623,Amir Johnson,20,1.3,20,1.1666666666666667,Westchester HS (CA),56,2nd,45-60,USA,High School,30,Role Player,Met
+623,Amir Johnson,20,1.3,20,1.1666666666666667,Westchester HS (CA),56,2nd,45-60,USA,High School,29,Role Player,Met
 624,Zaza Pachulia,19,0.6,32,0.3333333333333333,Ulkerspor,42,2nd,31-44,Turkey,Euroleague,1,Role Player,Met
 625,Willy Hernangómez,22,1.4,23,0.6333333333333333,Cajasol Sevilla,35,2nd,31-44,Spain,Liga ACB,3,Role Player,Met
 626,Luke Kornet,22,3.4,28,2.9,Vanderbilt,0,Undrafted,Undrafted,USA,Top D1,2,Good Starter,Exceeded
-627,Thabo Sefolosha,22,2.7,31,2.1999999999999997,Angelico Biella,13,1st,1-14,Italy,Serie B,19,Good Starter,Met
+627,Thabo Sefolosha,22,2.7,31,2.1999999999999997,Angelico Biella,13,1st,1-14,Italy,Serie B,18,Good Starter,Met
 628,J.J. Barea,23,1.5,32,0.9,Northeastern,0,Undrafted,Undrafted,USA,Other D1,7,Role Player,Exceeded
-629,Timothé Luwawu-Cabarrot,21,-2.2,24,-3.1999999999999997,Mega Basket,24,1st,15-30,Serbia,Mega Superbasket,16,Benchwarmer,Bust
+629,Timothé Luwawu-Cabarrot,21,-2.2,24,-3.1999999999999997,Mega Basket,24,1st,15-30,Serbia,ABA,11,Benchwarmer,Bust
 630,Garrison Mathews,24,-1.6,28,-1.9000000000000001,Lipscomb,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
-631,Juancho Hernangómez,21,-0.1,21,-0.6,Estudiantes,15,1st,15-30,Spain,Primera FEB,18,Replacement Level,Below
+631,Juancho Hernangómez,21,-0.1,21,-0.6,Estudiantes,15,1st,15-30,Spain,Primera FEB,17,Replacement Level,Below
 632,Jonathon Simmons,26,-2.6,27,-2.8000000000000003,Houston,0,Undrafted,Undrafted,USA,Top D1,2,Benchwarmer,Met
 633,Kevin Knox,19,-1.4,21,-3.0333333333333337,Kentucky,9,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 634,Zach Randolph,20,2.6,29,1.8333333333333333,Michigan State,19,1st,15-30,USA,Top D1,2,Role Player,Met
@@ -638,16 +638,16 @@
 636,Santi Aldama,21,3.2,24,1.1666666666666667,Loyola-Maryland,30,1st,15-30,USA,Other D1,7,Role Player,Met
 637,Michael Carter-Williams,22,0.8,27,0.13333333333333333,Syracuse,11,1st,1-14,USA,Top D1,2,Role Player,Below
 638,Furkan Korkmaz,21,-0.1,23,-1.0666666666666667,Anadolu Efes,26,1st,15-30,Turkey,Euroleague,1,Replacement Level,Below
-639,Darius Bazley,19,-1.0,22,-1.4666666666666668,Princeton HS (OH),23,1st,15-30,USA,High School,30,Replacement Level,Below
+639,Darius Bazley,19,-1.0,22,-1.4666666666666668,Princeton HS (OH),23,1st,15-30,USA,High School,29,Replacement Level,Below
 640,Svi Mykhailiuk,21,-0.1,25,-1.2666666666666666,Kansas,47,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 641,Frank Ntilikina,19,-1.7,22,-2.2666666666666666,Strasbourg IG,8,1st,1-14,France,LNB Pro A,10,Benchwarmer,Bust
 642,Noah Vonleh,19,-0.7,23,-1.0,Indiana,9,1st,1-14,USA,Top D1,2,Replacement Level,Met
 643,Jaden Ivey,20,0.0,22,-2.1333333333333333,Purdue,5,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
-644,C.J. Miles,19,2.4,26,1.4666666666666668,Skyline HS (TX),34,2nd,31-44,USA,High School,30,Role Player,Met
+644,C.J. Miles,19,2.4,26,1.4666666666666668,Skyline HS (TX),34,2nd,31-44,USA,High School,29,Role Player,Met
 645,Isaiah Joe,21,1.3,24,-0.2666666666666666,Arkansas,49,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 646,Dean Wade,24,0.3,28,-0.06666666666666665,Kansas State,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 647,Aaron Wiggins,23,1.1,26,-0.10000000000000002,Maryland,55,2nd,45-60,USA,Top D1,2,Replacement Level,Met
-648,Killian Hayes,19,-2.7,22,-3.3333333333333335,Ratiopharm,7,1st,1-14,Germany,Bundesliga,13,Benchwarmer,Bust
+648,Killian Hayes,19,-2.7,22,-3.3333333333333335,Ratiopharm,7,1st,1-14,Germany,Bundesliga,14,Benchwarmer,Bust
 649,Jalen Duren,19,3.1,21,0.7333333333333334,Memphis,13,1st,1-14,USA,Top D1,2,Role Player,Below
 650,Christian Braun,21,0.3,23,-1.3333333333333333,Kansas,21,1st,15-30,USA,Top D1,2,Replacement Level,Below
 651,Jonathan Isaac,20,3.8,26,2.2666666666666666,Florida State,6,1st,1-14,USA,Top D1,2,Good Starter,Met
@@ -662,13 +662,13 @@
 660,Andrew Nembhard,23,-2.2,24,-2.566666666666667,Gonzaga,31,2nd,31-44,USA,Top D1,2,Benchwarmer,Bust
 661,Greg Monroe,20,2.9,21,2.4,Georgetown,7,1st,1-14,USA,Top D1,2,Good Starter,Met
 662,Michael Kidd-Gilchrist,19,-0.5,21,-1.0999999999999999,Kentucky,2,1st,1-14,USA,Top D1,2,Replacement Level,Met
-663,DeAndre' Bembry,22,-0.7,27,-1.6666666666666667,St. Joseph's (PA),21,1st,15-30,USA,High School,30,Replacement Level,Below
+663,DeAndre' Bembry,22,-0.7,27,-1.6666666666666667,St. Joseph's (PA),21,1st,15-30,USA,High School,29,Replacement Level,Below
 664,Jonathan Kuminga,19,-0.4,21,-0.8333333333333334,G League Ignite,7,1st,1-14,USA,G League,8,Replacement Level,Met
 665,Markelle Fultz,19,0.5,24,-0.2333333333333333,Washington,1,1st,1-14,USA,Top D1,2,Replacement Level,Met
 666,Jared Dudley,22,2.1,24,1.7000000000000002,Boston College,22,1st,15-30,USA,Top D1,2,Role Player,Met
 667,Joe Johnson,22,2.7,28,2.4333333333333336,Arkansas,10,1st,1-14,USA,Top D1,2,Good Starter,Met
 668,Drew Eubanks,22,0.1,25,-0.19999999999999998,Oregon State,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
-669,JR Smith,19,2.6,22,2.3000000000000003,St. Benedict's Prep (HS),18,1st,15-30,USA,High School,30,Good Starter,Met
+669,JR Smith,19,2.6,22,2.3000000000000003,St. Benedict's Prep (HS),18,1st,15-30,USA,High School,29,Good Starter,Met
 670,Amir Coffey,23,-0.3,24,-1.3333333333333333,Minnesota,0,Undrafted,Undrafted,USA,Top D1,2,Replacement Level,Exceeded
 671,Thomas Bryant,21,2.2,22,1.7000000000000002,Indiana,42,2nd,31-44,USA,Top D1,2,Role Player,Met
 672,Trey Burke,21,2.5,25,0.7999999999999999,Michigan,9,1st,1-14,USA,Top D1,2,Role Player,Below
@@ -703,13 +703,13 @@
 701,Tre Jones,21,1.5,25,0.20000000000000004,Duke,41,2nd,31-44,USA,Top D1,2,Role Player,Met
 702,Wilson Chandler,20,0.5,25,-0.09999999999999999,DePaul,23,1st,15-30,USA,Top D1,2,Replacement Level,Below
 703,Marvin Bagley III,19,-0.4,24,-0.7666666666666666,Duke,2,1st,1-14,USA,Top D1,2,Replacement Level,Met
-704,Dirk Nowitzki,20,8.3,28,7.8999999999999995,DJK Wurzburg,9,1st,1-14,Germany,Bundesliga,13,MVP,Met
+704,Dirk Nowitzki,20,8.3,28,7.8999999999999995,DJK Wurzburg,9,1st,1-14,Germany,Bundesliga,14,MVP,Met
 705,Anthony Tolliver,24,0.9,31,0.43333333333333335,Creighton,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 706,Jabari Smith Jr.,19,-0.4,20,-1.6000000000000003,Auburn,3,1st,1-14,USA,Top D1,2,Replacement Level,Met
 707,Aron Baynes,27,-0.2,29,-0.9,Washington State,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 708,Davion Mitchell,23,-2.6,26,-2.9333333333333336,Baylor,9,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
 709,Rondae Hollis-Jefferson,21,0.8,21,0.4000000000000001,Arizona,23,1st,15-30,USA,Top D1,2,Role Player,Met
-710,KJ Martin,20,-0.7,22,-1.2333333333333334,IMG Academy (FL),52,2nd,45-60,USA,High School,30,Replacement Level,Met
+710,KJ Martin,20,-0.7,22,-1.2333333333333334,IMG Academy (FL),52,2nd,45-60,USA,High School,29,Replacement Level,Met
 711,Shake Milton,22,-1.0,23,-1.5333333333333332,Southern Methodist,54,2nd,45-60,USA,Top D1,2,Replacement Level,Met
 712,Zion Williamson,19,7.0,23,5.533333333333334,Duke,1,1st,1-14,USA,Top D1,2,All-NBA,Exceeded
 713,Josh Jackson,20,0.1,22,-2.3666666666666667,Kansas,4,1st,1-14,USA,Top D1,2,Benchwarmer,Bust
@@ -751,8 +751,8 @@
 749,Keegan Murray,22,-0.6,22,-1.0333333333333334,Iowa,4,1st,1-14,USA,Top D1,2,Replacement Level,Met
 750,Dennis Smith Jr.,20,0.4,23,-0.7000000000000001,North Carolina State,9,1st,1-14,USA,Top D1,2,Replacement Level,Met
 751,Christian Wood,23,3.1,24,2.1333333333333333,UNLV,0,Undrafted,Undrafted,USA,Other D1,7,Good Starter,Exceeded
-752,Daniel Theis,25,2.4,27,0.8999999999999999,Brose Bamberg,0,Undrafted,Undrafted,Germany,Bundesliga,13,Role Player,Exceeded
-753,Marcin Gortat,24,2.2,27,1.6000000000000003,RheinEnergie Cologne,57,2nd,45-60,Germany,Bundesliga,13,Role Player,Met
+752,Daniel Theis,25,2.4,27,0.8999999999999999,Brose Bamberg,0,Undrafted,Undrafted,Germany,Bundesliga,14,Role Player,Exceeded
+753,Marcin Gortat,24,2.2,27,1.6000000000000003,RheinEnergie Cologne,57,2nd,45-60,Germany,Bundesliga,14,Role Player,Met
 754,Frank Kaminsky,22,1.3,27,0.46666666666666673,Wisconsin,9,1st,1-14,USA,Top D1,2,Role Player,Below
 755,Nerlens Noel,20,3.1,25,2.533333333333333,Kentucky,6,1st,1-14,USA,Top D1,2,Good Starter,Met
 756,Kenrich Williams,24,0.6,30,0.26666666666666666,TCU,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
@@ -773,7 +773,7 @@
 771,Mitchell Robinson,20,3.3,26,2.9,Western Kentucky,36,2nd,31-44,USA,Other D1,7,Good Starter,Exceeded
 772,Cameron Payne,21,3.1,26,0.9666666666666667,Murray State,14,1st,1-14,USA,Other D1,7,Role Player,Below
 773,Josh Giddey,19,3.0,22,1.9000000000000001,Adelaide,6,1st,1-14,Australia,NBL,6,Role Player,Below
-774,Langston Galloway,23,0.1,25,-0.5333333333333333,St. Joseph's (PA),0,Undrafted,Undrafted,USA,High School,30,Replacement Level,Exceeded
+774,Langston Galloway,23,0.1,25,-0.5333333333333333,St. Joseph's (PA),0,Undrafted,Undrafted,USA,High School,29,Replacement Level,Exceeded
 775,Immanuel Quickley,21,2.2,25,1.7333333333333334,Kentucky,25,1st,15-30,USA,Top D1,2,Role Player,Met
 776,Allen Crabbe,22,-0.7,25,-0.8333333333333334,California,31,2nd,31-44,USA,Top D1,2,Replacement Level,Below
 777,Devonte' Graham,23,0.7,25,0.36666666666666664,Kansas,34,2nd,31-44,USA,Top D1,2,Role Player,Met
@@ -816,7 +816,7 @@
 814,Scottie Barnes,20,3.7,22,2.3333333333333335,Florida State,4,1st,1-14,USA,Top D1,2,Good Starter,Met
 815,Jeremy Lamb,21,1.6,22,1.4000000000000001,Connecticut,12,1st,1-14,USA,Top D1,2,Role Player,Below
 816,Gorgui Dieng,24,3.4,31,2.3333333333333335,Louisville,21,1st,15-30,USA,Top D1,2,Good Starter,Met
-817,Deni Avdija,20,2.1,24,-0.1666666666666666,Maccabi Tel Aviv,9,1st,1-14,Israel,Israeli Premier League,22,Replacement Level,Met
+817,Deni Avdija,20,2.1,24,-0.1666666666666666,Maccabi Tel Aviv,9,1st,1-14,Israel,Israeli Premier League,21,Replacement Level,Met
 818,Alex Len,20,0.3,24,0.13333333333333333,Maryland,5,1st,1-14,USA,Top D1,2,Role Player,Below
 819,Monte Morris,23,1.5,23,0.9,Iowa State,51,2nd,45-60,USA,Top D1,2,Role Player,Met
 820,Ja Morant,20,6.1,22,4.966666666666667,Murray State,2,1st,1-14,USA,Other D1,7,All-Star,Met
@@ -835,10 +835,10 @@
 833,John Wall,20,4.7,26,4.066666666666666,Kentucky,1,1st,1-14,USA,Top D1,2,All-Star,Met
 834,Tyrese Maxey,20,3.1,22,1.8999999999999997,Kentucky,21,1st,15-30,USA,Top D1,2,Role Player,Met
 835,Grayson Allen,23,1.3,28,0.6000000000000001,Duke,21,1st,15-30,USA,Top D1,2,Role Player,Met
-836,Anfernee Simons,20,0.2,24,-0.19999999999999998,IMG Academy (FL),24,1st,15-30,USA,High School,30,Replacement Level,Below
+836,Anfernee Simons,20,0.2,24,-0.19999999999999998,IMG Academy (FL),24,1st,15-30,USA,High School,29,Replacement Level,Below
 837,Markieff Morris,22,1.0,24,-0.20000000000000004,Kansas,13,1st,1-14,USA,Top D1,2,Replacement Level,Met
 838,Kevon Looney,20,2.1,26,1.2,UCLA,30,1st,15-30,USA,Top D1,2,Role Player,Met
-839,Dwight Howard,19,5.3,24,4.733333333333333,SW Atlanta Christian Academy (GA),1,1st,1-14,USA,High School,30,All-Star,Met
+839,Dwight Howard,19,5.3,24,4.733333333333333,SW Atlanta Christian Academy (GA),1,1st,1-14,USA,High School,29,All-Star,Met
 840,Wendell Carter Jr.,19,1.6,22,1.1666666666666667,Duke,7,1st,1-14,USA,Top D1,2,Role Player,Below
 841,Jaden McDaniels,20,0.0,24,-1.2666666666666666,Washington,28,1st,15-30,USA,Top D1,2,Replacement Level,Below
 842,Tony Snell,22,-0.5,29,-0.8666666666666666,New Mexico,20,1st,15-30,USA,Other D1,7,Replacement Level,Below
@@ -855,7 +855,7 @@
 853,Jeff Teague,21,2.9,26,2.1333333333333333,Wake Forest,19,1st,15-30,USA,Other D1,7,Good Starter,Met
 854,Avery Bradley,21,-0.1,25,-0.7999999999999999,Texas,19,1st,15-30,USA,Top D1,2,Replacement Level,Below
 855,Delon Wright,24,3.4,29,2.9666666666666663,Utah,20,1st,15-30,USA,Top D1,2,Good Starter,Met
-856,Bismack Biyombo,19,-0.2,23,-0.7333333333333334,Baloncesto Fuenlabrada,7,1st,1-14,Spain,Primera FEB,18,Replacement Level,Met
+856,Bismack Biyombo,19,-0.2,23,-0.7333333333333334,Baloncesto Fuenlabrada,7,1st,1-14,Spain,Primera FEB,17,Replacement Level,Met
 857,Tyrese Haliburton,20,7.2,22,6.633333333333334,Iowa State,12,1st,1-14,USA,Top D1,2,All-NBA,Exceeded
 858,Robin Lopez,20,1.2,25,0.6333333333333333,Stanford,15,1st,15-30,USA,Top D1,2,Role Player,Met
 859,Victor Oladipo,21,5.8,25,3.4666666666666663,Indiana,2,1st,1-14,USA,Top D1,2,Good Starter,Met
@@ -893,9 +893,9 @@
 891,Ish Smith,22,0.3,28,-0.3333333333333333,Wake Forest,0,Undrafted,Undrafted,USA,Other D1,7,Replacement Level,Exceeded
 892,Terrence Ross,21,0.8,26,0.30000000000000004,Washington,8,1st,1-14,USA,Top D1,2,Role Player,Below
 893,Austin Rivers,20,-1.2,25,-1.7666666666666666,Duke,10,1st,1-14,USA,Top D1,2,Replacement Level,Met
-894,Goran Dragić,22,3.9,27,2.8000000000000003,Union Olimpija,45,2nd,45-60,Solvenia,ABA,17,Good Starter,Exceeded
+894,Goran Dragić,22,3.9,27,2.8000000000000003,Union Olimpija,45,2nd,45-60,Solvenia,ABA,11,Good Starter,Exceeded
 895,Coby White,19,-0.7,23,-0.7999999999999999,North Carolina,7,1st,1-14,USA,Top D1,2,Replacement Level,Met
-896,Lou Williams,20,4.0,25,3.5,South Gwinnett HS (GA),45,2nd,45-60,USA,High School,30,Good Starter,Exceeded
+896,Lou Williams,20,4.0,25,3.5,South Gwinnett HS (GA),45,2nd,45-60,USA,High School,29,Good Starter,Exceeded
 897,Larry Nance Jr.,23,2.4,25,2.066666666666667,Wyoming,27,1st,15-30,USA,Other D1,7,Good Starter,Met
 898,Darius Garland,20,3.1,25,2.6999999999999997,Vanderbilt,5,1st,1-14,USA,Top D1,2,Good Starter,Met
 899,RJ Barrett,19,0.6,24,-0.4666666666666666,Duke,3,1st,1-14,USA,Top D1,2,Replacement Level,Met
@@ -904,13 +904,13 @@
 902,Kevin Love,20,8.9,25,6.2,UCLA,5,1st,1-14,USA,Top D1,2,All-NBA,Exceeded
 903,Trevor Ariza,19,2.8,22,2.4999999999999996,UCLA,43,2nd,31-44,USA,Top D1,2,Good Starter,Exceeded
 904,Miles Bridges,20,1.8,26,1.1666666666666667,Michigan State,12,1st,1-14,USA,Top D1,2,Role Player,Below
-905,Jusuf Nurkić,20,3.7,24,2.733333333333333,Cedevita,16,1st,15-30,Solvenia,ABA,17,Good Starter,Met
+905,Jusuf Nurkić,20,3.7,24,2.733333333333333,Cedevita,16,1st,15-30,Solvenia,ABA,11,Good Starter,Met
 906,Carmelo Anthony,19,5.0,28,4.3,Syracuse,3,1st,1-14,USA,Top D1,2,All-Star,Met
 907,Doug McDermott,23,0.0,28,-0.6666666666666666,Creighton,11,1st,1-14,USA,Top D1,2,Replacement Level,Met
 908,Anthony Edwards,19,4.3,23,2.933333333333333,Georgia,1,1st,1-14,USA,Top D1,2,Good Starter,Met
 909,LaMarcus Aldridge,21,3.9,30,3.266666666666667,Texas,2,1st,1-14,USA,Top D1,2,Good Starter,Met
 910,Jakob Poeltl,21,2.5,24,2.1333333333333333,Utah,9,1st,1-14,USA,Top D1,2,Good Starter,Met
-911,Ivica Zubac,19,3.1,27,2.3000000000000003,Mega Basket,32,2nd,31-44,Serbia,Mega Superbasket,16,Good Starter,Exceeded
+911,Ivica Zubac,19,3.1,27,2.3000000000000003,Mega Basket,32,2nd,31-44,Serbia,ABA,11,Good Starter,Exceeded
 912,Malcolm Brogdon,24,2.8,30,2.433333333333333,Virginia,36,2nd,31-44,USA,Top D1,2,Good Starter,Exceeded
 913,Patrick Beverley,24,3.8,24,2.9,Arkansas,42,2nd,31-44,USA,Top D1,2,Good Starter,Exceeded
 914,Kevin Huerter,20,1.0,24,-0.03333333333333336,Maryland,19,1st,15-30,USA,Top D1,2,Replacement Level,Below
@@ -947,14 +947,14 @@
 945,Robert Covington,24,2.2,31,1.8333333333333333,Tennessee State,0,Undrafted,Undrafted,USA,Other D1,7,Role Player,Exceeded
 946,Kristaps Porziņģis,20,5.1,28,4.7,Cajasol Sevilla,4,1st,1-14,Spain,Liga ACB,3,All-Star,Met
 947,Josh Richardson,22,0.7,24,0.3666666666666667,Tennessee,40,2nd,31-44,USA,Top D1,2,Role Player,Met
-948,Joe Ingles,27,3.5,33,2.466666666666667,Maccabi Tel Aviv,0,Undrafted,Undrafted,Israel,Israeli Premier League,22,Good Starter,Exceeded
+948,Joe Ingles,27,3.5,33,2.466666666666667,Maccabi Tel Aviv,0,Undrafted,Undrafted,Israel,Israeli Premier League,21,Good Starter,Exceeded
 949,Luka Dončić,19,9.9,24,9.066666666666668,Real Madrid,3,1st,1-14,Spain,Euroleague,1,MVP,Met
 950,Royce O'Neale,24,1.0,27,0.9,Baylor,0,Undrafted,Undrafted,USA,Top D1,2,Role Player,Exceeded
 951,Kawhi Leonard,20,9.4,25,9.133333333333333,San Diego State,15,1st,15-30,USA,Top D1,2,MVP,Met
 952,Mason Plumlee,23,2.2,29,2.1,Duke,22,1st,15-30,USA,Top D1,2,Good Starter,Met
 953,Jae Crowder,22,2.2,25,1.5,Marquette,34,2nd,31-44,USA,Top D1,2,Role Player,Met
 954,Reggie Jackson,21,2.7,24,1.4000000000000001,Boston College,24,1st,15-30,USA,Top D1,2,Role Player,Met
-955,Evan Fournier,20,1.1,28,0.6,Poitiers Basket 86,20,1st,15-30,France,LNB Pro B,21,Role Player,Met
+955,Evan Fournier,20,1.1,28,0.6,Poitiers Basket 86,20,1st,15-30,France,LNB Pro B,20,Role Player,Met
 956,Gary Harris,20,0.8,23,0.26666666666666666,Michigan State,19,1st,15-30,USA,Top D1,2,Role Player,Met
 957,Jarrett Allen,19,4.2,26,3.6999999999999997,Texas,22,1st,15-30,USA,Top D1,2,Good Starter,Met
 958,Josh Hart,22,2.8,28,1.2333333333333332,Villanova,30,1st,15-30,USA,Top D1,2,Role Player,Met
@@ -973,7 +973,7 @@
 971,Bam Adebayo,20,4.9,23,4.033333333333333,Kentucky,14,1st,1-14,USA,Top D1,2,All-Star,Met
 972,De'Aaron Fox,20,2.7,25,2.3333333333333335,Kentucky,5,1st,1-14,USA,Top D1,2,Good Starter,Met
 973,Mike Conley,20,6.8,29,5.466666666666666,Ohio State,4,1st,1-14,USA,Top D1,2,All-NBA,Exceeded
-974,Jonas Valančiūnas,20,3.0,27,2.6999999999999997,Lietuvos rytas Vilnius,5,1st,1-14,Lithuania,LKL,14,Good Starter,Met
+974,Jonas Valančiūnas,20,3.0,27,2.6999999999999997,Lietuvos rytas Vilnius,5,1st,1-14,Lithuania,LKL,15,Good Starter,Met
 975,Kelly Oubre Jr.,20,-0.5,24,-0.9333333333333332,Kansas,15,1st,15-30,USA,Top D1,2,Replacement Level,Below
 976,Nicolas Batum,20,3.9,21,3.3666666666666667,Le Mans,25,1st,15-30,France,LNB Pro A,10,Good Starter,Met
 977,Andre Drummond,19,3.2,24,2.6,Connecticut,9,1st,1-14,USA,Top D1,2,Good Starter,Met
@@ -1005,7 +1005,7 @@
 1003,Aaron Gordon,19,2.1,27,1.5333333333333334,Arizona,4,1st,1-14,USA,Top D1,2,Role Player,Below
 1004,Chris Paul,20,11.0,23,10.2,Wake Forest,4,1st,1-14,USA,Other D1,7,All Time Great,Exceeded
 1005,Anthony Davis,19,9.4,25,8.766666666666667,Kentucky,1,1st,1-14,USA,Top D1,2,MVP,Met
-1006,Dennis Schröder,20,0.0,23,-0.2333333333333333,Braunschweig,17,1st,15-30,Germany,Bundesliga,13,Replacement Level,Below
+1006,Dennis Schröder,20,0.0,23,-0.2333333333333333,Braunschweig,17,1st,15-30,Germany,Bundesliga,14,Replacement Level,Below
 1007,Bradley Beal,19,3.4,26,3.1999999999999997,Florida,3,1st,1-14,USA,Top D1,2,Good Starter,Met
 1008,Jimmy Butler,22,8.7,33,7.8999999999999995,Marquette,30,1st,15-30,USA,Top D1,2,MVP,Met
 1009,Paul George,20,7.2,27,5.433333333333334,Fresno State,10,1st,1-14,USA,Other D1,7,All-NBA,Exceeded
@@ -1017,10 +1017,10 @@
 1015,Kentavious Caldwell-Pope,20,0.3,24,-0.06666666666666667,Georgia,8,1st,1-14,USA,Top D1,2,Replacement Level,Met
 1016,Andrew Wiggins,19,0.9,28,0.3333333333333333,Kansas,1,1st,1-14,USA,Top D1,2,Role Player,Below
 1017,Devin Booker,19,4.2,26,3.766666666666667,Kentucky,13,1st,1-14,USA,Top D1,2,All-Star,Met
-1018,LeBron James,19,13.2,24,12.233333333333334,St. Vincent-St. Mary HS (OH),1,1st,1-14,USA,High School,30,All Time Great,Exceeded
+1018,LeBron James,19,13.2,24,12.233333333333334,St. Vincent-St. Mary HS (OH),1,1st,1-14,USA,High School,29,All Time Great,Exceeded
 1019,Damian Lillard,22,7.5,29,7.266666666666666,Weber State,6,1st,1-14,USA,Other D1,7,All-NBA,Exceeded
-1020,Nikola Jokić,20,13.7,26,13.4,Mega Basket,41,2nd,31-44,Serbia,Mega Superbasket,16,All Time Great,Exceeded
-1021,Giannis Antetokounmpo,19,11.5,25,11.033333333333333,Filathlitikos,15,1st,15-30,Greece,Greek B,20,All Time Great,Exceeded
+1020,Nikola Jokić,20,13.7,26,13.4,Mega Basket,41,2nd,31-44,Serbia,ABA,11,All Time Great,Exceeded
+1021,Giannis Antetokounmpo,19,11.5,25,11.033333333333333,Filathlitikos,15,1st,15-30,Greece,Greek B,19,All Time Great,Exceeded
 1022,CJ McCollum,22,3.9,29,3.0,Lehigh,10,1st,1-14,USA,Other D1,7,Good Starter,Met
 1023,Russell Westbrook,20,11.1,28,9.0,UCLA,4,1st,1-14,USA,Top D1,2,MVP,Met
 1024,Harrison Barnes,20,0.2,27,0.10000000000000002,North Carolina,7,1st,1-14,USA,Top D1,2,Role Player,Below
