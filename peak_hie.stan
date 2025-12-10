@@ -20,8 +20,6 @@ parameters {
   vector<lower=0>[T] sigma_p;
   
   vector[T] beta_league_difficulty;
-  
-  vector[T] beta_hs;
 }
 
 transformed parameters {
