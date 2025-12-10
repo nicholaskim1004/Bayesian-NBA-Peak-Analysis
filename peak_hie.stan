@@ -3,7 +3,7 @@ data {
   int<lower=1> L; // number of leagues
   int<lower=1> P; // number of pick bins
   int<lower=1> T; // number of tier bins
-  int<lower=0> tier_count[L,P,T]; // stores number of players in specific tier given leage and pick
+  int<lower=0> tier_counts[L,P,T]; // stores number of players in specific tier given leage and pick
   int<lower=0> total_lp[L,P]; // player total over specific league and pick bin
 
   vector[L] league_diff_map; // stores the ind to a particular league
@@ -41,10 +41,10 @@ model {
   alpha ~ normal(0,2);
   
   //hyperprior
-  league_effect_raw ~ normal(0,1);
+  to_vector(league_effect_raw) ~ normal(0,1);
   sigma_l ~ cauchy(0,1.5);
   
-  pick_effect_raw ~ normal(0,1);
+  to_vector(pick_effect_raw) ~ normal(0,1);
   sigma_p ~ cauchy(0,1.5);
   
   beta_league_difficulty ~ normal(0, 1);
@@ -58,9 +58,9 @@ model {
         eta[t] = alpha[t] + 
         league_effect[l,t] + 
         pick_effect[p,t] +
-        beta_league_difficulty[t]*league_diff_map[l]
+        beta_league_difficulty[t]*league_diff_map[l];
       }
-      tier_count[l, p] ~ multinomial(softmax(eta));
+      tier_counts[l, p] ~ multinomial(softmax(eta));
     }
   }
   

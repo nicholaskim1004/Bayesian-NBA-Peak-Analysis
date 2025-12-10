@@ -88,153 +88,52 @@ Key insights:
 
 These variables should then have their own effect to capture should differences
 
+Looking at Bust rates
+```{r}
+print(prop.table(table(nba$Round.Bin,nba$Met.Draft.Expt)))
+print(table(nba$Round.Bin,nba$Met.Draft.Expt))
+```
+
 
 ## Data Modeling
 
-High lvl idea: 
-
-Layers: 
-1. Country 19
-2.College 285
-3. Draft Pick Bin 5 each college
-4. Player Impact (Superstar, Star, etc) 5 each bin
-
-Distributions:
-
-Global mu, std param -> 
-
-use count data for countries to estimate concentration values to get probs of going to a college/team 
-
-
-
-
-College Round Dis -> Categorical Distribution (based on n_i/t_i) where t_i is from Direchlet
-
-Round Player Impact -> Bernoulli where props are determined by College and the Round selected
-
-Creating per College dataset which I'll feed into my model. Player counts of each Round bin and Player Tier bins
-
+Rescaling League Difficulty into a scalar
 ```{r}
-num_colleges = length(unique(nba$College))
-num_round_bins = length(unique(nba$Round_bins))
-
-round_prop_mat = matrix(nrow = num_colleges, ncol = num_round_bins)
-
-for (i in 1:length(unique(nba$Round_bins))){
-  round_prop_mat[,i] = pick_prop$total * pick_prop[,i+4, drop=TRUE]
-}
-colnames(round_prop_mat) <- c("Lottery","Late 1st","Early 2nd","Late 2nd","Undrafted")
-
-round_totals <- rowSums(round_prop_mat)
+nba$League_adj <- (30-nba$League.Diff)/29
 ```
 
-Table for count of player tier given college and draft pick
 ```{r}
-num_tiers = length(unique(player_grouping$Weight_Tier))
-college_list = pick_prop$College
+num_leagues <- length(unique(nba$League))
+num_pick_bins <- length(unique(nba$Round.Bin))
+num_tiers <- length(unique(nba$Player.Tier))
 
-round_bins = c("1-14","15-30","31-44","45-60","Undrafted")
+tier_counts_table <- as.numeric(table(nba$League,nba$Round.Bin,nba$Player.Tier))
+tier_counts <- array(tier_counts_table,dim = c(num_leagues,num_pick_bins,num_tiers))
 
-tier_mat = array(0,dim = list(num_colleges, num_round_bins, num_tiers))
+total_lp <- array(as.numeric(table(nba$League,nba$Round.Bin)), dim = c(num_leagues,num_pick_bins))
 
-for (i in 1:num_colleges){
-  fil_to_col = prop_tiers_colleges_round[prop_tiers_colleges_round$College == college_list[i],]
-    for (j in 1:num_round_bins){
-      indx <- which(round_bins == fil_to_col$Round_bins[j])
-      tier_mat[i,indx,] = as.numeric(fil_to_col[j,c(4,5,6,7,8),drop=TRUE]*fil_to_col[j,3,drop=TRUE])
-    }
-}
+league_diff_map <- nba %>% select(League, League_adj) %>% group_by(League) %>% summarise(league_adj = mean(League_adj))
+
+dat = list(L = num_leagues,
+           P = num_pick_bins,
+           T = num_tiers,
+           tier_counts = tier_counts, 
+           total_lp = total_lp,
+           league_diff_map = league_diff_map$league_adj)
 ```
 
-Setting up country vector in same order as others
-```{r}
-region <- merge(pick_prop[,1], unique(nba[,c(12,16)]), by = "College")
-region_id_vec <- as.numeric(region$Country)
-```
-
-Running the STAN model
 ```{r}
 library(rstan)
-
-storage.mode(round_prop_mat) <- "integer"
-storage.mode(tier_mat) <- "integer"
-
-posterior <- stan(
-  file = "by_college.stan",
-  data = list(C = num_colleges, P = num_round_bins, T = num_tiers, R = length(unique(nba$Country)),
-              region_of_college = region_id_vec, college_count = round_prop_mat, tier_count = tier_mat),
-  seed = 1234,
-  chains = 2,
-  iter = 2000
+peaks_mcmc <- stan(
+    file = "peak_hie.stan",
+    data = dat,
+    seed = 1234,
+    chains = 2,
+    iter = 2000
 )
 ```
 
-```{r}
-summary <- rstan::summary(posterior)$summary
 
-summary(posterior)
-```
-
-
-
-
-posterior predictive check on a random subset of my data
-```{r}
-set.seed(1234)
-
-n_samples <- 210
-
-num_iters <- dim(post_picks)[1]
-ran_iters <- sample(1:num_iters,n_samples)
-
-pred_college_counts <- array(0,dim=list(n_samples, num_colleges, num_round_bins))
-pred_tier_counts <- array(0,dim=list(n_samples, num_colleges, num_round_bins, num_tiers))
-
-for (d in 1:n_samples){
-  ran_ind = ran_iters[d]
-  for (c in 1:num_colleges){
-    Total_c = round_totals[c] #total number of players drafted from that college
-    pred_college_counts[d,c,] = as.vector(rmultinom(1, size = Total_c, prob = post_picks[ran_ind,c,]))
-    
-    for (r in 1:num_round_bins){
-      Total_t = sum(tier_mat[c,r,]) #total number of players drafted from that college and in that specific draft bin
-      pred_tier_counts[d,c,r,] = as.vector(rmultinom(1, size = Total_t, prob = post_tiers[ran_ind,c,r,]))
-    }
-  }
-}
-```
-
-Checking number of superstars betwen acutal data and from our simulated draw
-```{r}
-library(tidyverse)
-actual_superstar_count <- apply(tier_mat[,,1],1,sum)
-
-sim_superstar_count <- apply(pred_tier_counts[,,,1],c(1,2),sum)
-  
-sim_super_mean <- apply(sim_superstar_count, 2, mean)
-sim_super_lo   <- apply(sim_superstar_count, 2, quantile, 0.05)
-sim_super_hi   <- apply(sim_superstar_count, 2, quantile, 0.95)
-
-ppc_df <- tibble(
-  College = college_list,
-  observed = actual_superstar_count,
-  sim_mean = sim_super_mean,
-  sim_lo = sim_super_lo,
-  sim_hi = sim_super_hi
-)
-
-ppc_df %>% arrange(desc(observed)) %>% head(10)
-```
-
-```{r}
-ggplot(ppc_df, aes(x = sim_mean, y = observed)) +
-  geom_errorbarh(aes(xmin = sim_lo, xmax = sim_hi), height = 0.2, alpha = 0.6) +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
-  labs(title = "Variational Plot of Actual Superstar Count per College vs Sim",
-       x = "Predicted # superstars (mean ± 90% CI)", y = "Observed # superstars")
-```
-At lower tail where we have less data there is more variability/less certainty in capturing the observed superstar count. As we progress up the y axis or as we get more data we capture the true mean. Evidence that the model is plausible!
 
 
 ## On NBA Draft Prospects
