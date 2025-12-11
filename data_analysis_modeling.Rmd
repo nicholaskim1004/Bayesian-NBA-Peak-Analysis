@@ -95,32 +95,60 @@ For high school there is a selection bias in my data since the NBA stopped draft
 In either case, the difference in leagues mostly seems to come in the number of all time great to all-nba talent that is produced.
 
 ```{r}
-ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = reorder(Player.Tier,Tier_ord))) + 
+league_tier_plt <- ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = reorder(Player.Tier,Tier_ord))) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title = "Proportional Distribution of Tiers by League",
        x = "Leagues",
        y = "Proportion",
        fill = "Tiers")
+
+ggsave("plots/league_tier_plt.png",league_tier_plt, width=10, height=7)
+
+league_tier_plt
 ```
 
 Lastly, lets take a look at draft position and its effect
 ```{r}
-ggplot(data = nba, aes(x = Round.Bin, fill = Player.Tier)) + 
+act_tier_prop_round <- ggplot(data = nba, aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
   geom_bar(position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by Round",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tiers")
 
-ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = Round.Bin)) + 
+ggsave("plots/tier_prop_round_act.png", act_tier_prop_round, height = 7, width = 10)
+
+act_tier_prop_round
+
+act_pick_prop_league <- ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = Round.Bin)) + 
   geom_bar(position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Pick Bin by League",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Pick Bin")
+
+ggsave("plots/pick_prop_league_act.png", act_pick_prop_league, height = 7, width = 10)
+
+act_pick_prop_league
 
 ggplot(data = usa, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
   geom_bar(position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1) )+
+  labs(title = "Proportional Distribution of Pick Bin by League in USA",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Pick Bin")
 
 ggplot(data = spain, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
   geom_bar(position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Pick Bin by League in Spain",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Pick Bin")
 ```
 
 Similar, to the other plots, as we move further away from places where we'd expect top talent less is produced. If we were to disregard the selection bias in high school we can see in the us bar charts that as league difficulty gets weaker there are a high proportion of Undrafted players. This is more clear in the Spain example, where high school is filtered out.
@@ -190,7 +218,7 @@ tier_counts <- array(tier_counts_table,dim = c(num_leagues,num_pick_bins,num_tie
 
 league_diff_map <- nba %>% select(League, League_adj) %>% group_by(League) %>% summarise(league_adj= mean(League_adj))
 
-league_diff_map$difficulty <- c(17,24,13,9,1,8,20,30,23,22,29,14,10,21,25,3,16,15,6,28,7,27,18,4,19,26,5,2,12)
+league_diff_map$difficulty <- c(11,23,14,9,1,8,19,29,22,21,28,3,15,10,20,24,27,16,6,7,26,17,4,18,25,5,2,13)
 
 dat = list(L = num_leagues,
            P = num_pick_bins,
@@ -294,6 +322,8 @@ image(t(actual_lp))  # actual heatmap
 
 ```
 
+Getting distribution of tiers by league on posterior samples. Hopefully it is somewhat comparable to the data we see
+
 ```{r}
 all_tier_counts_per_league <- array(0, dim = c(num_leagues, num_tiers))
 all_tier_counts_per_league <- matrix(0, nrow = num_leagues, ncol = num_tiers)
@@ -312,23 +342,105 @@ df_plot <- tibble(
              rep("Euroleague",8),rep("G League",8),rep("Greek B",8),
              rep("High School",8),rep("International Prep",8),
              rep("Israeli Premier League",8),rep("JUCO",8),rep("LKL",8),
-             rep("LNB Pro A",8),rep("LNB Pro B",8),rep("LUC",8),
-             rep("Liga ACB",8),rep("Mega Superbasket",8),rep("NBB",8),
+             rep("LNB Pro A",8),rep("LNB Pro B",8),rep("LUB",8),
+             rep("Liga ACB",8),rep("NBB",8),
              rep("NBL",8),rep("Nationale Masculine 1",8),rep("Other D1",8),
              rep("Overtime",8),rep("Primera FEB",8),rep("Serie A",8),
              rep("Serie B",8),rep("Super League 1",8),rep("Super Ligi",8),
              rep("Top D1",8),rep("VTB United League",8)),
-  Tier = rep(c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player"),29),
-  Count = c(all_tier_counts_per_league[1,],all_tier_counts_per_league[2,],all_tier_counts_per_league[3,],all_tier_counts_per_league[4,],all_tier_counts_per_league[5,],all_tier_counts_per_league[6,],all_tier_counts_per_league[7,],all_tier_counts_per_league[8,],all_tier_counts_per_league[9,],all_tier_counts_per_league[10,],all_tier_counts_per_league[11,],all_tier_counts_per_league[12,],all_tier_counts_per_league[13,],all_tier_counts_per_league[14,],all_tier_counts_per_league[15,],all_tier_counts_per_league[16,],all_tier_counts_per_league[17,],all_tier_counts_per_league[18,],all_tier_counts_per_league[19,],all_tier_counts_per_league[20,],all_tier_counts_per_league[21,],all_tier_counts_per_league[22,],all_tier_counts_per_league[23,],all_tier_counts_per_league[24,],all_tier_counts_per_league[25,],all_tier_counts_per_league[26,],all_tier_counts_per_league[27,],all_tier_counts_per_league[28,],all_tier_counts_per_league[29,]),
-  League.Diff = c(rep(17,8),rep(24,8),rep(13,8),rep(9,8),rep(1,8),rep(8,8),rep(20,8),rep(30,8),rep(23,8),rep(22,8),rep(29,8),rep(14,8),rep(10,8),rep(21,8),rep(25,8),rep(3,8),rep(16,8),rep(15,8),rep(6,8),rep(28,8),rep(7,8),rep(27,8),rep(18,8),rep(4,8),rep(19,8),rep(26,8),rep(25,8),rep(2,8),rep(12,8)),
-  Tier_order = rep(c(1,3,4,8,5,2,7,6),29)
+  Tier = rep(c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player"),28),
+  Count = c(all_tier_counts_per_league[1,],all_tier_counts_per_league[2,],all_tier_counts_per_league[3,],all_tier_counts_per_league[4,],all_tier_counts_per_league[5,],all_tier_counts_per_league[6,],all_tier_counts_per_league[7,],all_tier_counts_per_league[8,],all_tier_counts_per_league[9,],all_tier_counts_per_league[10,],all_tier_counts_per_league[11,],all_tier_counts_per_league[12,],all_tier_counts_per_league[13,],all_tier_counts_per_league[14,],all_tier_counts_per_league[15,],all_tier_counts_per_league[16,],all_tier_counts_per_league[17,],all_tier_counts_per_league[18,],all_tier_counts_per_league[19,],all_tier_counts_per_league[20,],all_tier_counts_per_league[21,],all_tier_counts_per_league[22,],all_tier_counts_per_league[23,],all_tier_counts_per_league[24,],all_tier_counts_per_league[25,],all_tier_counts_per_league[26,],all_tier_counts_per_league[27,],all_tier_counts_per_league[28,]),
+  League.Diff = c(rep(11,8),rep(23,8),rep(14,8),rep(9,8),rep(1,8),rep(8,8),rep(19,8),rep(29,8),rep(22,8),rep(21,8),rep(28,8),rep(3,8),rep(15,8),rep(10,8),rep(20,8),rep(24,8),rep(27,8),rep(16,8),rep(6,8),rep(7,8),rep(26,8),rep(17,8),rep(4,8),rep(18,8),rep(25,8),rep(5,8),rep(2,8),rep(13,8)),
+  Tier_order = rep(c(1,3,4,8,5,2,7,6),28)
 ) 
 
-ggplot(df_plot, aes(x = reorder(League,League.Diff), y = Count, fill = reorder(Tier,Tier_order))) +
+tier_league_sim <- ggplot(df_plot, aes(x = reorder(League,League.Diff), y = Count, fill = reorder(Tier,Tier_order))) +
   geom_bar(stat = "identity", position = "fill") +
   labs(title = "Simulated Tier Rates by League",
        x = "League") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by League from Posterior",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Tier")
+
+ggsave("plots/tier_prop_league_sim.png",tier_league_sim, width = 10, height = 7)
+
+tier_league_sim
+```
+
+
+```{r}
+tier_league_sim
+```
+Similar plot on round.  
+```{r}
+all_tier_counts_per_round <- matrix(0, nrow = num_pick_bins, ncol = num_tiers)
+
+for (p in 1:num_pick_bins){
+  for (t in 1:num_tiers){
+    all_tier_counts_per_round[p,t] = sum(apply(rep_counts[,,p,t],1,sum))
+  }
+}
+
+df_plot <- tibble(
+  Pick_bin = c(rep("1-14",8),rep("15-30",8),rep("31-44",8),rep("45-60",8),
+             rep("Undrafted",8)),
+  Tier = rep(c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player"),5),
+  Count = c(all_tier_counts_per_round[1,],all_tier_counts_per_round[2,],all_tier_counts_per_round[3,],all_tier_counts_per_round[4,],all_tier_counts_per_round[5,]),
+  Tier_order = rep(c(1,3,4,8,5,2,7,6),5)
+) 
+
+tier_prop_round <- ggplot(df_plot, aes(x = Pick_bin, y = Count, fill = reorder(Tier,Tier_order))) +
+  geom_bar(stat = "identity", position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by Pick Bin from Posterior",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tier")
+ 
+ ggsave("plots/tier_prop_round_sim.png", tier_prop_round, height = 7, width = 10)
+ tier_prop_round
+```
+
+Looking at dis of pick bin by league
+
+```{r}
+all_round_counts_per_league <- matrix(0, nrow = num_leagues, ncol = num_pick_bins)
+
+for (l in 1:num_leagues){
+  for (p in 1:num_pick_bins){
+    all_round_counts_per_league[l,p] = sum(apply(rep_counts[,l,p,],1,sum))
+  }
+}
+
+df_plot <- tibble(
+  League = c(rep("ABA",5),rep("BSL",5),rep("Bundesliga",5),rep("CBA",5),
+             rep("Euroleague",5),rep("G League",5),rep("Greek B",5),
+             rep("High School",5),rep("International Prep",5),
+             rep("Israeli Premier League",5),rep("JUCO",5),rep("LKL",5),
+             rep("LNB Pro A",5),rep("LNB Pro B",5),rep("LUB",5),
+             rep("Liga ACB",5),rep("NBB",5),
+             rep("NBL",5),rep("Nationale Masculine 1",5),rep("Other D1",5),
+             rep("Overtime",5),rep("Primera FEB",5),rep("Serie A",5),
+             rep("Serie B",5),rep("Super League 1",5),rep("Super Ligi",5),
+             rep("Top D1",5),rep("VTB United League",5)),
+  Pick = rep(c("1-14","15-30","31-44","45-60","Undrafted"),28),
+  Count = c(all_round_counts_per_league[1,],all_round_counts_per_league[2,],all_round_counts_per_league[3,],all_round_counts_per_league[4,],all_round_counts_per_league[5,],all_round_counts_per_league[6,],all_round_counts_per_league[7,],all_round_counts_per_league[8,],all_round_counts_per_league[9,],all_round_counts_per_league[10,],all_round_counts_per_league[11,],all_round_counts_per_league[12,],all_round_counts_per_league[13,],all_round_counts_per_league[14,],all_round_counts_per_league[15,],all_round_counts_per_league[16,],all_round_counts_per_league[17,],all_round_counts_per_league[18,],all_round_counts_per_league[19,],all_round_counts_per_league[20,],all_round_counts_per_league[21,],all_round_counts_per_league[22,],all_round_counts_per_league[23,],all_round_counts_per_league[24,],all_round_counts_per_league[25,],all_round_counts_per_league[26,],all_round_counts_per_league[27,],all_round_counts_per_league[28,]),
+  League.Diff = c(rep(11,5),rep(23,5),rep(14,5),rep(9,5),rep(1,5),rep(8,5),rep(19,5),rep(29,5),rep(22,5),rep(21,5),rep(28,5),rep(3,5),rep(15,5),rep(10,5),rep(20,5),rep(24,5),rep(27,5),rep(16,5),rep(6,5),rep(7,5),rep(26,5),rep(17,5),rep(4,5),rep(18,5),rep(25,5),rep(5,5),rep(2,5),rep(13,5))
+) 
+
+sim_pick_prop_leauge <- ggplot(df_plot, aes(x = reorder(League,League.Diff), y = Count, fill = Pick)) +
+  geom_bar(stat = "identity", position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Pick by League from Posterior",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Pick Bin")
+
+ggsave("plots/pick_prop_league_sim.png", sim_pick_prop_leauge, height = 7, width = 10)
+
+sim_pick_prop_leauge
 ```
 
 ## On NBA Draft Prospects
@@ -338,8 +450,34 @@ Creating NBA draft prospects data set. Some need to change college to one we hav
 ```{r}
 nba_prospects <- data.frame(Player = c("AJ Dybantsa","Darryn Peterson","Cameron Boozer","Mikel Brown","Kingston Flemings","Caleb Wilson","Nate Ament","Karim Lopez","Isaiah Evans","Chris Cenac","Meleek Thomas","Labaron Philon","Dash Daniels","Cameron Carr","Hannes Steinbach","Brayden Burries","Darius Acuff","Matt Able","Thomas Haugh","Alijah Arenas","Yaxel Lendeborg","Bennett Stirtz","Patrick Ngongba","Ian Jackson","Tounde Yessoufou","Henri Vessaar","Miikka Muurinen","Koa Peat","Segio De Larrea","Miles Byrd","Zuby Ejiofor","Morez Johnson","JT Toppin","Karter Knox","PJ Haggerty","Adam Atamna","Richie Saunders","Baba Miller","Jaron Pierre","Tarris Reed","Nate Bittle","Malique Lewis","Milos Uzan","Baye Ndongo","Alex Karaban","Mouhamed Faye","Michael Ruzic","Mackenzie Mgbako","Tre White","Joshua Jefferson","Malique Ewin","Xaivian Lee","JJ Starling","Ognjen Srzentic","Braden Smith","Donovan Dent","Roddy Gayle","Kylan Boswell","Ryan Conwell","Denzel Aberdeen","Dame Sarr","Neoklis Avdalas","Flory Bidunga","Cayden Boozer","Chris Cenac Jr."),
            College = c("Brigham Young","Kansas","Duke","Louisville","Houston","North Carolina","Tennessee","New Zealand Breakers","Duke","Houston","Arkansas","Alabama","Melbourne United","Baylor","Washington","Arizona","Arkansas","North Carolina State","Florida","USC","Michigan","Iowa","Duke","St. John's","Baylor","North Carolina","KK Partizan","Arizona","Valencia Basket Club","San Diego State","St. John's","Michigan","Texas Tech","Arkansas","Kansas State","ASVEL","Brigham Young","Cincinnati","Southern Methodist","Connecticut","Oregon","South East Melbourne","Houston","Georgia Tech","Connecticut","Paris Basketball","Club Joventut Badalona","Texas A&M","Kansas","Iowa State","Arkansas","Florida","Syracuse","KK Mega Leks","Purdue","UCLA","Michigan","Illinois","Louisville","Kentucky","Duke","Virginia Tech","Kansas","Duke","Houston"),
-           Projected_pick = c(1:60,rep("Undrafted",5)))
+           League = c(rep("Top D1",7),"NBL",rep("Top D1",4),"NBL",rep("Top D1",13),"Euroleague","Top D1","Liga ACB",rep("Top D1",6),"LNB Pro A",rep("Top D1",5),"NBL",rep("Top D1",3),"Euroleague","Liga ACB",rep("Top D1",6),"ABA",rep("Top D1",11)),
+           Projected_pick = c(1:60,rep("Undrafted",5)),
+           Proj_Round_bin = c(rep("1-14",15),rep("15-30",15),rep("31-44",15),rep("45-60",15),rep("Undrafted",5)))
 ```
 
+Getting posterior draws for these prospects
+
+```{r}
+get_tier_probs <- function(pred_prob, leagues, pickbins, league_levels, pickbin_levels) {
+  league_idx <- match(leagues, league_levels)
+  pickbin_idx <- match(pickbins, pickbin_levels)
+  
+  player_tier_probs = matrix(0, nrow = length(league_idx), ncol = 8)
+  
+  for (i in 1:length(pickbin_idx)){
+    probs <- pred_prob[, league_idx[i], pickbin_idx[i], ]
+    player_tier_probs[i,] = colMeans(probs)
+  }
+  return(player_tier_probs)
+}
+
+tier_probs <- get_tier_probs(
+  rep_counts,
+  nba_prospects$League,
+  nba_prospects$Proj_Round_bin,
+  league_diff_map$League,
+  c("1-14","15-30","31-44","45-60","Undrafted")
+)
+```
 
 
