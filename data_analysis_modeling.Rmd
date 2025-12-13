@@ -108,6 +108,17 @@ ggsave("plots/league_tier_plt.png",league_tier_plt, width=10, height=7)
 league_tier_plt
 ```
 
+```{r}
+ggplot(data = subset(nba,League=="Top D1"), aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by League",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tiers")
+```
+
+
 Lastly, lets take a look at draft position and its effect
 ```{r}
 act_tier_prop_round <- ggplot(data = nba, aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
@@ -197,250 +208,240 @@ print(quantile(nba$Age.Peaked,c(.25,.75)))
 
 From the ages we can see that younger players with more potential are picked earlier and generally they reach their peaks in the prime ages of their career of 22-26.
 
+```{r}
+ggplot(data = nba, aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
+  geom_histogram(bins = 25)
+
+ggplot(data = subset(nba, League == "Top D1"), aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
+  geom_histogram(bins = 25)
+
+ggplot(data = subset(nba, League == "Euroleague"), aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
+  geom_histogram(bins = 25)
+```
+
+```{r}
+ggplot(data = nba, aes(x = Draft.Pick, y = Top.3.BPM.Avg, colour = League_red))+
+  geom_point()
+```
+
 ## Data Modeling
 
-Adjusting League.Diff to be a scalar
+brms
+
+
+Combining leagues together so there'll be less sparsity
+
 ```{r}
-league_raw <- (30 + 1 - nba$League.Diff)  # invert so higher = more difficult
+reduced_leagues <- numeric(nrow(nba))
+
+dev_leg <- c("G League","International Prep","Overtime")
+
+other <- c("CBA","Israeli Premier League","JUCO","Super League 1","VTB United League")
+
+south_america <- c("NBB","LUB")
+
+europe_lower <- c("Primera FEB","Serie B","Nationale Masculine 1","LNB Pro B","Greek B","LKL","BSL")
+
+europe_top_league <- c("Serie A","Bundesliga","Super Ligi")
+
+for (i in 1:nrow(nba)){
+  league = nba$League[i]
+  
+  if (league %in% dev_leg){
+    reduced_leagues[i] = "Developmental League"
+  }
+  else if (league %in% south_america){
+    reduced_leagues[i] = "South America"
+  }
+  else if (league %in% europe_top_league){
+    reduced_leagues[i] = "Other Top Europe"
+  }
+  else if (league %in% europe_lower){
+    reduced_leagues[i] = "Other Europe Lower"
+  }
+  else if (league == "Top D1"){
+    reduced_leagues[i] = "Top D1"
+  }
+  else if (league == "Other D1"){
+    reduced_leagues[i] = "Other D1"
+  }
+  else if (league == "Euroleague"){
+    reduced_leagues[i] = "Europe Elite"
+  }
+  else if (league %in% other){
+    reduced_leagues[i] = "Other"
+  }
+  else if (league == "ABA"){
+    reduced_leagues[i] = "Eastern Europe Top"
+  }
+  else if (league == "Liga ACB"){
+    reduced_leagues[i] = "Spain Top"
+  }
+  else if (league == "LNB Pro A"){
+    reduced_leagues[i] = "France Top"
+  }
+  else if (league == "High School"){
+    reduced_leagues[i] = "High School"
+  }
+  else if (league == "NBL"){
+    reduced_leagues[i] = "Australia Top"
+  }
+}
+
+nba$League_red <- factor(reduced_leagues)
+
+nba$League.Diff <- as.numeric(nba$League.Diff)
+league_diff_adj <- nba %>% select(League_red, League.Diff) %>% group_by(League_red) %>% summarise(Leage_diff_red = mean(League.Diff))
+
+nba <- merge(nba,league_diff_adj,by="League_red")
+
+league_raw <- (13 + 1 - nba$Leage_diff_red)  # invert so higher = more difficult
 league_diff_std <- scale(league_raw)[,1] 
 
+nba$League_red_adj <- league_diff_std
+
+league_raw <- (28 + 1 - nba$League.Diff)  # invert so higher = more difficult
+league_diff_std <- scale(league_raw)[,1] 
 nba$League_adj <- league_diff_std
+
+nba$Draft.Pick[nba$Draft.Pick == 0] <- 65
+```
+
+```{r}
+ggplot(data = nba, aes(x = reorder(League_red, League_red_adj, decreasing=TRUE), fill = reorder(Player.Tier,Tier_ord))) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by League",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Tiers")
 ```
 
 
 ```{r}
-num_leagues <- length(unique(nba$League))
-num_pick_bins <- length(unique(nba$Round.Bin))
-num_tiers <- length(unique(nba$Player.Tier))
+library(brms)
 
-tier_counts_table <- as.numeric(table(nba$League,nba$Round.Bin,nba$Player.Tier))
-tier_counts <- array(tier_counts_table,dim = c(num_leagues,num_pick_bins,num_tiers))
+nba$Round.Bin <- factor(nba$Round.Bin)
 
-league_diff_map <- nba %>% select(League, League_adj) %>% group_by(League) %>% summarise(league_adj= mean(League_adj))
+priors = c(
+    prior(student_t(4, 0, 5), class = Intercept),
+    prior(normal(0, 1), class = sd),       # hierarchical sd
+    prior(normal(0, 1), class = b)
+  )
 
-league_diff_map$difficulty <- c(11,23,14,9,1,8,19,29,22,21,28,3,15,10,20,24,27,16,6,7,26,17,4,18,25,5,2,13)
 
-dat = list(L = num_leagues,
-           P = num_pick_bins,
-           T = num_tiers,
-           tier_counts = tier_counts,
-           league_diff_map = league_diff_map$league_adj)
-```
-
-```{r}
-library(rstan)
-peaks_mcmc <- stan(
-    file = "peak_hie.stan",
-    data = dat,
-    seed = 1234,
-    chains = 4,
-    iter = 10000
+bpm_reg <- brm(
+    Top.3.BPM.Avg ~ 1 + Age.Enter + League_red_adj + Draft.Pick + (1 | League_red),
+    data = nba,
+    family = student(),
+    prior = priors, chains = 1, iter = 5000
 )
+
+
 ```
 
 ```{r}
-summary_df <- as.data.frame(summary(peaks_mcmc)$summary)
+summary(bpm_reg)
 ```
 
+
 ```{r}
-pp <- rstan::extract(peaks_mcmc)$prob_tier_new
+pp<-posterior_predict(bpm_reg)
+```
 
-rep_counts <- array(0, dim = c(nrow(pp), num_leagues, num_pick_bins, num_tiers))
+Gonna used these predicted values to place them into different tiers. The cut offs for the tiers are the following:
+- All Time Great: 10 >
+- MVP: 7.5-10
+- All-NBA: 5-7.5
+- All-Star: 3.7-5
+- Good Starter: 2-3.7
+- Role Player: 0-2
+- Replacement Level: -2-0
+- Benchwarmer: < -2
 
-for (i in 1:nrow(pp)){
-  for (l in 1:num_leagues){
-    for (p in 1:num_pick_bins){
-      rep_counts[i, l, p, ] <- rmultinom(
-        n = 1,
-        size = total_lp[l, p],
-        prob = pp[i, l, p, ]
-      )
+```{r}
+pp_tiers <- matrix(0,nrow = nrow(pp), ncol = ncol(pp))
+  
+for (player in 1:ncol(pp)){
+  player_pred_bpms = pp[,player]
+  for (i in 1:nrow(pp)){
+    pred_bpm = player_pred_bpms[i]
+    
+    if (pred_bpm > 10){
+      pp_tiers[i,player] = "All Time Great"
+    }
+    else if ((pred_bpm <= 10) & (pred_bpm > 7.5)){
+      pp_tiers[i,player] = "MVP"
+    }
+    else if ((pred_bpm <= 7.5) & (pred_bpm > 5)){
+      pp_tiers[i,player] = "All-NBA"
+    }
+    else if ((pred_bpm <= 5) & (pred_bpm > 3.7)){
+      pp_tiers[i,player] = "All-Star"
+    }
+    else if ((pred_bpm <= 3.7) & (pred_bpm > 2)){
+      pp_tiers[i,player] = "Good Starter"
+    }
+    else if ((pred_bpm <= 2) & (pred_bpm > 0)){
+      pp_tiers[i,player] = "Role Player"
+    }
+    else if ((pred_bpm <= 0) & (pred_bpm > -2)){
+      pp_tiers[i,player] = "Replacement Level"
+    }
+    else{
+      pp_tiers[i,player] = "Benchwarmer"
     }
   }
 }
 ```
 
-Let's see how our models player tier proportions are distributed compared to the data 
+Get proportions of each tier for each player 
 ```{r}
-#actual all time great rate from data
-actual_league_atg_prop <- as.numeric(table(nba$League, nba$Player.Tier)[,1])/sum(as.numeric(table(nba$League, nba$Player.Tier)[,1]))
+count_by_tier_per_player <- matrix(0, nrow=ncol(pp), ncol=8)
 
-
-league_atg_prop = numeric(num_leagues)
-
-for (l in 1:num_leagues){
-  league_atg_count = apply(rep_counts[,l,,1],1,sum)
-  total_atg_count = apply(rep_counts[,,,1],1,sum)
-  
-  league_atg_prop[l] = mean(league_atg_count/total_atg_count, na.rm = TRUE)
+for (player in 1:ncol(pp_tiers)){
+  count_by_tier_per_player[player,] = table(factor(pp_tiers[, player], 
+                                                   levels = c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player")))
 }
 
-cat("Actual\n")
-print(actual_league_atg_prop)
-cat("Sim\n")
-print(league_atg_prop)
+#transforming the matrix to be used for merging onto the nba dataframe
+
+tier_counts_pp <- as.data.frame(count_by_tier_per_player)
+colnames(tier_counts_pp) <- c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player")
+tier_counts_pp$Player <- nba$Player
+tier_counts_pp$League <- nba$League_red
+tier_counts_pp$Age <- nba$Age.Enter
+tier_counts_pp$Pick <- nba$Draft.Pick
+tier_counts_pp$Pick_bin <- nba$Round.Bin
+tier_counts_pp$League_ord <- nba$League_red_adj
 ```
 
-```{r}
-actual_league_atg_prop <- as.numeric(table(nba$League, nba$Player.Tier)[,1])/rowSums(table(nba$League, nba$Player.Tier))
-
-sim_league_atg_prop <- numeric(num_leagues)
-
-for (l in 1:num_leagues){
-  atg_count_post   <- apply(rep_counts[,l,,1], 1, sum)
-  total_count_post <- apply(rep_counts[,l,,],   1, sum)
-  sim_league_atg_prop[l] <- mean(atg_count_post / total_count_post)
-}
-
-library(tidyverse)
-
-df_plot <- tibble(
-  League = factor(1:num_leagues, labels = as.numeric(rownames(league_diff_map))),
-  Actual = actual_league_atg_prop,
-  Sim    = sim_league_atg_prop
-) %>%
-  pivot_longer(cols = c(Actual, Sim),
-               names_to = "Type", values_to = "Prop")
-
-ggplot(df_plot, aes(x = League, y = Prop, fill = Type)) +
-  geom_col(position = "dodge") +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Actual vs Simulated ATG Rates by League",
-       y = "All-Time-Great Rate",
-       x = "League") +
-  theme_minimal()
-
-```
 
 ```{r}
-actual_lp <- table(nba$League, nba$Round.Bin, nba$Player.Tier)[,,4]
+library(tidyr)
 
-sim_lp <- apply(rep_counts[,,,4], c(2,3), mean)
+tier_info <- tier_counts_pp %>%  
+  pivot_longer(
+    cols = "All Time Great":"Role Player", 
+    names_to = "Tier",
+    values_to = "Count"
+)
 
-image(t(sim_lp))     # simulated heatmap
-image(t(actual_lp))  # actual heatmap
+tier_info <- tier_info %>% mutate(Tier_ord = factor(Tier, levels = c("All Time Great","MVP","All-NBA","All-Star","Good Starter","Role Player","Replacement Level","Benchwarmer")))
 
-```
-
-Getting distribution of tiers by league on posterior samples. Hopefully it is somewhat comparable to the data we see
-
-```{r}
-all_tier_counts_per_league <- array(0, dim = c(num_leagues, num_tiers))
-all_tier_counts_per_league <- matrix(0, nrow = num_leagues, ncol = num_tiers)
-
-for (l in 1:num_leagues){
-  for (t in 1:num_tiers){
-    all_tier_counts_per_league[l,t] = sum(apply(rep_counts[,l,,t],1,sum))
-  }
-}
-
-```
-
-```{r}
-df_plot <- tibble(
-  League = c(rep("ABA",8),rep("BSL",8),rep("Bundesliga",8),rep("CBA",8),
-             rep("Euroleague",8),rep("G League",8),rep("Greek B",8),
-             rep("High School",8),rep("International Prep",8),
-             rep("Israeli Premier League",8),rep("JUCO",8),rep("LKL",8),
-             rep("LNB Pro A",8),rep("LNB Pro B",8),rep("LUB",8),
-             rep("Liga ACB",8),rep("NBB",8),
-             rep("NBL",8),rep("Nationale Masculine 1",8),rep("Other D1",8),
-             rep("Overtime",8),rep("Primera FEB",8),rep("Serie A",8),
-             rep("Serie B",8),rep("Super League 1",8),rep("Super Ligi",8),
-             rep("Top D1",8),rep("VTB United League",8)),
-  Tier = rep(c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player"),28),
-  Count = c(all_tier_counts_per_league[1,],all_tier_counts_per_league[2,],all_tier_counts_per_league[3,],all_tier_counts_per_league[4,],all_tier_counts_per_league[5,],all_tier_counts_per_league[6,],all_tier_counts_per_league[7,],all_tier_counts_per_league[8,],all_tier_counts_per_league[9,],all_tier_counts_per_league[10,],all_tier_counts_per_league[11,],all_tier_counts_per_league[12,],all_tier_counts_per_league[13,],all_tier_counts_per_league[14,],all_tier_counts_per_league[15,],all_tier_counts_per_league[16,],all_tier_counts_per_league[17,],all_tier_counts_per_league[18,],all_tier_counts_per_league[19,],all_tier_counts_per_league[20,],all_tier_counts_per_league[21,],all_tier_counts_per_league[22,],all_tier_counts_per_league[23,],all_tier_counts_per_league[24,],all_tier_counts_per_league[25,],all_tier_counts_per_league[26,],all_tier_counts_per_league[27,],all_tier_counts_per_league[28,]),
-  League.Diff = c(rep(11,8),rep(23,8),rep(14,8),rep(9,8),rep(1,8),rep(8,8),rep(19,8),rep(29,8),rep(22,8),rep(21,8),rep(28,8),rep(3,8),rep(15,8),rep(10,8),rep(20,8),rep(24,8),rep(27,8),rep(16,8),rep(6,8),rep(7,8),rep(26,8),rep(17,8),rep(4,8),rep(18,8),rep(25,8),rep(5,8),rep(2,8),rep(13,8)),
-  Tier_order = rep(c(1,3,4,8,5,2,7,6),28)
-) 
-
-tier_league_sim <- ggplot(df_plot, aes(x = reorder(League,League.Diff), y = Count, fill = reorder(Tier,Tier_order))) +
+ggplot(data = tier_info, aes(x = reorder(League,League_ord,decreasing=TRUE), y = Count, fill = Tier_ord)) + 
   geom_bar(stat = "identity", position = "fill") +
-  labs(title = "Simulated Tier Rates by League",
-       x = "League") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Proportional Distribution of Tiers by League from Posterior",
-       x = "Leagues",
-       y = "Proportion",
-       fill = "Tier")
-
-ggsave("plots/tier_prop_league_sim.png",tier_league_sim, width = 10, height = 7)
-
-tier_league_sim
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
-
 ```{r}
-tier_league_sim
-```
-Similar plot on round.  
-```{r}
-all_tier_counts_per_round <- matrix(0, nrow = num_pick_bins, ncol = num_tiers)
-
-for (p in 1:num_pick_bins){
-  for (t in 1:num_tiers){
-    all_tier_counts_per_round[p,t] = sum(apply(rep_counts[,,p,t],1,sum))
-  }
-}
-
-df_plot <- tibble(
-  Pick_bin = c(rep("1-14",8),rep("15-30",8),rep("31-44",8),rep("45-60",8),
-             rep("Undrafted",8)),
-  Tier = rep(c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player"),5),
-  Count = c(all_tier_counts_per_round[1,],all_tier_counts_per_round[2,],all_tier_counts_per_round[3,],all_tier_counts_per_round[4,],all_tier_counts_per_round[5,]),
-  Tier_order = rep(c(1,3,4,8,5,2,7,6),5)
-) 
-
-tier_prop_round <- ggplot(df_plot, aes(x = Pick_bin, y = Count, fill = reorder(Tier,Tier_order))) +
+ggplot(data = tier_info, aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
   geom_bar(stat = "identity", position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Proportional Distribution of Tiers by Pick Bin from Posterior",
-       x = "Pick Bin",
-       y = "Proportion",
-       fill = "Tier")
- 
- ggsave("plots/tier_prop_round_sim.png", tier_prop_round, height = 7, width = 10)
- tier_prop_round
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
-Looking at dis of pick bin by league
-
 ```{r}
-all_round_counts_per_league <- matrix(0, nrow = num_leagues, ncol = num_pick_bins)
-
-for (l in 1:num_leagues){
-  for (p in 1:num_pick_bins){
-    all_round_counts_per_league[l,p] = sum(apply(rep_counts[,l,p,],1,sum))
-  }
-}
-
-df_plot <- tibble(
-  League = c(rep("ABA",5),rep("BSL",5),rep("Bundesliga",5),rep("CBA",5),
-             rep("Euroleague",5),rep("G League",5),rep("Greek B",5),
-             rep("High School",5),rep("International Prep",5),
-             rep("Israeli Premier League",5),rep("JUCO",5),rep("LKL",5),
-             rep("LNB Pro A",5),rep("LNB Pro B",5),rep("LUB",5),
-             rep("Liga ACB",5),rep("NBB",5),
-             rep("NBL",5),rep("Nationale Masculine 1",5),rep("Other D1",5),
-             rep("Overtime",5),rep("Primera FEB",5),rep("Serie A",5),
-             rep("Serie B",5),rep("Super League 1",5),rep("Super Ligi",5),
-             rep("Top D1",5),rep("VTB United League",5)),
-  Pick = rep(c("1-14","15-30","31-44","45-60","Undrafted"),28),
-  Count = c(all_round_counts_per_league[1,],all_round_counts_per_league[2,],all_round_counts_per_league[3,],all_round_counts_per_league[4,],all_round_counts_per_league[5,],all_round_counts_per_league[6,],all_round_counts_per_league[7,],all_round_counts_per_league[8,],all_round_counts_per_league[9,],all_round_counts_per_league[10,],all_round_counts_per_league[11,],all_round_counts_per_league[12,],all_round_counts_per_league[13,],all_round_counts_per_league[14,],all_round_counts_per_league[15,],all_round_counts_per_league[16,],all_round_counts_per_league[17,],all_round_counts_per_league[18,],all_round_counts_per_league[19,],all_round_counts_per_league[20,],all_round_counts_per_league[21,],all_round_counts_per_league[22,],all_round_counts_per_league[23,],all_round_counts_per_league[24,],all_round_counts_per_league[25,],all_round_counts_per_league[26,],all_round_counts_per_league[27,],all_round_counts_per_league[28,]),
-  League.Diff = c(rep(11,5),rep(23,5),rep(14,5),rep(9,5),rep(1,5),rep(8,5),rep(19,5),rep(29,5),rep(22,5),rep(21,5),rep(28,5),rep(3,5),rep(15,5),rep(10,5),rep(20,5),rep(24,5),rep(27,5),rep(16,5),rep(6,5),rep(7,5),rep(26,5),rep(17,5),rep(4,5),rep(18,5),rep(25,5),rep(5,5),rep(2,5),rep(13,5))
-) 
-
-sim_pick_prop_leauge <- ggplot(df_plot, aes(x = reorder(League,League.Diff), y = Count, fill = Pick)) +
+ggplot(data = subset(tier_info,League == "Top D1"), aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
   geom_bar(stat = "identity", position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Proportional Distribution of Pick by League from Posterior",
-       x = "Leagues",
-       y = "Proportion",
-       fill = "Pick Bin")
-
-ggsave("plots/pick_prop_league_sim.png", sim_pick_prop_leauge, height = 7, width = 10)
-
-sim_pick_prop_leauge
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ## On NBA Draft Prospects
@@ -448,36 +449,141 @@ sim_pick_prop_leauge
 
 Creating NBA draft prospects data set. Some need to change college to one we have: Melbourne United, KK Partizan, Valencia Basket Club, South East Melbourne, Paris Basketball, Club Joventut, KK Mega
 ```{r}
-nba_prospects <- data.frame(Player = c("AJ Dybantsa","Darryn Peterson","Cameron Boozer","Mikel Brown","Kingston Flemings","Caleb Wilson","Nate Ament","Karim Lopez","Isaiah Evans","Chris Cenac","Meleek Thomas","Labaron Philon","Dash Daniels","Cameron Carr","Hannes Steinbach","Brayden Burries","Darius Acuff","Matt Able","Thomas Haugh","Alijah Arenas","Yaxel Lendeborg","Bennett Stirtz","Patrick Ngongba","Ian Jackson","Tounde Yessoufou","Henri Vessaar","Miikka Muurinen","Koa Peat","Segio De Larrea","Miles Byrd","Zuby Ejiofor","Morez Johnson","JT Toppin","Karter Knox","PJ Haggerty","Adam Atamna","Richie Saunders","Baba Miller","Jaron Pierre","Tarris Reed","Nate Bittle","Malique Lewis","Milos Uzan","Baye Ndongo","Alex Karaban","Mouhamed Faye","Michael Ruzic","Mackenzie Mgbako","Tre White","Joshua Jefferson","Malique Ewin","Xaivian Lee","JJ Starling","Ognjen Srzentic","Braden Smith","Donovan Dent","Roddy Gayle","Kylan Boswell","Ryan Conwell","Denzel Aberdeen","Dame Sarr","Neoklis Avdalas","Flory Bidunga","Cayden Boozer","Chris Cenac Jr."),
-           College = c("Brigham Young","Kansas","Duke","Louisville","Houston","North Carolina","Tennessee","New Zealand Breakers","Duke","Houston","Arkansas","Alabama","Melbourne United","Baylor","Washington","Arizona","Arkansas","North Carolina State","Florida","USC","Michigan","Iowa","Duke","St. John's","Baylor","North Carolina","KK Partizan","Arizona","Valencia Basket Club","San Diego State","St. John's","Michigan","Texas Tech","Arkansas","Kansas State","ASVEL","Brigham Young","Cincinnati","Southern Methodist","Connecticut","Oregon","South East Melbourne","Houston","Georgia Tech","Connecticut","Paris Basketball","Club Joventut Badalona","Texas A&M","Kansas","Iowa State","Arkansas","Florida","Syracuse","KK Mega Leks","Purdue","UCLA","Michigan","Illinois","Louisville","Kentucky","Duke","Virginia Tech","Kansas","Duke","Houston"),
-           League = c(rep("Top D1",7),"NBL",rep("Top D1",4),"NBL",rep("Top D1",13),"Euroleague","Top D1","Liga ACB",rep("Top D1",6),"LNB Pro A",rep("Top D1",5),"NBL",rep("Top D1",3),"Euroleague","Liga ACB",rep("Top D1",6),"ABA",rep("Top D1",11)),
-           Projected_pick = c(1:60,rep("Undrafted",5)),
-           Proj_Round_bin = c(rep("1-14",15),rep("15-30",15),rep("31-44",15),rep("45-60",15),rep("Undrafted",5)))
+nba_prospects <- data.frame(Player = c("AJ Dybantsa","Darryn Peterson","Cameron Boozer","Mikel Brown","Kingston Flemings","Caleb Wilson","Nate Ament","Karim Lopez","Isaiah Evans","Chris Cenac","Meleek Thomas","Labaron Philon","Dash Daniels","Cameron Carr","Hannes Steinbach","Brayden Burries","Darius Acuff","Matt Able","Thomas Haugh","Alijah Arenas","Yaxel Lendeborg","Bennett Stirtz","Patrick Ngongba","Ian Jackson","Tounde Yessoufou","Henri Vessaar","Miikka Muurinen","Koa Peat","Segio De Larrea","Miles Byrd","Zuby Ejiofor","Morez Johnson","JT Toppin","Karter Knox","PJ Haggerty","Adam Atamna","Richie Saunders","Baba Miller","Jaron Pierre","Tarris Reed","Nate Bittle","Malique Lewis","Milos Uzan","Baye Ndongo","Alex Karaban","Mouhamed Faye","Michael Ruzic","Mackenzie Mgbako","Tre White","Joshua Jefferson","Malique Ewin","Xaivian Lee","JJ Starling","Ognjen Srzentic","Braden Smith","Donovan Dent","Roddy Gayle","Kylan Boswell","Ryan Conwell","Denzel Aberdeen","Dame Sarr","Neoklis Avdalas","Flory Bidunga","Cayden Boozer","Dwayne Aristode"),
+                            Age.Enter = c(18,18,18,19,18,19,19,18,20,18,19,20,17,21,19,20,19,18,22,18,23,22,19,20,19,21,18,18,20,21,21,19,20,20,21,18,24,21,23,22,22,21,22,22,23,20,19,21,22,21,22,21,21,18,22,22,22,20,21,21,19,19,20,18,19),
+           College = c("Brigham Young","Kansas","Duke","Louisville","Houston","North Carolina","Tennessee","New Zealand Breakers","Duke","Houston","Arkansas","Alabama","Melbourne United","Baylor","Washington","Arizona","Arkansas","North Carolina State","Florida","USC","Michigan","Iowa","Duke","St. John's","Baylor","North Carolina","KK Partizan","Arizona","Valencia Basket Club","San Diego State","St. John's","Michigan","Texas Tech","Arkansas","Kansas State","ASVEL","Brigham Young","Cincinnati","Southern Methodist","Connecticut","Oregon","South East Melbourne","Houston","Georgia Tech","Connecticut","Paris Basketball","Club Joventut Badalona","Texas A&M","Kansas","Iowa State","Arkansas","Florida","Syracuse","KK Mega Leks","Purdue","UCLA","Michigan","Illinois","Louisville","Kentucky","Duke","Virginia Tech","Kansas","Duke","Arizona"),
+           League_red = c(rep("Top D1",7),"Australia Top",rep("Top D1",4),"Australia Top",rep("Top D1",13),"Europe Elite","Top D1","Spain Top",rep("Top D1",6),"France Top",rep("Top D1",5),"Australia Top",rep("Top D1",3),"Europe Elite","Spain Top",rep("Top D1",6),"Eastern Europe Top",rep("Top D1",11)),
+           Draft.Pick = c(1:60,rep(65,5)),
+           Proj_Round_bin = c(rep("1-14",15),rep("15-30",15),rep("31-44",15),rep("45-60",15),rep("Undrafted",5)),
+           League_red_adj = c(rep(0.4120414,7),0.2125225,rep(0.4120414,4),0.2125225,rep(0.4120414,13),0.8110791,0.4120414,0.6115603,rep(0.4120414,6),-0.7850718,rep(0.4120414,5),0.2125225,rep(0.4120414,3),0.8110791,0.6115603,rep(0.4120414,6),-1.5831473,rep(0.4120414,11)))
 ```
 
 Getting posterior draws for these prospects
 
 ```{r}
-get_tier_probs <- function(pred_prob, leagues, pickbins, league_levels, pickbin_levels) {
-  league_idx <- match(leagues, league_levels)
-  pickbin_idx <- match(pickbins, pickbin_levels)
+prospects_pred <- posterior_predict(bpm_reg, newdata = nba_prospects)
+
+pp_pros_tiers <- matrix(0,nrow = nrow(prospects_pred), ncol = ncol(prospects_pred))
   
-  player_tier_probs = matrix(0, nrow = length(league_idx), ncol = 8)
-  
-  for (i in 1:length(pickbin_idx)){
-    probs <- pred_prob[, league_idx[i], pickbin_idx[i], ]
-    player_tier_probs[i,] = colMeans(probs)
+for (player in 1:ncol(prospects_pred)){
+  player_pred_bpms = prospects_pred[,player]
+  for (i in 1:nrow(prospects_pred)){
+    pred_bpm = player_pred_bpms[i]
+    
+    if (pred_bpm > 10){
+      pp_pros_tiers[i,player] = "All Time Great"
+    }
+    else if ((pred_bpm <= 10) & (pred_bpm > 7.5)){
+      pp_pros_tiers[i,player] = "MVP"
+    }
+    else if ((pred_bpm <= 7.5) & (pred_bpm > 5)){
+      pp_pros_tiers[i,player] = "All-NBA"
+    }
+    else if ((pred_bpm <= 5) & (pred_bpm > 3.7)){
+      pp_pros_tiers[i,player] = "All-Star"
+    }
+    else if ((pred_bpm <= 3.7) & (pred_bpm > 2)){
+      pp_pros_tiers[i,player] = "Good Starter"
+    }
+    else if ((pred_bpm <= 2) & (pred_bpm > 0)){
+      pp_pros_tiers[i,player] = "Role Player"
+    }
+    else if ((pred_bpm <= 0) & (pred_bpm > -2)){
+      pp_pros_tiers[i,player] = "Replacement Level"
+    }
+    else{
+      pp_pros_tiers[i,player] = "Benchwarmer"
+    }
   }
-  return(player_tier_probs)
 }
 
-tier_probs <- get_tier_probs(
-  rep_counts,
-  nba_prospects$League,
-  nba_prospects$Proj_Round_bin,
-  league_diff_map$League,
-  c("1-14","15-30","31-44","45-60","Undrafted")
-)
 ```
+
+```{r}
+count_by_tier_prospect <- matrix(0, nrow=ncol(prospects_pred), ncol=8)
+
+for (player in 1:ncol(pp_pros_tiers)){
+  count_by_tier_prospect[player,] = table(factor(pp_pros_tiers[, player], 
+                                                   levels = c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player")))
+}
+
+#transforming the matrix to be used for merging onto the nba dataframe
+
+tier_counts_prospects_pp <- as.data.frame(count_by_tier_prospect)
+colnames(tier_counts_prospects_pp) <- c("All Time Great","All-NBA","All-Star","Benchwarmer","Good Starter","MVP","Replacement Level","Role Player")
+tier_counts_prospects_pp$Player <- nba_prospects$Player
+```
+
+Can get probabilities of each tier and also get draft expectation counts
+```{r}
+tier_counts_prospects_pp$Pick <- nba_prospects$Draft.Pick
+
+exceed_rate <- numeric(nrow(tier_counts_prospects_pp))
+met_rates <- numeric(nrow(tier_counts_prospects_pp))
+bust_rates <- numeric(nrow(tier_counts_prospects_pp))
+
+elite_rate <- numeric(nrow(tier_counts_prospects_pp))
+floor_rate <- numeric(nrow(tier_counts_prospects_pp))
+bum_rate <- numeric(nrow(tier_counts_prospects_pp))
+
+for (i in 1:nrow(tier_counts_prospects_pp)){
+  pick = tier_counts_prospects_pp$Pick[i]
+  
+  atg_c = tier_counts_prospects_pp$`All Time Great`[i]
+  mvp_c = tier_counts_prospects_pp$MVP[i]
+  allnba_c = tier_counts_prospects_pp$`All-NBA`[i]
+  allstar_c = tier_counts_prospects_pp$`All-Star`[i]
+  gs_c = tier_counts_prospects_pp$`Good Starter`[i]
+  rp_c = tier_counts_prospects_pp$`Role Player`[i]
+  replace_c = tier_counts_prospects_pp$`Replacement Level`[i]
+  bench_c = tier_counts_prospects_pp$Benchwarmer[i]
+  
+  
+  elite_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  floor_rate[i] = (gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  bum_rate[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  
+  if (pick <= 14){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (rp_c+replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 14) & (pick <= 30)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 30) & (pick <= 44)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 44) & (pick <= 60)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (rp_c+replace_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else{
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    #can't really bust when there is no expectation for you to even play significantly
+    bust_rates[i] = (0)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+}
+
+tier_counts_prospects_pp$Elite_rate <- elite_rate
+tier_counts_prospects_pp$Floor_rate <- floor_rate
+tier_counts_prospects_pp$Bum_rate <- bum_rate
+
+tier_counts_prospects_pp$Exceed_rate <- exceed_rate
+tier_counts_prospects_pp$Meet_rate <- met_rates
+tier_counts_prospects_pp$Bust_rate <- bust_rates
+
+```
+
+
+
+
+
 
 
