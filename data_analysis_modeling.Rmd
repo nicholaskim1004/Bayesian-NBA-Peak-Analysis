@@ -444,6 +444,100 @@ ggplot(data = subset(tier_info,League == "Top D1"), aes(x = Pick_bin, y = Count,
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+Let's get bust rates
+
+```{r}
+exceed_rate <- numeric(nrow(tier_counts_pp))
+met_rates <- numeric(nrow(tier_counts_pp))
+bust_rates <- numeric(nrow(tier_counts_pp))
+
+elite_rate <- numeric(nrow(tier_counts_pp))
+floor_rate <- numeric(nrow(tier_counts_pp))
+bum_rate <- numeric(nrow(tier_counts_pp))
+
+for (i in 1:nrow(tier_counts_pp)){
+  pick = tier_counts_pp$Pick[i]
+  
+  atg_c = tier_counts_pp$`All Time Great`[i]
+  mvp_c = tier_counts_pp$MVP[i]
+  allnba_c = tier_counts_pp$`All-NBA`[i]
+  allstar_c = tier_counts_pp$`All-Star`[i]
+  gs_c = tier_counts_pp$`Good Starter`[i]
+  rp_c = tier_counts_pp$`Role Player`[i]
+  replace_c = tier_counts_pp$`Replacement Level`[i]
+  bench_c = tier_counts_pp$Benchwarmer[i]
+  
+  
+  elite_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  floor_rate[i] = (gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  bum_rate[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  
+  if (pick <= 14){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (rp_c+replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 14) & (pick <= 30)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 30) & (pick <= 44)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else if ((pick > 44) & (pick <= 60)){
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (rp_c+replace_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    bust_rates[i] = (bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+  else{
+    exceed_rate[i] = (atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    met_rates[i] = (replace_c+bench_c)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+    #can't really bust when there is no expectation for you to even play significantly
+    bust_rates[i] = (0)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
+  }
+}
+
+tier_counts_pp$Elite_rate <- elite_rate
+tier_counts_pp$Floor_rate <- floor_rate
+tier_counts_pp$Bum_rate <- bum_rate
+
+tier_counts_pp$Exceed_rate <- exceed_rate
+tier_counts_pp$Meet_rate <- met_rates
+tier_counts_pp$Bust_rate <- bust_rates
+
+```
+
+Lets look at Elite and Bust rates grouped by different categories
+
+```{r}
+rate_league <- tier_counts_pp %>% group_by(League) %>% summarise(Age = mean(Age),
+                                                  Elite_rate = mean(Elite_rate),
+                                                  Floor_rate = mean(Floor_rate),
+                                                  Bum_rate = mean(Bum_rate),
+                                                  Exceed_rate = mean(Exceed_rate),
+                                                  Met_rate = mean(Meet_rate),
+                                                  Bust_rate = mean(Bust_rate))
+
+rate_round <- tier_counts_pp %>% group_by(Pick_bin) %>% summarise(Age = mean(Age),
+                                                  Elite_rate = mean(Elite_rate),
+                                                  Floor_rate = mean(Floor_rate),
+                                                  Bum_rate = mean(Bum_rate),
+                                                  Exceed_rate = mean(Exceed_rate),
+                                                  Met_rate = mean(Meet_rate),
+                                                  Bust_rate = mean(Bust_rate))
+
+rate_leauge_round <- tier_counts_pp %>% group_by(League,Pick_bin) %>% summarise(Age = mean(Age),
+                                                  Elite_rate = mean(Elite_rate),
+                                                  Floor_rate = mean(Floor_rate),
+                                                  Bum_rate = mean(Bum_rate),
+                                                  Exceed_rate = mean(Exceed_rate),
+                                                  Met_rate = mean(Meet_rate),
+                                                  Bust_rate = mean(Bust_rate))
+```
+
 ## On NBA Draft Prospects
 
 
