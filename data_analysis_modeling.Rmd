@@ -734,7 +734,9 @@ tier_counts_prospects_pp$Bust_rate <- bust_rates
 ```
 
 
-
+```{r}
+write.csv(x = tier_counts_prospects_pp, file = "Data/prospects_pred_outcomes.csv", row.names = FALSE)
+```
 
 
 
