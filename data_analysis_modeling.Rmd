@@ -129,11 +129,27 @@ act_tier_prop_round <- ggplot(data = nba, aes(x = Round.Bin, fill = reorder(Play
        y = "Proportion",
        fill = "Tiers")
 
-ggsave("plots/tier_prop_round_act.png", act_tier_prop_round, height = 7, width = 10)
-
 act_tier_prop_round
 
-act_pick_prop_league <- ggplot(data = nba, aes(x = reorder(League, League.Diff), fill = Round.Bin)) + 
+
+ggplot(data = usa, aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by Round",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tiers")
+
+
+ggplot(data = spain, aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
+  geom_bar(position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportional Distribution of Tiers by Round",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tiers")
+
+act_pick_prop_league <- ggplot(data = nba, aes(x = reorder(League_red, Leage_diff_red), fill = Round.Bin)) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title = "Proportional Distribution of Pick Bin by League",
@@ -141,39 +157,35 @@ act_pick_prop_league <- ggplot(data = nba, aes(x = reorder(League, League.Diff),
        y = "Proportion",
        fill = "Pick Bin")
 
-ggsave("plots/pick_prop_league_act.png", act_pick_prop_league, height = 7, width = 10)
-
 act_pick_prop_league
 
-ggplot(data = usa, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
+bpm_by_pick_d1<-ggplot(data = subset(nba, League == "Top D1"), aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1) )+
-  labs(title = "Proportional Distribution of Pick Bin by League in USA",
-       x = "Leagues",
+  labs(title = "Proportional Distribution of Player Tier by Pick Bin for Top D1",
+       x = "Pick Bin",
        y = "Proportion",
-       fill = "Pick Bin")
+       fill = "Tier")
 
-ggplot(data = spain, aes(x = reorder(League,League.Diff), fill = Round.Bin)) + 
+ggsave("plots/bpm_pick_d1.png", bpm_by_pick_d1, height = 7, width = 10)
+
+bpm_by_pick_d1
+
+bpm_by_pick_euro<- ggplot(data = subset(nba, League_red == "Europe Elite"), aes(x = Round.Bin, fill = reorder(Player.Tier,Tier_ord))) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Proportional Distribution of Pick Bin by League in Spain",
-       x = "Leagues",
+  labs(title = "Proportional Distribution of Player Tier by Pick Bin for Europe Elite",
+       x = "Pick Bin",
        y = "Proportion",
-       fill = "Pick Bin")
+       fill = "Tier")
+ggsave("plots/bpm_pick_euro.png", bpm_by_pick_euro, height = 7, width = 10)
+
+bpm_by_pick_euro
 ```
 
 Similar, to the other plots, as we move further away from places where we'd expect top talent less is produced. If we were to disregard the selection bias in high school we can see in the us bar charts that as league difficulty gets weaker there are a high proportion of Undrafted players. This is more clear in the Spain example, where high school is filtered out.
 
 
-```{r warning=FALSE}
-ggplot(nba, aes(x = Draft.Pick, color = League)) +
-  geom_density(linewidth = 1, alpha = 0.5) +
-  theme_bw()  +     # hide legend if too big
-  labs(title = "Draft Pick Density per League",
-       x = "Draft Pick",
-       y = "Density")
-
-```
 Key insights:
 - League difficulty matters in terms of generating elite/generational talent
 - Same goes for Round.Bin 
@@ -210,13 +222,29 @@ From the ages we can see that younger players with more potential are picked ear
 
 ```{r}
 ggplot(data = nba, aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
-  geom_histogram(bins = 25)
+  geom_histogram(bins = 25) +
+  labs(title = "Distribution of BPM by Round Bin",
+       x = "Avg BPM",
+       y = "Count",
+       fill = "Pick Bin")
+
 
 ggplot(data = subset(nba, League == "Top D1"), aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
-  geom_histogram(bins = 25)
+  geom_histogram(bins = 25)+
+  labs(title = "Distribution of BPM by Round Bin for Top D1",
+       x = "Avg BPM",
+       y = "Count",
+       fill = "Pick Bin")
+
+
 
 ggplot(data = subset(nba, League == "Euroleague"), aes(x = Top.3.BPM.Avg, fill =Round.Bin))+
-  geom_histogram(bins = 25)
+  geom_histogram(bins = 25)+
+  labs(title = "Distribution of BPM by Round Bin for Euroleague",
+       x = "Avg BPM",
+       y = "Count",
+       fill = "Pick Bin")
+
 ```
 
 ```{r}
@@ -308,13 +336,15 @@ nba$Draft.Pick[nba$Draft.Pick == 0] <- 65
 ```
 
 ```{r}
-ggplot(data = nba, aes(x = reorder(League_red, League_red_adj, decreasing=TRUE), fill = reorder(Player.Tier,Tier_ord))) + 
+tier_league <- ggplot(data = nba, aes(x = reorder(League_red, League_red_adj, decreasing=TRUE), fill = reorder(Player.Tier,Tier_ord))) + 
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title = "Proportional Distribution of Tiers by League",
        x = "Leagues",
        y = "Proportion",
        fill = "Tiers")
+
+ggsave("plots/prop_tiers_leauge_red.png",tier_league,width=10, height=7)
 ```
 
 
@@ -334,7 +364,7 @@ bpm_reg <- brm(
     Top.3.BPM.Avg ~ 1 + Age.Enter + League_red_adj + Draft.Pick + (1 | League_red),
     data = nba,
     family = student(),
-    prior = priors, chains = 1, iter = 5000
+    prior = priors, chains = 4, iter = 10000
 )
 
 
@@ -429,19 +459,45 @@ tier_info <- tier_counts_pp %>%
 
 tier_info <- tier_info %>% mutate(Tier_ord = factor(Tier, levels = c("All Time Great","MVP","All-NBA","All-Star","Good Starter","Role Player","Replacement Level","Benchwarmer")))
 
-ggplot(data = tier_info, aes(x = reorder(League,League_ord,decreasing=TRUE), y = Count, fill = Tier_ord)) + 
+tier_league_plot <- ggplot(data = tier_info, aes(x = reorder(League,League_ord,decreasing=TRUE), y = Count, fill = Tier_ord)) + 
   geom_bar(stat = "identity", position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "Proportional Distribution of Player Tiers by League on Posterior",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Tiers")
+
+ggsave("plots/tier_league_post.png",tier_league_plot, height = 7, width = 10)
+
+tier_league_plot
+```
+
+
+```{r}
+tier_pick_post <- ggplot(data = tier_info, aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
+  geom_bar(stat = "identity", position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "Proportional Distribution of Player Tiers by Pick Bin on Posterior",
+       x = "Pick Bin",
+       y = "Proportion",
+       fill = "Tiers")
+
+ggsave("plots/tier_pick_post.png",tier_pick_post, height = 7, width = 10)
+
+tier_pick_post
 ```
 ```{r}
-ggplot(data = tier_info, aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
+tier_pick_post_d1 <- ggplot(data = subset(tier_info,League == "Top D1"), aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
   geom_bar(stat = "identity", position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-```{r}
-ggplot(data = subset(tier_info,League == "Top D1"), aes(x = Pick_bin, y = Count, fill = Tier_ord)) + 
-  geom_bar(stat = "identity", position = "fill") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "Proportional Distribution of Player Tiers by Pick Bin for Top D1 on Posterior",
+       x = "Leagues",
+       y = "Proportion",
+       fill = "Tiers")
+
+ggsave("plots/tier_pick_post_d1.png",tier_pick_post_d1, height = 7, width = 10)
+
+tier_pick_post_d1
 ```
 
 Let's get bust rates
@@ -499,6 +555,8 @@ for (i in 1:nrow(tier_counts_pp)){
     bust_rates[i] = (0)/(atg_c+mvp_c+allnba_c+allstar_c+gs_c+rp_c+replace_c+bench_c)
   }
 }
+
+
 
 tier_counts_pp$Elite_rate <- elite_rate
 tier_counts_pp$Floor_rate <- floor_rate
